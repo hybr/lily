@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {MdToolbarModule} from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-root',
