@@ -1,3 +1,5 @@
+
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -20,6 +22,19 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
 /* Routing */
 import { routing } from './app.routes';
 
+import { 
+    AngularFireModule, 
+    AuthMethods, 
+    AuthProviders 
+  } from "angularfire2";
+const firebaseConfig = {
+    apiKey: "AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0",
+    authDomain: "ia2f-5d2b6.firebaseapp.com",
+    databaseURL: "https://ia2f-5d2b6.firebaseio.com",
+    storageBucket: "ia2f-5d2b6.appspot.com",
+    messagingSenderId: "288539084670"
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +46,10 @@ import { routing } from './app.routes';
     FormsModule,
     HttpModule, JsonpModule,
     MaterialModule, MdToolbarModule,
+    AngularFireModule.initializeApp(firebaseConfig,{
+        provider: AuthProviders.Google,
+        method: AuthMethods.Popup
+    }),
     routing
   ],
   providers: [ MdIconRegistry ],
