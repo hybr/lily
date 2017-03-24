@@ -8,12 +8,15 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 })
 export class WebPageComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  name: string;
 
-  ngOnInit() {
-    this.activatedRoute.params.subscribe((params: Params) => {
-      let name = params['name'];
-    });
+  constructor(private activatedRoute: ActivatedRoute) { 
+      this.name = activatedRoute.snapshot.params['name'];
+      if (this.name == '') {
+          this.name = 'home';
+      }
   }
+
+  ngOnInit() { }
 
 }
