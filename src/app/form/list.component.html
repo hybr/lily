@@ -1,0 +1,19 @@
+<section>
+  <header>
+    <input 
+      placeholder="Search by form name or number" 
+      autofocus="" 
+      (keyup.enter)="add()"
+    >
+  </header>
+  <section>
+    <ul>
+      <li *ngFor="let form of forms | async" [class.disabled]="form.obsolete">
+          {{form.form_number}}. <a [routerLink] = "['/form', form.$key]">{{form.name}}</a> : {{form.detail}}
+      </li>
+    </ul>
+  </section>
+  <footer>
+    <span><strong>{{ forms.length }}</strong> {{ forms.length == 1 ? 'form' : 'forms'}} to fill</span>
+  </footer>
+</section>

@@ -1,8 +1,9 @@
 export class Form {
-  number: string = '';
-  title: string = '';
+  form_number: string = '';
   obsolete: boolean = false;
-
+  name: string = '';
+  detail: string = '';
+  
   constructor(values: Object = {}) {
     Object.assign(this, values);
   }

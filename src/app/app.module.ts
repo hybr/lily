@@ -28,7 +28,8 @@ import {
 import { AppComponent } from './app.component';
 import { WebPageComponent } from './views/web-page/web-page.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
-import { FormComponent } from './form/form.component';
+import { FormDetailComponent } from './form/detail.component';
+import { FormListComponent } from './form/list.component';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -43,7 +44,8 @@ const firebaseConfig = {
     AppComponent,
     WebPageComponent,
     PageNotFoundComponent,
-    FormComponent
+    FormDetailComponent,
+    FormListComponent
   ],
   imports: [
     BrowserModule,
