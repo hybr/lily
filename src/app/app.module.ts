@@ -11,42 +11,46 @@ import 'hammerjs';
 import {MdCardModule} from '@angular/material/card';
 import {MdButtonModule} from '@angular/material/button';
 import {MdIconModule} from '@angular/material/icon';
-import {MdIconRegistry} from '@angular/material/icon'
+import {MdIconRegistry} from '@angular/material/icon';
 import {MdToolbarModule} from '@angular/material/toolbar';
+
+/* Routing */
+import { routing } from './app.routes';
+
+/* authentication */
+import {
+  AngularFireModule,
+  AuthMethods,
+  AuthProviders
+} from 'angularfire2';
 
 /* Application Components */
 import { AppComponent } from './app.component';
 import { WebPageComponent } from './views/web-page/web-page.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
+import { FormComponent } from './form/form.component';
 
-/* Routing */
-import { routing } from './app.routes';
-
-import { 
-    AngularFireModule, 
-    AuthMethods, 
-    AuthProviders 
-  } from "angularfire2";
 const firebaseConfig = {
-    apiKey: "AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0",
-    authDomain: "ia2f-5d2b6.firebaseapp.com",
-    databaseURL: "https://ia2f-5d2b6.firebaseio.com",
-    storageBucket: "ia2f-5d2b6.appspot.com",
-    messagingSenderId: "288539084670"
+    apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
+    authDomain: 'ia2f-5d2b6.firebaseapp.com',
+    databaseURL: 'https://ia2f-5d2b6.firebaseio.com',
+    storageBucket: 'ia2f-5d2b6.appspot.com',
+    messagingSenderId: '288539084670'
 };
 
 @NgModule({
   declarations: [
     AppComponent,
     WebPageComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    FormComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule, JsonpModule,
     MaterialModule, MdToolbarModule,
-    AngularFireModule.initializeApp(firebaseConfig,{
+    AngularFireModule.initializeApp (firebaseConfig, {
         provider: AuthProviders.Google,
         method: AuthMethods.Popup
     }),

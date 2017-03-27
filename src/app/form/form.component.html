@@ -1,0 +1,23 @@
+<section>
+  <header>
+    <h1>Forms</h1>
+    <input placeholder="What is form title" 
+      autofocus="" 
+      [(ngModel)]="newForm.title" 
+      (keyup.enter)="add()">
+  </header>
+  <section>
+    <ul>
+      <li *ngFor="let form of forms | async" [class.disabled]="form.obsolete">
+        <div class="view">
+          <input type="checkbox" (click)="toggleObsolete(form)" [checked]="form.obsolete">
+          <label>{{form.title}}</label>
+          <button (click)="remove(form)"></button>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <footer>
+    <span><strong>{{ getAll().length}}</strong> {{ getAll().length == 1 ? 'form' : 'forms'}} to fill</span>
+  </footer>
+</section>

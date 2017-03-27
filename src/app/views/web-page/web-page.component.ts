@@ -10,11 +10,11 @@ export class WebPageComponent implements OnInit {
 
   name: string;
 
-  constructor(private activatedRoute: ActivatedRoute) { 
-      this.name = activatedRoute.snapshot.params['name'];
-      if (this.name == '') {
-          this.name = 'home';
-      }
+  constructor(private activatedRoute: ActivatedRoute) {
+    this.name = activatedRoute.snapshot.params['name'];
+    if (this.name === '') {
+      this.name = 'home';
+    }
   }
 
   ngOnInit() { }
