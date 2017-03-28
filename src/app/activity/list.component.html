@@ -1,0 +1,28 @@
+<section>
+  <header>
+      <label for="activityListSearchId">Search</label>
+	    <input 
+	       id="activityListSearchId"
+	       placeholder="name, number or detail pattern"
+	       [(ngModel)]="searchPattern"
+	       (ngModelChange) = "searchActivities()"
+	    />
+  </header>
+  <section>
+  	<div *ngIf="!(activities | async)">Loading activities list...</div>
+    <ol>
+      <li *ngFor="let activity of activities | async" [class.disabled]="activity.obsolete">
+          {{activity.number}}.
+          <a [routerLink]="['/activity', activity.$key]">{{activity.name}}</a>
+           : {{activity.detail}}
+      </li>
+    </ol>
+  </section>
+  <footer>
+    <span>
+      <strong>{{(activities|async)?.length}}</strong>
+      {{(activities|async)?.length <= 1?'activity':'activities'}}
+      | <a [routerLink]="['/activity/new']">Add New Activity</a>
+    </span>
+  </footer>
+</section>

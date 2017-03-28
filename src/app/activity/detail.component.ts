@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
 import { ActivatedRoute } from '@angular/router';
-import { Form } from './form';
+import { Activity } from './model';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-form-detail',
+  selector: 'app-activity-detail',
   templateUrl: './detail.component.html',
-  styleUrls: [ './form.component.css' ]
+  styleUrls: [ './activity.component.css' ]
 })
-export class FormDetailComponent implements OnInit {
+export class ActivityDetailComponent implements OnInit {
 
-  form: FirebaseObjectObservable<any>;
+  activity: FirebaseObjectObservable<any>;
 
   constructor(
     private _af: AngularFire,
@@ -22,8 +22,8 @@ export class FormDetailComponent implements OnInit {
     this._route.params
       .map(params => params['key'])
       .subscribe(key => {
-          this.form = this._af.database.object(`/c1/${key}`);
-          console.log(this.form);
+          this.activity = this._af.database.object(`/c1/${key}`);
+          console.log(this.activity);
       })
     ;
   }

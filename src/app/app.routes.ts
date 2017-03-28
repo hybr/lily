@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { WebPageRoutes } from './views/web-page/web-page.routes';
 import { PageNotFoundRoutes } from './views/page-not-found/page-not-found.routes';
-import { FormComponentRoutes } from './form/form.routes';
+import { ActivityComponentRoutes } from './activity/routes';
 
 // Route Configuration
 export const routes: Routes = [
@@ -13,7 +13,7 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   ...WebPageRoutes,
-  ...FormComponentRoutes,
+  ...ActivityComponentRoutes,
   ...PageNotFoundRoutes /* keep it as last route */
 ];
 

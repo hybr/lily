@@ -10,10 +10,8 @@ export class AppComponent {
   title = 'app works!';
   user = {};
 
-  constructor(
-      public af: AngularFire
-  ) {
-      this.af.auth.subscribe(user => {
+  constructor(private _af: AngularFire) {
+      this._af.auth.subscribe(user => {
         if (user) {
           // user logged in
           this.user = user;
@@ -22,17 +20,16 @@ export class AppComponent {
           this.user = {};
         }
       });
-      console.log('User: ', this.user);
   }
 
   login() {
-      this.af.auth.login({
+      this._af.auth.login({
         provider: AuthProviders.Google,
         method: AuthMethods.Redirect
       });
   }
 
   logout() {
-    this.af.auth.logout();
+    this._af.auth.logout();
   }
 }

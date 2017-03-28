@@ -2,6 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
 
 /* Routing */
@@ -18,9 +19,9 @@ import {
 import { AppComponent } from './app.component';
 import { WebPageComponent } from './views/web-page/web-page.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
-import { FormDetailComponent } from './form/detail.component';
-import { FormListComponent } from './form/list.component';
-import { FormAddComponent } from './form/add.component';
+import { ActivityDetailComponent } from './activity/detail.component';
+import { ActivityListComponent } from './activity/list.component';
+import { ActivityAddComponent } from './activity/add.component';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -35,13 +36,14 @@ const firebaseConfig = {
     AppComponent,
     WebPageComponent,
     PageNotFoundComponent,
-    FormDetailComponent,
-    FormListComponent,
-    FormAddComponent
+    ActivityDetailComponent,
+    ActivityListComponent,
+    ActivityAddComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule, JsonpModule,
     AngularFireModule.initializeApp (firebaseConfig, {
         provider: AuthProviders.Google,
