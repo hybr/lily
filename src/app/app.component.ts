@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MdToolbarModule } from '@angular/material/toolbar';
 import { AngularFire, AuthMethods, AuthProviders } from 'angularfire2';
 
 @Component({
@@ -33,7 +32,7 @@ export class AppComponent {
       });
   }
 
-    logout() {
-      this.af.auth.logout();
-    }
+  logout() {
+    this.af.auth.logout();
+  }
 }

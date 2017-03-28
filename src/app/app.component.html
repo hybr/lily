@@ -1,27 +1,31 @@
-<md-sidenav-container>
-  <md-sidenav #sidenav mode="over">
-    <button md-mini-fab (click)="sidenav.toggle()">
-      <md-icon>close</md-icon>
-    </button>
-    <nav>
-      <md-list>
-        <md-list-item><a [routerLink]="['/']">Home</a></md-list-item>
-        <md-list-item><a [routerLink]="['/web-page/about']">About</a></md-list-item>
-      </md-list>
-    </nav>
-  </md-sidenav>
-  <md-toolbar color="primary">
-    <button md-mini-fab (click)="sidenav.toggle()">
-      <md-icon>menu</md-icon>
-    </button>
-    &nbsp;&nbsp;Demo
+<div data-role="page">
 
-    &nbsp;&nbsp;<button *ngIf="(user | json) == '{}'" md-mini-fab (click)="login()">
-		<md-icon>account_box</md-icon>
-	</button>
-	&nbsp;&nbsp;<button *ngIf="(user | json) != '{}'" md-mini-fab (click)="logout()">
-	   <md-icon>exit_to_app</md-icon>
-	</button>
-  </md-toolbar>
+<div data-role="panel" id="appPanelId">
+  <a [routerLink]="['/']" class="ui-btn ui-shadow ui-corner-all ui-icon-home ui-btn-icon-left">Home</a>
+  <a [routerLink]="['/web-page/about']" class="ui-btn ui-shadow ui-corner-all ui-icon-info ui-btn-icon-left">About</a>
+  <a [routerLink]="['/form']" class="ui-btn ui-shadow ui-corner-all ui-icon-grid ui-btn-icon-left">Forms</a>
+</div><!-- /panel -->
+
+<div data-role="header">
+<div data-role="navbar" data-grid="b">
+  <ul>
+    <li><a class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-btn-mini" href="#appPanelId">Menu</a></li>
+    <li class="center-it">Demo</li>
+    <li>
+      <button *ngIf="(user | json) == '{}'" (click)="login()" class="ui-btn ui-shadow ui-corner-all ui-icon-user ui-btn-icon-left">Login</button>
+      <button *ngIf="(user | json) != '{}'" (click)="logout()" class="ui-btn ui-shadow ui-corner-all ui-icon-power ui-btn-icon-left">Logout</button>
+    </li>
+  </ul>
+</div><!-- /navbar -->
+</div>
+
+<div role="main" class="ui-content">
   <router-outlet></router-outlet>
-</md-sidenav-container>
+</div>
+
+<footer data-role="footer">Demo Copyright</footer>
+
+</div><!-- page -->
+
+
+

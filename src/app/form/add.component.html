@@ -1,0 +1,17 @@
+  <ul data-role="listview">
+    <li>
+      <h2>Adding New Form</h2>
+    </li>
+    <li>
+
+      <label>Number</label>
+      <input floating [(ngModel)]="newForm.form_number" />
+    </li>
+    <li>
+      Name: <input [(ngModel)]="newForm.name" />
+    </li>
+    <li>
+      Name: <input [(ngModel)]="newForm.name" />
+    </li>
+  </ul>
+  {{ newForm | json }}

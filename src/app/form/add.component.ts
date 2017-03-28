@@ -6,26 +6,20 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-form-detail',
-  templateUrl: './detail.component.html',
+  templateUrl: './add.component.html',
   styleUrls: [ './form.component.css' ]
 })
-export class FormDetailComponent implements OnInit {
+export class FormAddComponent implements OnInit {
 
   form: FirebaseObjectObservable<any>;
-
+  newForm = new Form();
+  
   constructor(
     private _af: AngularFire,
     private _route: ActivatedRoute
-  ) {}
-
-  ngOnInit() {
-    this._route.params
-      .map(params => params['key'])
-      .subscribe(key => {
-          this.form = this._af.database.object(`/c1/${key}`);
-          console.log(this.form);
-      })
-    ;
+  ) {
   }
+
+  ngOnInit() {}
 
 }

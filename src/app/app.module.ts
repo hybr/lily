@@ -1,18 +1,8 @@
 
-
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
-
-/* Angular Material */
-import { MaterialModule } from '@angular/material';
-import 'hammerjs';
-import {MdCardModule} from '@angular/material/card';
-import {MdButtonModule} from '@angular/material/button';
-import {MdIconModule} from '@angular/material/icon';
-import {MdIconRegistry} from '@angular/material/icon';
-import {MdToolbarModule} from '@angular/material/toolbar';
 
 /* Routing */
 import { routing } from './app.routes';
@@ -30,6 +20,7 @@ import { WebPageComponent } from './views/web-page/web-page.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { FormDetailComponent } from './form/detail.component';
 import { FormListComponent } from './form/list.component';
+import { FormAddComponent } from './form/add.component';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -45,20 +36,19 @@ const firebaseConfig = {
     WebPageComponent,
     PageNotFoundComponent,
     FormDetailComponent,
-    FormListComponent
+    FormListComponent,
+    FormAddComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule, JsonpModule,
-    MaterialModule, MdToolbarModule,
     AngularFireModule.initializeApp (firebaseConfig, {
         provider: AuthProviders.Google,
         method: AuthMethods.Popup
     }),
     routing
   ],
-  providers: [ MdIconRegistry ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

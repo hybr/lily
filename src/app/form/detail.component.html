@@ -1,2 +1,9 @@
-
-{{ form | async | json }}
+<div *ngIf="!(form | async)">Loading form...</div>
+<section>
+  <header>
+    <h2>{{(form|async)?.name}}</h2>
+    {{(form|async)?.detail }}
+  </header>
+  <section>
+  </section>
+</section>
