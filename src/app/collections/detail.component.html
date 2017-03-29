@@ -17,7 +17,7 @@
   <section>
     <div class="loading" *ngIf="!(actualCollectionList | async)">Loading {{(collection|async)?.name}} list...</div>
     <ol>
-      <li *ngFor="let actualCollection of actualCollectionList | async" [disabled]="!collection.active">
+      <li *ngFor="let actualCollection of actualCollectionList | async" [class.disabled]="!collection.active">
           {{actualCollection.number}}.
           <a [routerLink]="['/collection', collection.$key]">{{actualCollection.name}}</a>
            : {{actualCollection.detail}}
