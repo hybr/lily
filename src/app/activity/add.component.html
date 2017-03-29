@@ -5,21 +5,24 @@
     </li>
 
     <li>
-	    <label for="activityAddFormObsoleteId">Status:</label>
-		<select id="activityAddactivityObsoleteId" formControlName="obsolete" data-role="slider" required>
-		    <option value="true">Old</option>
-		    <option value="false" selected=selected>Active</option>
-		</select>
+      <label for="activityAddFormObsoleteId">Status:</label>
+      <select id="activityAddactivityObsoleteId" formControlName="obsolete" data-role="slider" required>
+        <option value="true">Old</option>
+        <option value="false" selected=selected>Active</option>
+      </select>
     </li>
 
     <li *ngFor="let key of activity.getKeysForForm()">
-		<label for="activityAddFormNumberId">
-			{{activity.getTitle(key)}}: 
-			<input type="text" id="activityAddFormNumberId" formControlName="{{key}}">
-		</label>
+      <label for="activityAddFormNumberId">
+        {{activity.getTitle(key)}}: <input type="text" id="activityAddFormNumberId" formControlName="{{key}}">
+      </label>
     </li>
+
     <li>
-    	<button type="submit" class="btn btn-success">Submit</button>
+    	<button type="submit" class="ui-btn ui-shadow ui-btn-inline ui-corner-all ui-icon-action ui-btn-icon-left">Add</button>
+    	<button [routerLink]="['/activity']" class="ui-btn ui-shadow ui-btn-inline ui-corner-all ui-icon-arrow-l ui-btn-icon-left">Cancel</button>
+    	<button type="reset" class="ui-btn ui-shadow ui-btn-inline ui-corner-all ui-icon-recycle ui-btn-icon-left">Reset</button>
     </li>
+
   </ul>
 </form>

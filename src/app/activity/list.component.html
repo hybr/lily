@@ -9,7 +9,7 @@
 	    />
   </header>
   <section>
-  	<div *ngIf="!(activities | async)">Loading activities list...</div>
+  	<div class="loading" *ngIf="!(activities | async)">Loading activities list...</div>
     <ol>
       <li *ngFor="let activity of activities | async" [class.disabled]="activity.obsolete">
           {{activity.number}}.
@@ -23,6 +23,7 @@
       <strong>{{(activities|async)?.length}}</strong>
       {{(activities|async)?.length <= 1?'activity':'activities'}}
       | <a [routerLink]="['/activity/new']">Add New Activity</a>
+      | <a [routerLink]="['/steps']">Steps</a>
     </span>
   </footer>
 </section>

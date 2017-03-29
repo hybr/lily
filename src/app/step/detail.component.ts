@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
 import { ActivatedRoute } from '@angular/router';
-import { Activity } from './model';
+import { Step } from './model';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-activity-detail',
+  selector: 'app-step-detail',
   templateUrl: './detail.component.html',
   styleUrls: [ './style.component.css' ]
 })
-export class ActivityDetailComponent implements OnInit {
+export class StepDetailComponent implements OnInit {
 
-  activity: FirebaseObjectObservable<any>;
+  step: FirebaseObjectObservable<any>;
 
   constructor(
     private _af: AngularFire,
@@ -22,8 +22,8 @@ export class ActivityDetailComponent implements OnInit {
     this._route.params
       .map(params => params['key'])
       .subscribe(key => {
-          this.activity = this._af.database.object(`/c1/${key}`);
-          console.log(this.activity);
+          this.step = this._af.database.object(`/c2/${key}`);
+          console.log(this.step);
       })
     ;
   }

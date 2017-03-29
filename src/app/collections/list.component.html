@@ -1,0 +1,29 @@
+<section>
+  <header>
+      <label for="collectionListSearchId">Search</label>
+	    <input 
+	       id="collectionListSearchId"
+	       placeholder="name, number or detail pattern"
+	       [(ngModel)]="searchPattern"
+	       (ngModelChange) = "searchCollections()"
+	    />
+  </header>
+  <section>
+  	<div class="loading" *ngIf="!(collections | async)">Loading collections list...</div>
+    <ol>
+      <li *ngFor="let collection of collections | async" [class.disabled]="collection.obsolete">
+          {{collection.number}}.
+          <a [routerLink]="['/collection', collection.$key]">{{collection.name}}</a>
+           : {{collection.detail}}
+      </li>
+    </ol>
+  </section>
+  <footer>
+    <span>
+      <strong>{{(collections|async)?.length}}</strong>
+      {{(collections|async)?.length <= 1?'collection':'collections'}}
+      | <a [routerLink]="['/collection/new']">Add New Collection</a>
+      | <a [routerLink]="['/activities']">Activities</a>
+    </span>
+  </footer>
+</section>

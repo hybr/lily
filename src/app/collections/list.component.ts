@@ -3,27 +3,27 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import 'rxjs/add/operator/map';
 import "rxjs/add/operator/filter";
 import { Observable } from 'rxjs';
-import { Activity } from './model';
+import { Collection } from './model';
 
 @Component({
-  selector: 'app-activity-list',
+  selector: 'app-collection-list',
   templateUrl: './list.component.html',
   styleUrls: [ './style.component.css' ],
 })
-export class ActivityListComponent implements OnInit {
+export class CollectionListComponent implements OnInit {
 
-  activities: Observable<any>;
+  collections: Observable<any>;
   searchPattern: string = '';
   
   constructor(private _af: AngularFire) {
-    this.searchActivities();
+    this.searchCollections();
   }
 
-  searchActivities(): void {
-    this.activities = this._af.database.list('/c1')
-      .map(activities => activities.filter(activity => {
+  searchCollections(): void {
+    this.collections = this._af.database.list('/c3')
+      .map(collections => collections.filter(collection => {
         let rE = new RegExp(this.searchPattern, 'gi');
-        return rE.test(activity.name) || rE.test(activity.number) || rE.test(activity.detail)
+        return rE.test(collection.name) || rE.test(collection.number) || rE.test(collection.detail)
       }));
   }
   

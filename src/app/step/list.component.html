@@ -1,0 +1,29 @@
+<section>
+  <header>
+      <label for="stepListSearchId">Search</label>
+	    <input 
+	       id="stepListSearchId"
+	       placeholder="name, number or detail pattern"
+	       [(ngModel)]="searchPattern"
+	       (ngModelChange) = "searchSteps()"
+	    />
+  </header>
+  <section>
+  	<div class="loading" *ngIf="!(steps | async)">Loading steps list...</div>
+    <ol>
+      <li *ngFor="let step of steps | async" [class.disabled]="step.obsolete">
+          {{step.number}}.
+          <a [routerLink]="['/step', step.$key]">{{step.name}}</a>
+           : {{step.detail}}
+      </li>
+    </ol>
+  </section>
+  <footer>
+    <span>
+      <strong>{{(steps|async)?.length}}</strong>
+      {{(steps|async)?.length <= 1?'step':'steps'}}
+      | <a [routerLink]="['/step/new']">Add New Step</a>
+      | <a [routerLink]="['/activities']">Activities</a>
+    </span>
+  </footer>
+</section>

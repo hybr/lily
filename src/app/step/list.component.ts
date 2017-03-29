@@ -3,27 +3,27 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import 'rxjs/add/operator/map';
 import "rxjs/add/operator/filter";
 import { Observable } from 'rxjs';
-import { Activity } from './model';
+import { Step } from './model';
 
 @Component({
-  selector: 'app-activity-list',
+  selector: 'app-step-list',
   templateUrl: './list.component.html',
   styleUrls: [ './style.component.css' ],
 })
-export class ActivityListComponent implements OnInit {
+export class StepListComponent implements OnInit {
 
-  activities: Observable<any>;
+  steps: Observable<any>;
   searchPattern: string = '';
   
   constructor(private _af: AngularFire) {
-    this.searchActivities();
+    this.searchSteps();
   }
 
-  searchActivities(): void {
-    this.activities = this._af.database.list('/c1')
-      .map(activities => activities.filter(activity => {
+  searchSteps(): void {
+    this.steps = this._af.database.list('/c2')
+      .map(steps => steps.filter(step => {
         let rE = new RegExp(this.searchPattern, 'gi');
-        return rE.test(activity.name) || rE.test(activity.number) || rE.test(activity.detail)
+        return rE.test(step.name) || rE.test(step.number) || rE.test(step.detail)
       }));
   }
   
