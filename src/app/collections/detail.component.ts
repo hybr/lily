@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class CollectionDetailComponent implements OnInit {
 
-  collection:Observable<any>;
+  collection: Observable<any>;
   
   actualCollectionList: Observable<any[]>;
   actualCollectionSearchPattern: string = '';
@@ -24,12 +24,12 @@ export class CollectionDetailComponent implements OnInit {
   ngOnInit() {
     this.collection = this._route.params
       .map(params => this._af.database.object(`/c3/${params['key']}` ))
-    console.log('c1 = ',  + this.collection);
+    console.log('c1 = ', this.collection);
     this.searchActualCollections();
   }
 
   searchActualCollections(): void {
-      console.log('c2 = ',  + this.collection); 
+      console.log('c2 = ', this.collection.find()); 
     this.actualCollectionList = this._af.database.list('/c1' )
       .map(collections => collections.filter(actualCollection => {
         let rE = new RegExp(this.actualCollectionSearchPattern, 'gi');
