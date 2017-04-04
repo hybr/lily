@@ -5,7 +5,7 @@ export class Collection {
     public active: boolean = true,
     public name: string = '',
     public detail: string = '',
-    public fields: Array<any> = []
+    public fields: string[] = []
   ) { }
 
   getKeysForForm() {

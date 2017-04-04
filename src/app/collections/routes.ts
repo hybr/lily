@@ -7,7 +7,8 @@ import { CollectionAddComponent } from './add.component';
 
 export const CollectionComponentRoutes: Routes = [
   { path: 'collection/new', component: CollectionAddComponent },
+  { path: 'collection/update/:key', component: CollectionAddComponent },
+  { path: 'collection/delete/:key', component: CollectionAddComponent },
   { path: 'collection/:key', component: CollectionDetailComponent },
   { path: 'collections', component: CollectionListComponent }
-  
 ];
