@@ -22,13 +22,22 @@
 	  <div class="loading" *ngIf="!(actualCollectionList | async)">Loading {{(collectionDocument|async)?.name}} list...</div>
 	  <ol>
 	    <li *ngFor="let actualCollection of actualCollectionList | async" [class.disabled]="!collectionDocument.active">
+	    	<a [routerLink]="['/ac/'+(collectionDocument|async)?.$key+'/'+(collectionDocument|async)?.number+'/update', actualCollection.$key]" class="ui-btn ui-shadow ui-corner-all ui-icon-edit ui-btn-icon-notext ui-btn-inline">Update</a>
+	        <a [routerLink]="['/ac/'+(collectionDocument|async)?.$key+'/'+(collectionDocument|async)?.number+'/remove', actualCollection.$key]" class="ui-btn ui-shadow ui-corner-all ui-icon-delete ui-btn-icon-notext ui-btn-inline">Delete</a>
 	        {{actualCollection.number}}.
-	        <a [routerLink]="['/collection/update/' + actualCollection.name, actualCollection.$key]">{{actualCollection.name}}</a>
+	        <a [routerLink]="['/ac/'+(collectionDocument|async)?.$key+'/'+(collectionDocument|async)?.number+'/show', actualCollection.$key]">{{actualCollection.name}}</a>
 	         : {{actualCollection.detail}}
 	    </li>
 	  </ol>
 	</section>
   
+  	<footer>
+	  <span>
+	    <strong>{{(actualCollectionList|async)?.length}}</strong>
+	    {{(actualCollectionList|async)?.length <= 1?'document':'documents'}}
+	    | <a [routerLink]="['/ac/'+(collectionDocument|async)?.$key+'/'+(collectionDocument|async)?.number+'/new']">Add New Document</a>
+	  </span>
+	</footer>
   </section>
   
 </section>

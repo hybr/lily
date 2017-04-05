@@ -5,7 +5,7 @@ export class Step {
     public obsolete: boolean = false,
     public name: string = '',
     public detail: string = '',
-    public fields: array = []
+    public fields: string[] = []
   ) { }
 
   getKeysForForm() {
