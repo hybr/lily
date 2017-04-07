@@ -1,4 +1,4 @@
-export class Collection {
+export class CollectionOfCollections {
 
   constructor(
     public cnumber: string = '',

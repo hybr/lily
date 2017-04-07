@@ -1,26 +1,26 @@
-<form [formGroup]="collectionForm"  (ngSubmit)="onSubmit()" [hidden]="submitted">
+<form [formGroup]="cocsForm"  (ngSubmit)="onSubmit()" [hidden]="submitted">
   <ul data-role="listview">
     <li>
-      <h2>Adding New Collection</h2>
+      <h2>Adding New cocs</h2>
     </li>
 
     <li>
-      <label for="collectionAddFormObsoleteId">Status:</label>
-      <select id="collectionAddcollectionObsoleteId" formControlName="active" data-role="slider" required>
+      <label for="cocsAddFormObsoleteId">Status:</label>
+      <select id="cocsAddcocsObsoleteId" formControlName="active" data-role="slider" required>
         <option value="false">In Active</option>
         <option value="true" selected=selected>Active</option>
       </select>
     </li>
 
-    <li *ngFor="let key of collection.getKeysForForm()">
-      <label for="collectionAddFormNumberId">
-        {{collection.getTitle(key)}}: <input type="text" id="collectionAddFormNumberId" formControlName="{{key}}">
+    <li *ngFor="let key of cocs.getKeysForForm()">
+      <label for="cocsAddFormNumberId">
+        {{cocs.getTitle(key)}}: <input type="text" id="cocsAddFormNumberId" formControlName="{{key}}">
       </label>
     </li>
 
     <li>
     	<button type="submit" class="ui-btn ui-shadow ui-btn-inline ui-corner-all ui-icon-action ui-btn-icon-left">Add</button>
-    	<button [routerLink]="['/collection']" class="ui-btn ui-shadow ui-btn-inline ui-corner-all ui-icon-arrow-l ui-btn-icon-left">Cancel</button>
+    	<button [routerLink]="['/cocs']" class="ui-btn ui-shadow ui-btn-inline ui-corner-all ui-icon-arrow-l ui-btn-icon-left">Cancel</button>
     	<button type="reset" class="ui-btn ui-shadow ui-btn-inline ui-corner-all ui-icon-recycle ui-btn-icon-left">Reset</button>
     </li>
 

@@ -3,26 +3,26 @@ import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'a
 import 'rxjs/add/operator/map';
 import "rxjs/add/operator/filter";
 import { Observable } from 'rxjs';
-import { Collection } from './model';
+import { CollectionOfCollections } from './model';
 
 @Component({
   selector: 'app-collection-list',
   templateUrl: './list.component.html',
   styleUrls: [ './style.component.css' ],
 })
-export class CollectionListComponent implements OnInit {
+export class ListDocsOfCocsComponent implements OnInit {
 
-  public collectionDocument: FirebaseObjectObservable<any>;
-  collections: Observable<any[]>;
+  public docOfCocs: FirebaseObjectObservable<CollectionOfCollections>;
+  public listOfCocs: Observable<CollectionOfCollections[]>;
   searchPattern: string = '';
   
   constructor(private _af: AngularFire) {
     this.searchCollections();
-    this.collectionDocument = this._af.database.object('/c3/-KgRw3KNYJBPnOGnPw9H');
+    this.docOfCocs = this._af.database.object('/c3/-KgRw3KNYJBPnOGnPw9H');
   }
 
   searchCollections(): void {
-    this.collections = this._af.database.list('/c3')
+    this.listOfCocs = this._af.database.list('/c3')
       .map(collections => collections.filter(collection => {
         let rE = new RegExp(this.searchPattern, 'gi');
         return (rE.test(collection.name) 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators  } from '@angular/forms';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
-import { Collection } from './model';
+import { CollectionOfCollections } from './model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './add.component.html',
   styleUrls: [ './style.component.css' ]
 })
-export class CollectionAddComponent implements OnInit {
+export class AddDocInCocsComponent implements OnInit {
     collectionForm: FormGroup;
     collection = new Collection();
     submitted: boolean = false;

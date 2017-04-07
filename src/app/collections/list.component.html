@@ -1,13 +1,12 @@
 <section>
 
   <header>
-    <h2>{{(collectionDocument|async)?.name}}</h2>
+    <h2>{{(docOfCocs|async)?.name}}</h2>
   </header>
 
   <section>
-  
-    {{(collectionDocument|async)?.detail}}
-    <div class="loading" *ngIf="!(collectionDocument | async)">Loading collection document detail...</div>
+    {{(docOfCocs|async)?.detail}}
+    <div class="loading" *ngIf="!(docOfCocs | async)">Loading collection document detail...</div>
 	<header>
         <label for="collectionListSearchId">Search Collection: </label><input 
 	       id="collectionListSearchId"
@@ -16,30 +15,26 @@
 	       (ngModelChange) = "searchCollections()"
 	    />
 	</header>
-
 	<section>
-	  	<div class="loading" *ngIf="!(collections | async)">Loading collections list...</div>
+	  	<div class="loading" *ngIf="!(listOfCocs | async)">Loading collections list...</div>
 	    <ol>
-	      <li *ngFor="let collection of collections | async" [class.disabled]="!collection.active">	          
-	          <a [routerLink]="['/collections/update', collection.$key]" class="ui-btn ui-shadow ui-corner-all ui-icon-edit ui-btn-icon-notext ui-btn-inline">Update</a>
-	          <a [routerLink]="['/collections/delete', collection.$key]" class="ui-btn ui-shadow ui-corner-all ui-icon-delete ui-btn-icon-notext ui-btn-inline">Delete</a>
-	          {{collection.number}}.
-	          <a *ngIf="collection.active" [routerLink]="['/collection', collection.$key]">{{collection.name}}</a>
-	          <span *ngIf="!collection.active">{{collection.name}}</span>
-	           : {{collection.detail}}
+	      <li *ngFor="let docOfCocs of listOfCocs | async" [class.disabled]="!docOfCocs.active">	          
+	          <a [routerLink]="['/cocs/update', docOfCocs.$key]" class="ui-btn ui-shadow ui-corner-all ui-icon-edit ui-btn-icon-notext ui-btn-inline">Update</a>
+	          <a [routerLink]="['/cocs/delete', docOfCocs.$key]" class="ui-btn ui-shadow ui-corner-all ui-icon-delete ui-btn-icon-notext ui-btn-inline">Delete</a>
+	          {{docOfCocs.number}}.
+	          <a *ngIf="docOfCocs.active" [routerLink]="['/collection', docOfCocs.$key]">{{docOfCocs.name}}</a>
+	          <span *ngIf="!docOfCocs.active">{{docOfCocs.name}}</span>
+	           : {{docOfCocs.detail}}
 	      </li>
 	    </ol>
 	</section>
-
 	<footer>
 	  <span>
-	    <strong>{{(collections|async)?.length}}</strong>
-	    {{(collections|async)?.length <= 1?'collection':'collections'}}
+	    <strong>{{(listOfCocs|async)?.length}}</strong>
+	    {{(listOfCocs|async)?.length <= 1?'collection':'collections'}}
 	    | <a [routerLink]="['/collection/new']">Add New Collection</a>
 	    | <a [routerLink]="['/activities']">Activities</a>
 	  </span>
 	</footer>
-    
   </section>
-  
 </section>

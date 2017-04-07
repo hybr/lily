@@ -1,14 +1,17 @@
 import { Routes } from '@angular/router';
 
-import { CollectionListComponent } from './list.component';
-import { CollectionDetailComponent } from './detail.component';
-import { CollectionAddComponent } from './add.component';
+import { ListDocsOfCocsComponent } from './list.component';
+import { DetailDocOfCocsComponent } from './detail.component';
+import { AddDocInCocsComponent } from './add.component';
 
 
 export const CollectionComponentRoutes: Routes = [
-  { path: 'collection/new', component: CollectionAddComponent },
-  { path: 'collection/update/:key', component: CollectionAddComponent },
-  { path: 'collection/delete/:key', component: CollectionAddComponent },
-  { path: 'collection/:key', component: CollectionDetailComponent },
-  { path: 'collections', component: CollectionListComponent }
+  { path: 'cocs/new', component: AddDocInCocsComponent }, // C
+  { path: 'cocs/list', component: ListDocsOfCocsComponent }, // R
+  { path: 'cocs/show/:key', component: DetailDocOfCocsComponent }, // R
+  { path: 'cocs/edit/:key', component: AddDocInCocsComponent }, // U
+  { path: 'cocs/remove/:key', component: AddDocInCocsComponent }, // D
+  
+  { path: 'ac/:cDocKey/:cNum/:cDocAction/', component: DetailDocOfCocsComponent },
+
 ];

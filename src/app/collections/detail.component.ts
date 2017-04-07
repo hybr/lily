@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   templateUrl: './detail.component.html',
   styleUrls: [ './style.component.css' ]
 })
-export class CollectionDetailComponent implements OnInit {
+export class DetailDocOfCocsComponent implements OnInit {
 
   public collectionDocument: FirebaseObjectObservable<any>;
   public actualCollectionList: Observable<any[]>;
@@ -48,4 +48,4 @@ export class CollectionDetailComponent implements OnInit {
     );
   } // searchActualCollections
 
-}  // class CollectionDetailComponent
+}  // class DetailDocOfCocsComponent

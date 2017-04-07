@@ -28,9 +28,9 @@ import { StepDetailComponent } from './step/detail.component';
 import { StepListComponent } from './step/list.component';
 import { StepAddComponent } from './step/add.component';
 
-import { CollectionDetailComponent } from './collections/detail.component';
-import { CollectionListComponent } from './collections/list.component';
-import { CollectionAddComponent } from './collections/add.component';
+import { DetailDocOfCocsComponent } from './collections/detail.component';
+import { ListDocsOfCocsComponent } from './collections/list.component';
+import { AddDocInCocsComponent } from './collections/add.component';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -51,9 +51,9 @@ const firebaseConfig = {
     StepDetailComponent,
     StepListComponent,
     StepAddComponent,
-    CollectionDetailComponent,
-    CollectionListComponent,
-    CollectionAddComponent
+    DetailDocOfCocsComponent,
+    ListDocsOfCocsComponent,
+    AddDocInCocsComponent
   ],
   imports: [
     BrowserModule,

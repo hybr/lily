@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './add.component.html',
   styleUrls: [ './style.component.css' ]
 })
-export class CollectionAddComponent implements OnInit {
+export class RemoveDocInCocsComponent implements OnInit {
     collectionForm: FormGroup;
     collection = new Collection();
     submitted: boolean = false;
