@@ -1,4 +1,73 @@
 
+
+
+
+<form *ngIf="!(docOfCocs | async)" [formGroup]="docForm"  (ngSubmit)="onSubmit()" [hidden]="submitted">
+
+  <ul data-role="listview">
+    <li>
+      <h2>Adding New Record in {{(docOfCocs|async)?.name}}</h2>
+    </li>
+
+    <li>
+      <label for="cocsAddFormObsoleteId">Status:</label>
+      <select id="cocsAddcocsObsoleteId" formControlName="active" data-role="slider" required>
+        <option value="false">In Active</option>
+        <option value="true" selected=selected>Active</option>
+      </select>
+    </li>
+
+    <li *ngFor="let key of docForm.getKeysForForm()">
+      <label for="cocsAddFormNumberId">
+        {{docOfCocs.getTitle(key)}}: <input type="text" id="cocsAddFormNumberId" formControlName="{{key}}">
+      </label>
+    </li>
+
+    <li>
+      <button
+        type="submit"
+        class="ui-btn ui-shadow ui-btn-inline ui-corner-all ui-icon-action ui-btn-icon-left"
+      >
+        Add
+      </button>
+      <button 
+        [routerLink]="['/cocs']" 
+        class="ui-btn ui-shadow ui-btn-inline ui-corner-all ui-icon-arrow-l ui-btn-icon-left"
+      >
+        Cancel
+      </button>
+      <button 
+        type="reset" 
+        class="ui-btn ui-shadow ui-btn-inline ui-corner-all ui-icon-recycle ui-btn-icon-left"
+      >
+        Reset
+      </button>
+    </li>
+  </ul>
+  
+</form>
+
+====================================================
+
+    docForm: FormGroup;
+    public docOfCocs: FirebaseObjectObservable<CollectionOfCollections>;
+
+    submitted: boolean = false;
+    constructor(
+        private _fb: FormBuilder,
+        private _af: AngularFire,
+        private _route: ActivatedRoute
+    ) {
+        this.docForm = this._fb.group(this.docOfCocs);
+    }
+    
+    ngOnInit() {
+      let cDocKey = this._route.snapshot.paramMap.get('cDocKey');
+      let cNum = this._route.snapshot.paramMap.get('cNum');
+      this.docOfCocs = this._af.database.object(`/c3/${cDocKey}`);
+    }
+
+=================================================
       
        // Simulate POST /forms
   add(form: Form): FormDataService {

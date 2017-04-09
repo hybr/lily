@@ -16,4 +16,3 @@ body: {
 .loading {
 	color: red;
 }
-@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';

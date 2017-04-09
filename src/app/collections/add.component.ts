@@ -10,21 +10,21 @@ import { Router } from '@angular/router';
   styleUrls: [ './style.component.css' ]
 })
 export class AddDocInCocsComponent implements OnInit {
-    collectionForm: FormGroup;
-    collection = new Collection();
+    cocsForm: FormGroup;
+    cocs = new CollectionOfCollections();
     submitted: boolean = false;
     constructor(
         private _fb: FormBuilder,
         private _af: AngularFire,
         private _router: Router
     ) {
-        this.collectionForm = this._fb.group(this.collection);
+        this.cocsForm = this._fb.group(this.cocs);
     }
     
     onSubmit() {
-        this._af.database.list('/c3').push(this.collectionForm.value);
+        this._af.database.list('/c3').push(this.cocsForm.value);
         this.submitted = true;
-        this._router.navigate(['/collections']);
+        this._router.navigate(['/cocs/list']);
     }
   ngOnInit() {}
 

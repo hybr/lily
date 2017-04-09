@@ -6,10 +6,10 @@ export class CollectionOfCollections {
     public name: string = '',
     public detail: string = '',
     public fields: string[] = []
-  ) { }
+    ) { }
 
   getKeysForForm() {
-      return ['cnumber', 'name', 'detail', 'fields'];
+    return ['cnumber', 'name', 'detail', 'fields'];
   }
   
   getTitle(key) {
@@ -21,6 +21,5 @@ export class CollectionOfCollections {
       case 'fields': return 'Fields';
     }
   }
-  
   
 }
