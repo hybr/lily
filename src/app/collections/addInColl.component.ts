@@ -20,11 +20,22 @@ export class AddDocInCollComponent implements OnInit {
     private _fb: FormBuilder,
     private _af: AngularFire,
     private _route: ActivatedRoute
-  ) {
-    this.docForm = this._fb.group(this.docOfCocs);
-    this.docOfCocs = this._af.database.object('/c3/-KgRw3KNYJBPnOGnPw9H');
-  }
+  ) {}
 
   ngOnInit() {
-  }
+    let cDocKey = this._route.snapshot.paramMap.get('cDocKey');
+    console.log('cDocKey =', cDocKey);
+    let cNum = this._route.snapshot.paramMap.get('cNum');
+    console.log('cNum  =', cNum);
+    this.docOfCocs = this._af.database.object(`/c3/${cDocKey}`);
+    console.log('this.docOfCocs = ', this.docOfCocs);
+    this.docOfCocs.subscribe(
+      function(result) {
+        console.log('cDovKey result =', result);
+        // create class from json and assign to form
+        this.docForm = this._fb.group(result);
+      }
+    );
+    
+  } // ngOnInit
 }

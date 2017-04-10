@@ -1,11 +1,11 @@
 
 
 <div class="loading" *ngIf="!(docOfCocs | async)">Loading form...</div>
-<form *ngIf="!(docOfCocs | async)" [formGroup]="docForm"  (ngSubmit)="onSubmit()" [hidden]="submitted">
+<form *ngIf="(docOfCocs | async)" [formGroup]="docForm"  (ngSubmit)="onSubmit()" [hidden]="submitted">
 
   <ul data-role="listview">
     <li>
-      <h2>Adding New Record in {{(docOfCocs|async)?.name}}</h2>
+      <h2>Adding New {{(docOfCocs|async)?.name}} Record</h2>
     </li>
 
     <li>

@@ -45,7 +45,7 @@ export class DetailDocOfCocsComponent implements OnInit {
           ));
         
       }
-      );
+    );
   } // searchActualCollections
 
 }  // class DetailDocOfCocsComponent
