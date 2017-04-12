@@ -55,11 +55,11 @@ export class AddDocInCollComponent implements OnInit {
           });
 
           if (fType == 'fields') {
-            formFieldsGroup[property] = self._fb.array([
+            formFieldsGroup[property] = self._fb.group(
               self.getFormControlGroup(
                 cocsRecord['fields'][property]['fields']
               ) 
-            ]);
+            );
             console.log('sub field group = ', fType, cocsRecord['fields'][property]['fields'],
               self.getFormControlGroup({
                 'fields' : cocsRecord['fields'][property]['fields']

@@ -18,19 +18,44 @@
               <option value="true" selected=selected>Active</option>
             </select>
           </label>
-        </li>
 
-        <div *ngFor="let field of fields">
+
+
+         <div *ngFor="let field of fields">
+
+         Fields:{{field|json}}
+
           <li *ngIf="(field['name'] != 'active')" >
-            <label id="addInCollLabel{{field['name'] }}Id" for="addInCollField{{field['name'] }}Id">
-              {{field['title']}}: <input 
-              type="text" 
-              formControlName="{{ field['name'] }}"
-              id="addInCollField{{field['name'] }}Id"
-              >
-            </label>
+            
+            <div *ngIf="(field['type'] != 'fields')">
+              <label id="addInCollLabel{{field['name'] }}Id" for="addInCollField{{field['name'] }}Id">
+                {{field['title']}}: <input 
+                type="text" 
+                formControlName="{{ field['name'] }}"
+                id="addInCollField{{field['name'] }}Id"
+                >
+              </label>
+            </div>
+
+            <div *ngIf="(field['type'] == 'fields')">
+              <fieldset>
+                <legend>L {{field['title']}}</legend>
+
+                <div *ngFor="let subField of field['fields']">
+                {{subField|json}}
+                  <label id="addInCollLabel{{subField['name'] }}Id" for="addInCollField{{subField['name'] }}Id">
+                    {{subField['title']}}: <input 
+                    type="text" 
+                    formControlName="{{ subField['name'] }}"
+                    id="addInCollField{{subField['name'] }}Id"
+                    >
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+          
           </li>
-        </div>
+        </div><!-- let field of fields -->
 
         <li>
           <button
