@@ -1,9 +1,14 @@
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpModule, JsonpModule } from '@angular/http';
+
+/* forms */
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpModule, JsonpModule } from '@angular/http';
+
+/* local storage */
+import { LocalStorageModule } from 'angular-2-local-storage';
 
 /* Routing */
 import { routing } from './app.routes';
@@ -34,11 +39,11 @@ import { AddDocInCocsComponent } from './collections/add.component';
 import { AddDocInCollComponent } from './collections/addInColl.component';
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
-    authDomain: 'ia2f-5d2b6.firebaseapp.com',
-    databaseURL: 'https://ia2f-5d2b6.firebaseio.com',
-    storageBucket: 'ia2f-5d2b6.appspot.com',
-    messagingSenderId: '288539084670'
+  apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
+  authDomain: 'ia2f-5d2b6.firebaseapp.com',
+  databaseURL: 'https://ia2f-5d2b6.firebaseio.com',
+  storageBucket: 'ia2f-5d2b6.appspot.com',
+  messagingSenderId: '288539084670'
 };
 
 @NgModule({
@@ -52,24 +57,30 @@ const firebaseConfig = {
     StepDetailComponent,
     StepListComponent,
     StepAddComponent,
-    
+
     DetailDocOfCocsComponent,
     ListDocsOfCocsComponent,
     AddDocInCocsComponent,
 
     AddDocInCollComponent
   ],
+
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule, JsonpModule,
     AngularFireModule.initializeApp (firebaseConfig, {
-        provider: AuthProviders.Google,
-        method: AuthMethods.Popup
+      provider: AuthProviders.Google,
+      method: AuthMethods.Popup
+    }),
+    LocalStorageModule.withConfig({
+      prefix: 'app-root',
+      storageType: 'localStorage'
     }),
     routing
   ],
+
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

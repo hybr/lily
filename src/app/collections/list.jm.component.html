@@ -1,23 +1,26 @@
 <section>
 
-	<header>
+	<header data-role="header">
 		<h2>{{(docOfCocs|async)?.name}}</h2>
 	</header>
 
-	<section >
+	<section data-role="main">
+		
 		<div class="loading" *ngIf="!(docOfCocs | async)">Loading collection detail...</div>
+		
 		<div *ngIf="(docOfCocs | async)">
-			{{(docOfCocs|async)?.detail}}
-			<header>
-				<label for="collectionListSearchId">Search Collection: </label>
-				<input 
+			
+			<header data-role="header">
+				<label for="collectionListSearchId">Search Collections: <input 
 				id="collectionListSearchId"
 				placeholder="name, number or detail pattern"
 				[(ngModel)]="searchPattern"
 				(ngModelChange) = "searchCollections()"
-				/>
+				/></label>
 			</header>
-			<section>
+
+			<section data-role="main">
+				{{(docOfCocs|async)?.detail}}
 				<ol>
 					<li *ngFor="let docOfCocs of listOfCocs | async" [class.disabled]="!docOfCocs.active">	          
 						<a [routerLink]="['/cocs/update', docOfCocs.$key]" class="ui-btn ui-shadow ui-corner-all ui-icon-edit ui-btn-icon-notext ui-btn-inline">Update</a>
@@ -29,14 +32,15 @@
 					</li>
 				</ol>
 			</section>
-			<footer>
-				<span>
-					<strong>{{(listOfCocs|async)?.length}}</strong>
-					{{(listOfCocs|async)?.length <= 1?'collection':'collections'}}
-					| <a [routerLink]="['/cocs/new']">Add New Collection</a>
-					| <a [routerLink]="['/activities']">Activities</a>
-				</span>
+			
+			<footer data-role="footer">
+				<strong>{{(listOfCocs|async)?.length}}</strong>
+				{{(listOfCocs|async)?.length <= 1?'collection':'collections'}}
+				| <a [routerLink]="['/cocs/new']">Add New Collection</a>
+				| <a [routerLink]="['/activities']">Activities</a>
 			</footer>
 		</div>
+
 	</section>
+
 </section>
