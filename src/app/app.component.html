@@ -1,32 +1,39 @@
-<div data-role="page">
 
-<div data-role="panel" id="appPanelId">
-  <a [routerLink]="['/']" class="ui-btn ui-shadow ui-corner-all ui-icon-home ui-btn-icon-left">Home</a>
-  <a [routerLink]="['/web-page/about']" class="ui-btn ui-shadow ui-corner-all ui-icon-info ui-btn-icon-left">About</a>
-  <a [routerLink]="['/activities']" class="ui-btn ui-shadow ui-corner-all ui-icon-grid ui-btn-icon-left">Activities</a>
-  <a [routerLink]="['/cocs/list']" class="ui-btn ui-shadow ui-corner-all ui-icon-grid ui-btn-icon-left">Collections</a>
-</div><!-- /panel -->
+<md-toolbar color="primary">
+    <span>Demo</span>
+    <button [routerLink]="['/']">Home</button>
+    <button [routerLink]="['/web-page/about']">About</button>
 
-<div data-role="header">
-<div data-role="navbar" data-grid="b">
-  <ul>
-    <li><a class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-btn-mini" href="#appPanelId">Menu</a></li>
-    <li class="center-it">Demo</li>
-    <li>
-      <button *ngIf="(user | json) == '{}'" (click)="login()" class="ui-btn ui-shadow ui-corner-all ui-icon-user ui-btn-icon-left">Login</button>
-      <button *ngIf="(user | json) != '{}'" (click)="logout()" class="ui-btn ui-shadow ui-corner-all ui-icon-power ui-btn-icon-left">Logout</button>
-    </li>
-  </ul>
-</div><!-- /navbar -->
-</div>
+    <span class="spacer"></span>
 
-<div role="main" class="ui-content">
-  <router-outlet></router-outlet>
-</div>
+    <button md-icon-button [mdMenuTriggerFor]="menu">
+      <md-icon>more_vert</md-icon>
+    </button>
+    
+    <md-menu #menu="mdMenu">
+      <button md-menu-item *ngIf="(user | json) == '{}'" (click)="login()">
+        <md-icon>fingerprint</md-icon>
+        <span>Login</span>
+      </button>
+      
+      <button md-menu-item *ngIf="(user | json) != '{}'" (click)="logout()">
+        <md-icon>fingerprint</md-icon>
+        <span>Logout</span>
+      </button>
 
-<footer data-role="footer">Demo &copy; Copyright</footer>
+      <button md-menu-item [routerLink]="['/cocs/list']">
+        <md-icon>announcement</md-icon>
+        <span>Database</span>
+      </button>
+      <button md-menu-item [routerLink]="['/activities']">
+        <md-icon>notifications_off</md-icon>
+        <span>Activities</span>
+      </button>
+    </md-menu>
 
-</div><!-- page -->
+</md-toolbar>
 
 
+<router-outlet></router-outlet>
 
+Demo &copy; Copyright

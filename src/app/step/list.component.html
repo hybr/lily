@@ -9,7 +9,7 @@
 	    />
   </header>
   <section>
-  	<div class="loading" *ngIf="!(steps | async)">Loading steps list...</div>
+  	<div class="lns_loading" *ngIf="!(steps | async)">Loading steps list...</div>
     <ol>
       <li *ngFor="let step of steps | async" [class.disabled]="step.obsolete">
           {{step.number}}.

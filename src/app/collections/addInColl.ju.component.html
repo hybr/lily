@@ -1,36 +1,14 @@
-
-<div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading form...</div>
-
-<md-card>
-
-  <md-card-title>
-    Adding New {{(docOfCocs|async)?.name}} Record
-  </md-card-title>
-
-  <md-card-content>
-    <form 
-      *ngIf="(docOfCocs | async)" 
-      [formGroup]="docForm" 
-      novalidate  
-      (ngSubmit)="onSubmit(docForm)" 
-      [hidden]="submitted"
-    >
-      <md-list>
-        <md-list-item>
-          <md-input-container>
-            <md-input class="floating" placeholder="Favorite food" value="Sushi"></md-input>
-          
-          </md-input-container>
-        </md-list-item>
-        <md-list-item>Item 2</md-list-item>
-        <md-list-item>Item 3</md-list-item>
-      </md-list>
-
-    </form>
-  </md-card-content>
-</md-card>
+<div class="lnsPage ui-widget">
   
-  <div *ngIf="(docOfCocs | async)">
+  <div class="lnsHeader ui-widget-header">
+    Adding New {{(docOfCocs|async)?.name}} Record
+  </div><!-- class="lnsHeader" -->
+  
+  <div class="lnsNavigation">
+    <div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading form...</div>
+  </div><!-- class="lnsNavigation" -->
+  
+  <div class="lnsMain ui-widget-content" *ngIf="(docOfCocs | async)">
 
     <form 
       *ngIf="(docOfCocs | async)" 
@@ -67,12 +45,6 @@
               </label><br />
 
               <input *ngIf="(field['type'] == 'string')"
-                type="text" 
-                formControlName="{{field['name']}}"
-                id="addInCollField{{field['name']}}Id"
-              />
-
-              <input *ngIf="(field['type'] == 'number')"
                 type="text" 
                 formControlName="{{field['name']}}"
                 id="addInCollField{{field['name']}}Id"
@@ -170,3 +142,4 @@
   <div class="lnsFooter">
   </div><!-- class="lnsFooter" -->
 
+</div><!-- class="lnsPage" -->

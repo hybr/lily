@@ -11,7 +11,7 @@ import { CollectionOfCollections } from './model';
 @Component({
   selector: 'app-collection-list',
   /* TODO: load themes dynamically */
-  templateUrl: './list.jm.component.html',
+  templateUrl: './list.component.html',
   styleUrls: [ './style.component.css' ],
 })
 export class ListDocsOfCocsComponent implements OnInit {

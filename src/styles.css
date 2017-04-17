@@ -1,7 +1,13 @@
+
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+
+
+/* lns = Lily Name Space */
 body: {
 	margin: 0;
 }
-.center-it{
+.lns_center_it{
   text-align: center;
   margin: 0 auto;
 }
@@ -13,6 +19,26 @@ body: {
 .ng-invalid:not(form)  {
   border-left: 5px solid #a94442; /* red */
 }
-.loading {
+
+.lns_loading {
 	color: red;
+}
+
+.no_bullets {
+	list-style: none;
+}
+
+.lnsPage {
+	margin: auto;
+}
+
+.lns_sub_fields_border {
+	padding: 1%;
+	border: 2px solid;
+}
+
+.spacer {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
 }

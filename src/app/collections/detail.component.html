@@ -1,47 +1,53 @@
-<div class="loading" *ngIf="!(docOfCocs | async)">Loading detail...</div>
-<section *ngIf="(docOfCocs | async)" >
+<div class="lnsPage ui-widget">
+	<div class="lnsHeader ui-widget-header">
+		{{(docOfCocs|async)?.name}} Details
+	</div><!-- class="lnsHeader" -->
+	<div class="lnsNavigation">
+		<button [routerLink]="['/ac/new/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number]"
+			>Add New Record</button>
+		<div class="ui-state-highlight lns_loading" *ngIf="!(docOfCocs | async)">Loading details...</div>
+	</div><!-- class="lnsNavigation" -->
+	<div class="lnsMain ui-widget-content" *ngIf="(docOfCocs | async)">
 
-	<header data-role="header">
-		<h2>{{(docOfCocs|async)?.name}}</h2>
-	</header>
-
-	<section data-role="main">
-
-		<header data-role="header">
-			<label for="actualCollectionListSearchId">Search: <input 
+		<div class="lnsPage ui-widget">
+			<div class="lnsHeader ui-widget-header">
+			</div><!-- class="lnsHeader" -->
+			<div class="lnsNavigation">
+				<label for="actualCollectionListSearchId">Search: <input 
 				id="actualCollectionListSearchId"
 				placeholder="name, number or detail pattern"
 				[(ngModel)]="actualCollectionSearchPattern"
 				(ngModelChange) = "searchActualCollections()"
 			/></label>
-		</header>
+			</div><!-- class="lnsNavigation" -->
+			<div class="lnsMain ui-widget-content">
+				{{(docOfCocs|async)?.detail}}
+				<ol>
+					<li *ngFor="let actualCollection of actualCollectionList | async" [class.disabled]="!docOfCocs.active">
+						<a 
+						[routerLink]="['/ac/update/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]" 
+						class="ui-icon ui-icon-pencil"
+						title="Update"
+						>Update</a>
+						<a 
+						[routerLink]="['/ac/remove/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]" 
+						class="ui-icon ui-icon-close"
+						title="Remove"
+						>Remove</a>
+						{{actualCollection.number}}.
+						<a [routerLink]="['/ac/show/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]">{{actualCollection.name}}</a>
+						: {{actualCollection.detail}}
+					</li>
+				</ol>
+			</div><!-- class="lnsMain" -->
+			<div class="lnsFooter">
+				<strong>{{(actualCollectionList|async)?.length}}</strong>
+				{{(actualCollectionList|async)?.length <= 1?'record':'records'}}
+			</div><!-- class="lnsFooter" -->
+		</div><!-- class="lnsPage" -->
 
-		<section data-role="main">
-			{{(docOfCocs|async)?.detail}}
-			<ol>
-				<li *ngFor="let actualCollection of actualCollectionList | async" [class.disabled]="!docOfCocs.active">
-					<a 
-					[routerLink]="['/ac/update/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]" 
-					class="ui-btn ui-shadow ui-corner-all ui-icon-edit ui-btn-icon-notext ui-btn-inline"
-					>Update</a>
-					<a 
-					[routerLink]="['/ac/remove/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]" 
-					class="ui-btn ui-shadow ui-corner-all ui-icon-delete ui-btn-icon-notext ui-btn-inline"
-					>Delete</a>
-					{{actualCollection.number}}.
-					<a [routerLink]="['/ac/show/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]">{{actualCollection.name}}</a>
-					: {{actualCollection.detail}}
-				</li>
-			</ol>
-		</section>
+	</div><!-- class="lnsMain" -->
+	<div class="lnsFooter">
 
-		<footer data-role="footer">
-			<strong>{{(actualCollectionList|async)?.length}}</strong>
-			{{(actualCollectionList|async)?.length <= 1?'document':'documents'}}
-			| <a [routerLink]="['/ac/new/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number]"
-			>Add New Document</a>
-		</footer>
-
-	</section>
-
-</section>
+	</div><!-- class="lnsFooter" -->
+</div><!-- class="lnsPage" -->

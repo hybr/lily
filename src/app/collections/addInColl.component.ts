@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: [ './style.component.css' ]
 })
 export class AddDocInCollComponent implements OnInit {
-  public fields = [];
+  public fields: Array<any> = <any>[];
   public docForm: FormGroup;
   public docOfCocs: FirebaseObjectObservable<CollectionOfCollections>;
   public submitted: boolean = false;
@@ -26,55 +26,82 @@ export class AddDocInCollComponent implements OnInit {
     private _lss: LocalStorageService
   ) {}
 
+  removeSubFieldL1(i, fieldName) {
+    (<FormArray>this.docForm.controls[fieldName]).removeAt(i);
+  }
+
+  addSubFieldL1(fieldName, fieldGroup) {
+    const control = <FormArray>this.docForm.controls[fieldName];
+    control.push(this._fb.group(this.docForm['controls'][fieldName]['controls'][0]['controls']));
+  }
+  
   getFormControlGroup(cocsRecord) {
     let self = this;
     console.log('cocsRecord received = ', cocsRecord);
-        let formFieldsGroup = {};
-        for (var property in cocsRecord['fields']) {
-          
-          let fValue = '';
-          if (cocsRecord['fields'][property]['default_value']) {
-            fValue = cocsRecord['fields'][property]['default_value'];
-          }
+    let formFieldsGroup = {};
+    let localFields: Array<any> = <any>[];
 
-          let fType = 'string';
-          if (cocsRecord['fields'][property]['type']) {
-            fType = cocsRecord['fields'][property]['type'];
-          }
 
-          let fTitle = property.split(' ').map(i => i[0].toUpperCase() + i.substr(1).toLowerCase()).join(' ');
-          if (cocsRecord['fields'][property]['title']) {
-            fTitle = cocsRecord['fields'][property]['title'];
-          }
 
-          self.fields.push({
-            'name' : property,
-            'title' : fTitle,
-            'value': fValue,
-            'type': fType
-          });
+    let sequence = 1;
+    for (var property in cocsRecord ) {
+      
+      let fValue = '';
+      if (cocsRecord[property]['default_value']) {
+        fValue = cocsRecord[property]['default_value'];
+      }
 
-          if (fType == 'fields') {
-            formFieldsGroup[property] = self._fb.group(
-              self.getFormControlGroup(
-                cocsRecord['fields'][property]['fields']
-              ) 
-            );
-            console.log('sub field group = ', fType, cocsRecord['fields'][property]['fields'],
-              self.getFormControlGroup({
-                'fields' : cocsRecord['fields'][property]['fields']
-              })
-            );
-            // formFieldsGroup[property] = new FormControl(fValue, []);
-          } else {
-            formFieldsGroup[property] = new FormControl(fValue, []);
-          }
+      let fType = 'string';
+      if (cocsRecord[property]['type']) {
+        fType = cocsRecord[property]['type'];
+      }
 
-          
-          console.log('cocsRecord property =', property, ' : ', formFieldsGroup[property]);
-        } /* for */
-        console.log('formFieldsGroup = ', formFieldsGroup);
-        return formFieldsGroup;
+      let fTitle = property.split('_').map(i => i[0].toUpperCase() + i.substr(1).toLowerCase()).join(' ');
+      if (cocsRecord[property]['title']) {
+        fTitle = cocsRecord[property]['title'];
+      }
+
+      let fSequence = sequence;
+      sequence++;
+      if (cocsRecord[property]['sequence']) {
+        fSequence = cocsRecord[property]['sequence'];
+      }
+
+      if (fType == 'fields') {
+
+        let { fbg, lf} = self.getFormControlGroup(
+          cocsRecord[property]['fields']
+        );
+
+        formFieldsGroup[property] = self._fb.array([
+           fbg
+        ]);
+        localFields.push({
+          'name' : property,
+          'title' : fTitle,
+          'value': lf,
+          'type': fType,
+          'sequence': fSequence
+        });
+        // formFieldsGroup[property] = new FormControl(fValue, []);
+      } else {
+        localFields.push({
+          'name' : property,
+          'title' : fTitle,
+          'value': fValue,
+          'type': fType,
+          'sequence': fSequence
+        });
+        formFieldsGroup[property] = new FormControl(fValue, []);
+      }
+
+    } /* for */
+
+    localFields.sort(function(a, b) { 
+        return a.sequence - b.sequence;
+    });
+
+    return {fbg: self._fb.group(formFieldsGroup), lf: localFields};
   } /* getFormControlGroup */
 
   ngOnInit() {
@@ -88,9 +115,16 @@ export class AddDocInCollComponent implements OnInit {
     self.docOfCocs.subscribe(
       function(cocsRecord) {
         // create class from json and assign to form
-        self.docForm = self._fb.group(self.getFormControlGroup(cocsRecord));
+        let { fbg, lf} = self.getFormControlGroup(cocsRecord['fields']);
+        self.docForm = fbg;
+        console.log('docForm = ', self.docForm);
+        self.fields.push(lf);
       }
     );
     
   } // ngOnInit
+
+  onSubmit(model: any) {
+    console.log('model = ', model)
+  } // onSubmit
 }

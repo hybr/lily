@@ -1,0 +1,55 @@
+<div class="lnsPage ui-widget">
+	<div class="lnsHeader ui-widget-header">
+		{{(docOfCocs|async)?.name}}
+	</div><!-- class="lnsHeader" -->
+	<div class="lnsNavigation">
+		<button [routerLink]="['/cocs/new']">Add New Collection</button>
+		<div class="ui-state-highlight lns_loading" *ngIf="!(docOfCocs | async)">Loading collection detail...</div>
+	</div><!-- class="lnsNavigation" -->
+	<div class="lnsMain ui-widget-content" *ngIf="(docOfCocs | async)">
+
+		<div class="lnsPage ui-widget">
+			<div class="lnsHeader ui-widget-header">
+			</div><!-- class="lnsHeader" -->
+			<div class="lnsNavigation">
+				<label for="collectionListSearchId">Search Collections: 
+					<input  id="collectionListSearchId"
+					placeholder="name, number or detail pattern"
+					[(ngModel)]="searchPattern"
+					(ngModelChange) = "searchCollections()"
+					/>
+				</label>
+			</div><!-- class="lnsNavigation" -->
+			<div class="lnsMain ui-widget-content">
+				{{(docOfCocs|async)?.detail}}
+				<ol>
+					<li *ngFor="let docOfCocs of listOfCocs | async" [class.disabled]="!docOfCocs.active">	          
+						<a [routerLink]="['/cocs/update', docOfCocs.$key]" 
+						class="ui-icon ui-icon-pencil"
+						title="Update" 
+						>Update</a>
+						<a [routerLink]="['/cocs/delete', docOfCocs.$key]" 
+						class="ui-icon ui-icon-close"
+						title="Remove"
+						>Remove</a>
+
+						{{docOfCocs.number}}.
+
+						<a *ngIf="docOfCocs.active" [routerLink]="['/cocs/show', docOfCocs.$key]">{{docOfCocs.name}}</a>
+						<span *ngIf="!docOfCocs.active">{{docOfCocs.name}}</span>
+
+						: {{docOfCocs.detail}}
+					</li>
+				</ol>
+			</div><!-- class="lnsMain" -->
+			<div class="lnsFooter">
+				<strong>{{(listOfCocs|async)?.length}}</strong>
+				{{(listOfCocs|async)?.length <= 1?'collection':'collections'}}
+			</div><!-- class="lnsFooter" -->
+		</div><!-- class="lnsPage" -->
+
+	</div><!-- class="lnsMain" -->
+	<div class="lnsFooter">
+
+	</div><!-- class="lnsFooter" -->
+</div><!-- class="lnsPage" -->
