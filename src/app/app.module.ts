@@ -2,10 +2,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule, JsonpModule } from '@angular/http';
+
 import { MaterialModule } from '@angular/material';
-
-import { MdButtonModule, MdCheckboxModule } from '@angular/material';
-
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import 'hammerjs';
 
 /* forms */
@@ -74,8 +73,7 @@ const firebaseConfig = {
     BrowserModule,
     FormsModule,
     MaterialModule.forRoot(),
-
-    MdButtonModule, MdCheckboxModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpModule, JsonpModule,
     AngularFireModule.initializeApp (firebaseConfig, {
@@ -89,8 +87,6 @@ const firebaseConfig = {
     routing
   ],
   
-  exports: [MdButtonModule, MdCheckboxModule],
-
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

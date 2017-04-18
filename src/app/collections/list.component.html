@@ -1,55 +1,42 @@
-<div class="lnsPage ui-widget">
-	<div class="lnsHeader ui-widget-header">
-		{{(docOfCocs|async)?.name}}
-	</div><!-- class="lnsHeader" -->
-	<div class="lnsNavigation">
-		<button [routerLink]="['/cocs/new']">Add New Collection</button>
-		<div class="ui-state-highlight lns_loading" *ngIf="!(docOfCocs | async)">Loading collection detail...</div>
-	</div><!-- class="lnsNavigation" -->
-	<div class="lnsMain ui-widget-content" *ngIf="(docOfCocs | async)">
+<div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading database detail...</div>
+<md-card *ngIf="(docOfCocs | async)">
 
-		<div class="lnsPage ui-widget">
-			<div class="lnsHeader ui-widget-header">
-			</div><!-- class="lnsHeader" -->
-			<div class="lnsNavigation">
-				<label for="collectionListSearchId">Search Collections: 
-					<input  id="collectionListSearchId"
-					placeholder="name, number or detail pattern"
-					[(ngModel)]="searchPattern"
-					(ngModelChange) = "searchCollections()"
-					/>
-				</label>
-			</div><!-- class="lnsNavigation" -->
-			<div class="lnsMain ui-widget-content">
-				{{(docOfCocs|async)?.detail}}
-				<ol>
-					<li *ngFor="let docOfCocs of listOfCocs | async" [class.disabled]="!docOfCocs.active">	          
-						<a [routerLink]="['/cocs/update', docOfCocs.$key]" 
-						class="ui-icon ui-icon-pencil"
-						title="Update" 
-						>Update</a>
-						<a [routerLink]="['/cocs/delete', docOfCocs.$key]" 
-						class="ui-icon ui-icon-close"
-						title="Remove"
-						>Remove</a>
+	<md-card-header>
+		<md-card-title><h2>{{(docOfCocs|async)?.name}}</h2></md-card-title>
+		<md-card-subtitle>{{(docOfCocs|async)?.detail}}</md-card-subtitle>
+	</md-card-header>
 
-						{{docOfCocs.number}}.
+	<md-card-content>
+	
+		<md-input-container>
+			<input 
+				mdInput 
+				id="collectionListSearchId" 
+				placeholder="Search Tables" 
+				[(ngModel)]="searchPattern"
+				(ngModelChange) = "searchCollections()"
+			/>
+		</md-input-container>
 
-						<a *ngIf="docOfCocs.active" [routerLink]="['/cocs/show', docOfCocs.$key]">{{docOfCocs.name}}</a>
-						<span *ngIf="!docOfCocs.active">{{docOfCocs.name}}</span>
+		<md-list>
+			<md-list-item 
+				*ngFor="let docOfCocs of listOfCocs | async" 
+				[class.disabled]="!docOfCocs.active"
+			>
+				{{docOfCocs.number}}.
+				<a 
+				*ngIf="docOfCocs.active" [routerLink]="['/cocs/show', docOfCocs.$key]"
+				>{{docOfCocs.name}}</a>
+				<span *ngIf="!docOfCocs.active">{{docOfCocs.name}}</span>
+				: {{docOfCocs.detail}}
+			</md-list-item>
+		</md-list>
 
-						: {{docOfCocs.detail}}
-					</li>
-				</ol>
-			</div><!-- class="lnsMain" -->
-			<div class="lnsFooter">
-				<strong>{{(listOfCocs|async)?.length}}</strong>
-				{{(listOfCocs|async)?.length <= 1?'collection':'collections'}}
-			</div><!-- class="lnsFooter" -->
-		</div><!-- class="lnsPage" -->
+	</md-card-content>
 
-	</div><!-- class="lnsMain" -->
-	<div class="lnsFooter">
+	<md-card-actions>
+		Total <strong>{{(listOfCocs|async)?.length}}</strong>
+		{{(listOfCocs|async)?.length <= 1?'table':'tables'}} in list
+	</md-card-actions>
 
-	</div><!-- class="lnsFooter" -->
-</div><!-- class="lnsPage" -->
+</md-card>

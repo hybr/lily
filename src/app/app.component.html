@@ -1,8 +1,8 @@
 
 <md-toolbar color="primary">
     <span>Demo</span>
-    <button [routerLink]="['/']">Home</button>
-    <button [routerLink]="['/web-page/about']">About</button>
+    <button md-button [routerLink]="['/']">Home</button>
+    <button md-button [routerLink]="['/web-page/about']">About</button>
 
     <span class="spacer"></span>
 
@@ -17,23 +17,24 @@
       </button>
       
       <button md-menu-item *ngIf="(user | json) != '{}'" (click)="logout()">
-        <md-icon>fingerprint</md-icon>
+        <md-icon>exit_to_app</md-icon>
         <span>Logout</span>
       </button>
 
       <button md-menu-item [routerLink]="['/cocs/list']">
-        <md-icon>announcement</md-icon>
+        <md-icon>info</md-icon>
         <span>Database</span>
       </button>
+
       <button md-menu-item [routerLink]="['/activities']">
-        <md-icon>notifications_off</md-icon>
+        <md-icon>format_list_numbered</md-icon>
         <span>Activities</span>
       </button>
     </md-menu>
 
 </md-toolbar>
 
-
 <router-outlet></router-outlet>
 
+<hr />
 Demo &copy; Copyright

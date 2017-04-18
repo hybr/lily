@@ -1,14 +1,15 @@
 
-<div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading form...</div>
+<div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading add form...</div>
+<md-card *ngIf="(docOfCocs | async)">
 
-<md-card>
-
-  <md-card-title>
-    Adding New {{(docOfCocs|async)?.name}} Record
-  </md-card-title>
+  <md-card-header>
+    <md-card-title><h2>Adding New {{(docOfCocs|async)?.name}} Record</h2></md-card-title>
+    <md-card-subtitle>{{(docOfCocs|async)?.detail}}</md-card-subtitle>
+  </md-card-header>
 
   <md-card-content>
-    <form 
+
+<form 
       *ngIf="(docOfCocs | async)" 
       [formGroup]="docForm" 
       novalidate  
@@ -17,136 +18,123 @@
     >
       <md-list>
         <md-list-item>
-          <md-input-container>
-            <md-input class="floating" placeholder="Favorite food" value="Sushi"></md-input>
-          
-          </md-input-container>
+            <md-select placeholder="Status" formControlName="active">
+              <md-option value="false">Inactive</md-option>
+              <md-option value="true" selected=selected>Active</md-option>
+          </md-select>
         </md-list-item>
-        <md-list-item>Item 2</md-list-item>
-        <md-list-item>Item 3</md-list-item>
-      </md-list>
 
-    </form>
-  </md-card-content>
-</md-card>
-  
-  <div *ngIf="(docOfCocs | async)">
-
-    <form 
-      *ngIf="(docOfCocs | async)" 
-      [formGroup]="docForm" 
-      novalidate  
-      (ngSubmit)="onSubmit(docForm)" 
-      [hidden]="submitted"
-    >
-
-      <ul class="no_bullets">
-
-        <li>
-          <hr /><label for="addInCollFieldactiveId">Status</label><br />
-          <select 
-            id="addInCollFieldactiveId" 
-            formControlName="active" 
-            required
-          >
-            <option value="false">Inactive</option>
-            <option value="true" selected=selected>Active</option>
-          </select>
-        </li>
-
-        <li *ngFor="let field of fields[0]" >       
+        <md-list-item *ngFor="let field of fields[0]">
 
           <div *ngIf="(field['name'] != 'active')"><!-- fields to ignore -->
 
-            <div *ngIf="(field['type'] != 'fields')" class="ui-field-contain"><!-- main fields -->
+              <div *ngIf="(field['type'] != 'fields')"><!-- main fields -->
 
-              <hr /><label 
-                id="addInCollLabel{{field['name']}}Id" 
-                for="addInCollField{{field['name']}}Id">
-                {{field['title']}}
-              </label><br />
+                <md-input-container *ngIf="(field['type'] == 'string')">
+                  <input 
+                    mdInput 
+                    placeholder="{{field['title']}}" 
+                    type="text" 
+                    formControlName="{{field['name']}}"
+                    id="addInCollField{{field['name']}}Id"
+                  />
+                </md-input-container>
 
-              <input *ngIf="(field['type'] == 'string')"
-                type="text" 
-                formControlName="{{field['name']}}"
-                id="addInCollField{{field['name']}}Id"
-              />
+                <md-input-container *ngIf="(field['type'] == 'number')">
+                  <input 
+                    mdInput 
+                    placeholder="{{field['title']}}" 
+                    type="number" 
+                    formControlName="{{field['name']}}"
+                    id="addInCollField{{field['name']}}Id"
+                  />
+                </md-input-container>
 
-              <input *ngIf="(field['type'] == 'number')"
-                type="text" 
-                formControlName="{{field['name']}}"
-                id="addInCollField{{field['name']}}Id"
-              />
+                <md-input-container *ngIf="(field['type'] == 'date')">
+                  <input 
+                    mdInput 
+                    placeholder="{{field['title']}}" 
+                    type="date" 
+                    formControlName="{{field['name']}}"
+                    id="addInCollField{{field['name']}}Id"
+                  />
+                </md-input-container>
 
-              <input *ngIf="(field['type'] == 'date')"
-                placeholder="date" 
-                type="text" 
-                class="lns_datepicker"
-                formControlName="{{field['name']}}"
-                id="addInCollField{{field['name']}}Id"
-              />
+              </div><!-- main fields -->
 
-            </div><!-- main fields -->
+              <div *ngIf="(field['type'] == 'fields')" class="ui-field-contain"><!-- show sub fields -->
 
-            <div *ngIf="(field['type'] == 'fields')" class="ui-field-contain"><!-- show sub fields -->
+                <hr /><fieldset>
+                  <legend>{{field['title']}}</legend>
+                  <div><!--  add button -->
+                    <span (click)="addSubFieldL1(field['name'], docForm['controls'][field['name']]['controls'])"
+                      title="Add New {{field['title']}}">
+                      Add New {{field['title']}}
+                    </span>
+                  </div><!-- add button -->
 
-              <hr /><fieldset>
-                <legend>{{field['title']}}</legend>
-                <div><!--  add button -->
-                  <span (click)="addSubFieldL1(field['name'], docForm['controls'][field['name']]['controls'])"
-                    title="Add New {{field['title']}}">
-                    Add New {{field['title']}}
-                  </span>
-                </div><!-- add button -->
+                  <div formArrayName="{{field['name']}}">
+                    <div 
+                      *ngFor="
+                        let singleSubRecord of docForm['controls'][field['name']]['controls']; 
+                        let i = index; 
+                      "
+                    >
+                      <div [formGroupName]="i" class="lns_sub_fields_border"><!-- [formGroupName]="i" -->
 
-                <div formArrayName="{{field['name']}}">
-                  <div 
-                    *ngFor="
-                      let singleSubRecord of docForm['controls'][field['name']]['controls']; 
-                      let i = index; 
-                    "
-                  >
-                    <div [formGroupName]="i" class="lns_sub_fields_border"><!-- [formGroupName]="i" -->
-                      <div><!--  remove button -->
-                        <span (click)="removeSubFieldL1(i, field['name'])">
-                          Remove {{i + 1}}
-                        </span>
-                      </div><!-- remove button -->
+                        <div><!--  remove button -->
+                          <span (click)="removeSubFieldL1(i, field['name'])">
+                            Remove {{i + 1}}
+                          </span>
+                        </div><!-- remove button -->
 
-                      <div *ngFor="let subField of field['value']" ><!-- each sub field -->
-                        <hr /><label 
-                          id="addInCollLabel{{subField['name']}}Id" 
-                          for="addInCollField{{subField['name']}}Id">
-                          {{subField['title']}}
-                        </label><br />
+                        <div *ngFor="let subField of field['value']" ><!-- each sub field -->
+                         
+                          <md-input-container *ngIf="(subField['type'] == 'string')">
+                            <input 
+                              mdInput 
+                              placeholder="{{subField['title']}}" 
+                              type="text" 
+                              formControlName="{{subField['name']}}"
+                              id="addInCollField{{subField['name']}}Id"
+                            />
+                          </md-input-container>
 
-                        <input *ngIf="(subField['type'] == 'string')"
-                          type="text" 
-                          formControlName="{{subField['name']}}"
-                          id="addInCollField{{subField['name']}}Id"
-                        />
+                          <md-input-container *ngIf="(subField['type'] == 'number')">
+                            <input 
+                              mdInput 
+                              placeholder="{{subField['title']}}" 
+                              type="number" 
+                              formControlName="{{subField['name']}}"
+                              id="addInCollField{{subField['name']}}Id"
+                            />
+                          </md-input-container>
 
-                        <input *ngIf="(subField['type'] == 'date')"
-                          placeholder="date" 
-                          type="text" 
-                          class="lns_datepicker"
-                          formControlName="{{subField['name']}}"
-                          id="addInCollField{{subField['name']}}Id"
-                        />
-                      </div><!-- each sub field -->
-                    </div><!-- [formGroupName]="i" -->
-                  </div><!-- ngFor="let singleSubRecord -->
-              </div><!-- formArrayName-->
+                          <md-input-container *ngIf="(subField['type'] == 'date')">
+                            <input 
+                              mdInput 
+                              placeholder="{{subField['title']}}" 
+                              type="date" 
+                              formControlName="{{subField['name']}}"
+                              id="addInCollField{{subField['name']}}Id"
+                            />
+                          </md-input-container>
 
-            </fieldset>
 
-          </div><!-- show sub fields -->
+                        </div><!-- each sub field -->
+                      </div><!-- [formGroupName]="i" -->
+                    </div><!-- ngFor="let singleSubRecord -->
+                </div><!-- formArrayName-->
+
+              </fieldset>
+
+            </div><!-- show sub fields -->
+          
+          </div><!-- fields to ignore -->
         
-        </div><!-- fields to ignore -->
-        
-        </li>
+        </md-list-item><!-- *ngFor="let field of fields[0]" -->
 
-        <li><hr />
+        <md-list-item>
           <button
             type="submit"
             class="ui-btn ui-shadow ui-btn-inline ui-corner-all ui-icon-action ui-btn-icon-left"
@@ -160,13 +148,10 @@
             type="reset" 
             class="ui-btn ui-shadow ui-btn-inline ui-corner-all ui-icon-recycle ui-btn-icon-left"
           >Reset</button>
-        </li>
+        </md-list-item>
+      </md-list>
 
-      </ul>
     </form>
-
-  </div><!-- class="lnsMain" -->
-
-  <div class="lnsFooter">
-  </div><!-- class="lnsFooter" -->
-
+  </md-card-content>
+</md-card>
+  
