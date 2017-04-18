@@ -1,53 +1,57 @@
-<div class="lnsPage ui-widget">
-	<div class="lnsHeader ui-widget-header">
-		{{(docOfCocs|async)?.name}} Details
-	</div><!-- class="lnsHeader" -->
-	<div class="lnsNavigation">
-		<button [routerLink]="['/ac/new/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number]"
-			>Add New Record</button>
-		<div class="ui-state-highlight lns_loading" *ngIf="!(docOfCocs | async)">Loading details...</div>
-	</div><!-- class="lnsNavigation" -->
-	<div class="lnsMain ui-widget-content" *ngIf="(docOfCocs | async)">
+<div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading {{(docOfCocs|async)?.name}}  detail...</div>
+<md-card *ngIf="(docOfCocs | async)">
 
-		<div class="lnsPage ui-widget">
-			<div class="lnsHeader ui-widget-header">
-			</div><!-- class="lnsHeader" -->
-			<div class="lnsNavigation">
-				<label for="actualCollectionListSearchId">Search: <input 
-				id="actualCollectionListSearchId"
-				placeholder="name, number or detail pattern"
-				[(ngModel)]="actualCollectionSearchPattern"
-				(ngModelChange) = "searchActualCollections()"
-			/></label>
-			</div><!-- class="lnsNavigation" -->
-			<div class="lnsMain ui-widget-content">
-				{{(docOfCocs|async)?.detail}}
-				<ol>
-					<li *ngFor="let actualCollection of actualCollectionList | async" [class.disabled]="!docOfCocs.active">
-						<a 
-						[routerLink]="['/ac/update/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]" 
-						class="ui-icon ui-icon-pencil"
-						title="Update"
-						>Update</a>
-						<a 
-						[routerLink]="['/ac/remove/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]" 
-						class="ui-icon ui-icon-close"
-						title="Remove"
-						>Remove</a>
+	<md-card-header>
+		<md-card-title><h2>Table {{(docOfCocs|async)?.name}} Details</h2></md-card-title>
+		<md-card-subtitle>{{(docOfCocs|async)?.detail}}</md-card-subtitle>
+	</md-card-header>
+
+	<md-card-content>
+		<md-list>
+			<md-list-item>
+				<button 
+					md-mini-fab 
+					[routerLink]="['/ac/new/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number]"
+					title="Add New Record"
+				><md-icon>add</md-icon></button>
+				&nbsp;
+				<md-input-container>
+
+					<input 
+						mdInput 
+						id="collectionListSearchId" 
+						placeholder="Search Records" 
+						[(ngModel)]="actualCollectionSearchPattern"
+						(ngModelChange) = "searchActualCollections()"
+					/>
+				</md-input-container>
+			</md-list-item>
+			
+			<md-list-item 
+				*ngFor="let actualCollection of actualCollectionList | async" 
+				[class.disabled]="!docOfCocs.active"
+			>
+						<button md-mini-fab
+							[routerLink]="['/ac/update/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]" 
+							title="Update"
+						><md-icon>mode_edit</md-icon></button>
+						
+						<button md-mini-fab
+							[routerLink]="['/ac/remove/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]" 
+							title="Remove"
+						><md-icon>delete</md-icon></button>
+
 						{{actualCollection.number}}.
-						<a [routerLink]="['/ac/show/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]">{{actualCollection.name}}</a>
+						{{actualCollection.name}}
 						: {{actualCollection.detail}}
-					</li>
-				</ol>
-			</div><!-- class="lnsMain" -->
-			<div class="lnsFooter">
-				<strong>{{(actualCollectionList|async)?.length}}</strong>
-				{{(actualCollectionList|async)?.length <= 1?'record':'records'}}
-			</div><!-- class="lnsFooter" -->
-		</div><!-- class="lnsPage" -->
+			</md-list-item>
+		</md-list>
 
-	</div><!-- class="lnsMain" -->
-	<div class="lnsFooter">
+	</md-card-content>
 
-	</div><!-- class="lnsFooter" -->
-</div><!-- class="lnsPage" -->
+	<md-card-actions>
+		Total <strong>{{(actualCollectionList|async)?.length}}</strong>
+		{{(actualCollectionList|async)?.length <= 1?'record':'records'}} in table
+	</md-card-actions>
+
+</md-card>
