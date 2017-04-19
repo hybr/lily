@@ -10,12 +10,13 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-collection-addincall',
-  templateUrl: './addInColl.component.html',
+  templateUrl: './updateInColl.component.html',
   styleUrls: [ './style.component.css' ]
 })
-export class AddDocInCollComponent implements OnInit {
+export class UpdateDocInCollComponent implements OnInit {
   public fields: Array<any> = <any>[];
   public docForm: FormGroup;
+  public listOfColl: FirebaseListObservable<any[]>;
   public docOfCocs: FirebaseObjectObservable<CollectionOfCollections>;
   public submitted: boolean = false;
 
@@ -104,14 +105,54 @@ export class AddDocInCollComponent implements OnInit {
     return {fbg: self._fb.group(formFieldsGroup), lf: localFields};
   } /* getFormControlGroup */
 
+  private applyFormValues (group, formValues) {
+
+    Object.keys(formValues).forEach(key => {
+      console.log('Updating ', key, formValues[key]);
+
+      let formControl = group.controls[key];
+
+      if (formControl instanceof FormArray) {
+
+        let i = 0;
+        Object.keys(formValues[key]).forEach(subKey => {
+          if (formValues[key][subKey]) {
+            this.applyFormValues(formControl[i], formValues[key][subKey]);
+            i++;
+          }  
+        });
+      } else if (formControl instanceof FormGroup) {
+        if (formValues[key]) {
+          this.applyFormValues(formControl, formValues[key]);
+        }
+      } else {
+        if (formValues.hasOwnProperty(key) && formValues[key] != undefined) {
+          formControl.setValue(formValues[key]);
+        } else {
+          formControl.setValue('test');
+        }
+      }
+    });
+  }
+
   ngOnInit() {
     let self = this;
     let cDocKey = self._route.snapshot.paramMap.get('cDocKey');
     console.log('cDocKey =', cDocKey);
     let cNum = self._route.snapshot.paramMap.get('cNum');
     console.log('cNum  =', cNum);
+    let docId = self._route.snapshot.paramMap.get('docId');
+    console.log('docId  =', docId);
+
+    
+    self.listOfColl = self._af.database.list(`/${cNum}`);
     self.docOfCocs = self._af.database.object(`/c3/${cDocKey}`);
     console.log('self.docOfCocs = ', self.docOfCocs);
+    console.log('self.listOfColl = ', self.listOfColl);
+
+    let docToUpdate = self._af.database.object(`/${cNum}/${docId}`);
+    console.log('docToUpdate = ', docToUpdate);
+
     self.docOfCocs.subscribe(
       function(cocsRecord) {
         // create class from json and assign to form
@@ -119,12 +160,23 @@ export class AddDocInCollComponent implements OnInit {
         self.docForm = fbg;
         console.log('docForm = ', self.docForm);
         self.fields.push(lf);
-      }
-    );
+        // get the values and assign to form
+        docToUpdate.subscribe(
+          function (docToUpdateRecord) {
+            console.log('docToUpdateRecord = ', docToUpdateRecord);
+            self.applyFormValues(self.docForm, docToUpdateRecord);
+
+          } /* function (docToUpdateRecord) */
+        ); /* docToUpdate.subscribe */
+
+      } /* function(cocsRecord)  */
+    ); /* self.docOfCocs.subscribe */
     
   } // ngOnInit
 
   onSubmit(model: any) {
+    this.listOfColl.push(model);
+    alert('Saved');
     console.log('model = ', model)
   } // onSubmit
 }

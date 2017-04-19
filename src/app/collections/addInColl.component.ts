@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 export class AddDocInCollComponent implements OnInit {
   public fields: Array<any> = <any>[];
   public docForm: FormGroup;
+  public listOfColl: FirebaseListObservable<any[]>;
   public docOfCocs: FirebaseObjectObservable<CollectionOfCollections>;
   public submitted: boolean = false;
 
@@ -110,6 +111,7 @@ export class AddDocInCollComponent implements OnInit {
     console.log('cDocKey =', cDocKey);
     let cNum = self._route.snapshot.paramMap.get('cNum');
     console.log('cNum  =', cNum);
+    self.listOfColl = self._af.database.list(`/${cNum}`);
     self.docOfCocs = self._af.database.object(`/c3/${cDocKey}`);
     console.log('self.docOfCocs = ', self.docOfCocs);
     self.docOfCocs.subscribe(
@@ -124,7 +126,9 @@ export class AddDocInCollComponent implements OnInit {
     
   } // ngOnInit
 
-  onSubmit(model: any) {
+  onSubmit(model: FormGroup) {
+    this.listOfColl.push(model.value);
+    alert('Saved');
     console.log('model = ', model)
   } // onSubmit
 }

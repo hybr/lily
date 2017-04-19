@@ -1,7 +1,7 @@
-<div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading add form...</div>
+<div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading update form...</div>
 <md-card *ngIf="(docOfCocs | async)">
   <md-card-header>
-    <md-card-title><h2>Adding New {{(docOfCocs|async)?.name}} Record</h2></md-card-title>
+    <md-card-title><h2>Update {{(docOfCocs|async)?.name}} Record</h2></md-card-title>
     <md-card-subtitle>{{(docOfCocs|async)?.detail}}</md-card-subtitle>
   </md-card-header>
 

@@ -18,6 +18,6 @@ export const CollectionComponentRoutes: Routes = [
 	*/
 
 	{ path: 'ac/new/:cDocKey/:cNum', component: AddDocInCollComponent },
-	{ path: 'ac/update/:cDocKey/:cNum/:key', component: UpdateDocInCollComponent },
+	{ path: 'ac/update/:cDocKey/:cNum/:docId', component: UpdateDocInCollComponent },
 
 ];

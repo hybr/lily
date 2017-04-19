@@ -4,12 +4,11 @@ import { NgModule } from '@angular/core';
 import { HttpModule, JsonpModule } from '@angular/http';
 
 import { MaterialModule } from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'hammerjs';
 
 /* forms */
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /* local storage */
 import { LocalStorageModule } from 'angular-2-local-storage';
@@ -41,6 +40,7 @@ import { DetailDocOfCocsComponent } from './collections/detail.component';
 import { ListDocsOfCocsComponent } from './collections/list.component';
 import { AddDocInCocsComponent } from './collections/add.component';
 import { AddDocInCollComponent } from './collections/addInColl.component';
+import { UpdateDocInCollComponent } from './collections/updateInColl.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -65,7 +65,8 @@ const firebaseConfig = {
     DetailDocOfCocsComponent,
     ListDocsOfCocsComponent,
     AddDocInCocsComponent,
-
+    UpdateDocInCollComponent,
+    
     AddDocInCollComponent
   ],
 
