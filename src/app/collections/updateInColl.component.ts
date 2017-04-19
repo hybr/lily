@@ -105,34 +105,46 @@ export class UpdateDocInCollComponent implements OnInit {
     return {fbg: self._fb.group(formFieldsGroup), lf: localFields};
   } /* getFormControlGroup */
 
-  private applyFormValues (group, formValues) {
+  private applyFormValues (group, formValues, isFromArray) {
+    console.log('applyFormValues isFromArray = ', isFromArray);
+    console.log('applyFormValues group = ', group);
+    console.log('applyFormValues formValues = ', formValues);
+    
 
-    Object.keys(formValues).forEach(key => {
-      console.log('Updating ', key, formValues[key]);
+    for (var key in group.controls) {
 
-      let formControl = group.controls[key];
+      if (group.controls.hasOwnProperty(key)) {
+        console.log(key + " -> " + group.controls[key]);
+        let formControl = group.controls[key];
 
-      if (formControl instanceof FormArray) {
+        if (formControl instanceof FormArray) {
+          
+          console.log('Updating values for FormArray ' + key + '', formControl, formValues[key]);
 
-        let i = 0;
-        Object.keys(formValues[key]).forEach(subKey => {
-          if (formValues[key][subKey]) {
-            this.applyFormValues(formControl[i], formValues[key][subKey]);
-            i++;
-          }  
-        });
-      } else if (formControl instanceof FormGroup) {
-        if (formValues[key]) {
-          this.applyFormValues(formControl, formValues[key]);
-        }
-      } else {
-        if (formValues.hasOwnProperty(key) && formValues[key] != undefined) {
-          formControl.setValue(formValues[key]);
+          let count = 1;
+          for (var i in formValues[key]) {
+            console.log('subGroups in FormArray = ', formValues[key][i]);
+            this.applyFormValues(formControl.controls[0], formValues[key][i], count);
+            count++;
+          }
+        } else if (formControl instanceof FormGroup) {
+          console.log('Updating values for FormGroup ' + key + ' = ', formControl);
+          if (formValues[key]) {
+            this.applyFormValues(formControl, formValues[key], 0);
+          }
         } else {
-          formControl.setValue('test');
+          console.log('Updating values for formControl ' + key + ' = ', formControl);
+          if (formValues.hasOwnProperty(key) && formValues[key] != undefined) {
+            if (isFromArray > 0) {
+              (<FormArray>group.controls[isFromArray]).push(formControl.setValue(formValues[key]));
+            } else {
+              formControl.setValue(formValues[key]);
+            }
+          }
         }
       }
-    });
+    }
+
   }
 
   ngOnInit() {
@@ -164,7 +176,7 @@ export class UpdateDocInCollComponent implements OnInit {
         docToUpdate.subscribe(
           function (docToUpdateRecord) {
             console.log('docToUpdateRecord = ', docToUpdateRecord);
-            self.applyFormValues(self.docForm, docToUpdateRecord);
+            self.applyFormValues(self.docForm, docToUpdateRecord, 0);
 
           } /* function (docToUpdateRecord) */
         ); /* docToUpdate.subscribe */
@@ -174,9 +186,8 @@ export class UpdateDocInCollComponent implements OnInit {
     
   } // ngOnInit
 
-  onSubmit(model: any) {
-    this.listOfColl.push(model);
-    alert('Saved');
+  onSubmit(model: FormGroup) {
+    this.listOfColl.push(model.value);
     console.log('model = ', model)
   } // onSubmit
 }
