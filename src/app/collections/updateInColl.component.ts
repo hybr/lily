@@ -106,39 +106,46 @@ export class UpdateDocInCollComponent implements OnInit {
   } /* getFormControlGroup */
 
   private applyFormValues (group, formValues, isFromArray) {
-    console.log('applyFormValues isFromArray = ', isFromArray);
+    console.log('-------------------------------------', 'applyFormValues isFromArray = ', isFromArray);
     console.log('applyFormValues group = ', group);
     console.log('applyFormValues formValues = ', formValues);
     
+    if (isFromArray > 0) {
+      group.controls[isFromArray]  = new FormGroup(isFromArray);
+    }
 
     for (var key in group.controls) {
 
       if (group.controls.hasOwnProperty(key)) {
-        console.log(key + " -> " + group.controls[key]);
-        let formControl = group.controls[key];
+        console.log('=================', key + " -> " + group.controls[key]);
 
-        if (formControl instanceof FormArray) {
+        if (group.controls[key] instanceof FormArray) {
           
-          console.log('Updating values for FormArray ' + key + '', formControl, formValues[key]);
+          console.log('Updating values for FormArray ' + key + '', group.controls[key], formValues[key]);
 
           let count = 1;
           for (var i in formValues[key]) {
             console.log('subGroups in FormArray = ', formValues[key][i]);
-            this.applyFormValues(formControl.controls[0], formValues[key][i], count);
+            this.applyFormValues(group.controls[key], formValues[key][i], count);
             count++;
           }
-        } else if (formControl instanceof FormGroup) {
-          console.log('Updating values for FormGroup ' + key + ' = ', formControl);
-          if (formValues[key]) {
-            this.applyFormValues(formControl, formValues[key], 0);
+        } else if (group.controls[key] instanceof FormGroup) {
+          console.log('Updating values for FormGroup ' + key + ' = ', group.controls[key]);
+          
+
+          for (var subGroupKey in formValues) {
+            console.log('subGroups in FormGRoup = ', formValues[subGroupKey]);
+            this.applyFormValues(group.controls[key], formValues[subGroupKey], 0);
           }
+
         } else {
-          console.log('Updating values for formControl ' + key + ' = ', formControl);
+          console.log('Updating values for FormControl ' + key + ' = ', group.controls[key]);
           if (formValues.hasOwnProperty(key) && formValues[key] != undefined) {
             if (isFromArray > 0) {
-              (<FormArray>group.controls[isFromArray]).push(formControl.setValue(formValues[key]));
+              //(<FormGroup>group.controls[isFromArray]).setControl(key, group.controls[key].setValue(formValues[key]));
+              group.controls[key].setValue(formValues[key]);
             } else {
-              formControl.setValue(formValues[key]);
+              group.controls[key].setValue(formValues[key]);
             }
           }
         }
