@@ -1,5 +1,58 @@
 
 
+  private applyFormValues2 (group, formValues, isFromArray) {
+    console.log('-------------------------------------', 'applyFormValues isFromArray = ', isFromArray);
+    console.log('applyFormValues group = ', group);
+    console.log('applyFormValues formValues = ', formValues);
+    
+    if (isFromArray > 0) {
+      group.controls[isFromArray]  = new FormGroup(isFromArray);
+    }
+
+    for (var mainGroupKey in group.controls) {
+
+      if (group.controls.hasOwnProperty(mainGroupKey)) {
+        console.log('=================', mainGroupKey + " -> " + group.controls[mainGroupKey]);
+
+        if (group.controls[mainGroupKey] instanceof FormArray) {
+          
+          console.log('Updating values for FormArray ' + mainGroupKey + '', group.controls[mainGroupKey], formValues[mainGroupKey]);
+
+          let count = 1;
+          for (var i in formValues[mainGroupKey]) {
+            console.log('subGroups in FormArray = ', formValues[mainGroupKey][i]);
+            this.applyFormValues(group.controls[mainGroupKey], formValues[mainGroupKey][i], count);
+            count++;
+          }
+        } else if (group.controls[mainGroupKey] instanceof FormGroup) {
+          console.log('Updating values for FormGroup ' + mainGroupKey + ' = ', group.controls[mainGroupKey]);
+          
+
+          for (var subGroupmainGroupKey in formValues) {
+            console.log('subGroups in FormGRoup = ', formValues[subGroupmainGroupKey]);
+            this.applyFormValues(group.controls[mainGroupKey], formValues[subGroupmainGroupKey], 0);
+          }
+
+        } else {
+          console.log('Updating values for FormControl ' + mainGroupKey + ' = ', group.controls[mainGroupKey]);
+          if (formValues.hasOwnProperty(mainGroupKey) && formValues[mainGroupKey] != undefined) {
+            if (isFromArray > 0) {
+              //(<FormGroup>group.controls[isFromArray]).setControl(mainGroupKey, group.controls[mainGroupKey].setValue(formValues[mainGroupKey]));
+              group.controls[mainGroupKey].setValue(formValues[mainGroupKey]);
+            } else {
+              group.controls[mainGroupKey].setValue(formValues[mainGroupKey]);
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+------------------------------------------
+
+
+
 
 
 <form *ngIf="!(docOfCocs | async)" [formGroup]="docForm"  (ngSubmit)="onSubmit()" [hidden]="submitted">

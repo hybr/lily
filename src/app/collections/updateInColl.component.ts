@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 export class UpdateDocInCollComponent implements OnInit {
   public fields: Array<any> = <any>[];
   public docForm: FormGroup;
-  public listOfColl: FirebaseListObservable<any[]>;
+  public listOfCollToUpdate: FirebaseListObservable<any[]>;
   public docOfCocs: FirebaseObjectObservable<CollectionOfCollections>;
   public submitted: boolean = false;
 
@@ -41,8 +41,6 @@ export class UpdateDocInCollComponent implements OnInit {
     console.log('cocsRecord received = ', cocsRecord);
     let formFieldsGroup = {};
     let localFields: Array<any> = <any>[];
-
-
 
     let sequence = 1;
     for (var property in cocsRecord ) {
@@ -70,21 +68,20 @@ export class UpdateDocInCollComponent implements OnInit {
 
       if (fType == 'fields') {
 
-        let { fbg, lf} = self.getFormControlGroup(
+        let groupObject = self.getFormControlGroup(
           cocsRecord[property]['fields']
         );
 
         formFieldsGroup[property] = self._fb.array([
-           fbg
+           groupObject.fbg
         ]);
         localFields.push({
           'name' : property,
           'title' : fTitle,
-          'value': lf,
+          'value': groupObject.lf,
           'type': fType,
           'sequence': fSequence
         });
-        // formFieldsGroup[property] = new FormControl(fValue, []);
       } else {
         localFields.push({
           'name' : property,
@@ -106,52 +103,49 @@ export class UpdateDocInCollComponent implements OnInit {
   } /* getFormControlGroup */
 
   private applyFormValues (group, formValues, isFromArray) {
-    console.log('-------------------------------------', 'applyFormValues isFromArray = ', isFromArray);
+    console.log('-------------------------------------');
+    console.log('applyFormValues isFromArray = ', isFromArray);
     console.log('applyFormValues group = ', group);
     console.log('applyFormValues formValues = ', formValues);
-    
-    if (isFromArray > 0) {
-      group.controls[isFromArray]  = new FormGroup(isFromArray);
-    }
 
-    for (var key in group.controls) {
+    for (var mainGroupKey in group.controls) {
+      console.log('=================', mainGroupKey + " -> ", group.controls[mainGroupKey]);
 
-      if (group.controls.hasOwnProperty(key)) {
-        console.log('=================', key + " -> " + group.controls[key]);
+      if (group.controls[mainGroupKey] instanceof FormGroup) { /* checking group.controls[mainGroupKey] */
 
-        if (group.controls[key] instanceof FormArray) {
-          
-          console.log('Updating values for FormArray ' + key + '', group.controls[key], formValues[key]);
-
-          let count = 1;
-          for (var i in formValues[key]) {
-            console.log('subGroups in FormArray = ', formValues[key][i]);
-            this.applyFormValues(group.controls[key], formValues[key][i], count);
-            count++;
-          }
-        } else if (group.controls[key] instanceof FormGroup) {
-          console.log('Updating values for FormGroup ' + key + ' = ', group.controls[key]);
-          
-
-          for (var subGroupKey in formValues) {
-            console.log('subGroups in FormGRoup = ', formValues[subGroupKey]);
-            this.applyFormValues(group.controls[key], formValues[subGroupKey], 0);
-          }
-
-        } else {
-          console.log('Updating values for FormControl ' + key + ' = ', group.controls[key]);
-          if (formValues.hasOwnProperty(key) && formValues[key] != undefined) {
-            if (isFromArray > 0) {
-              //(<FormGroup>group.controls[isFromArray]).setControl(key, group.controls[key].setValue(formValues[key]));
-              group.controls[key].setValue(formValues[key]);
-            } else {
-              group.controls[key].setValue(formValues[key]);
-            }
-          }
+        for (var subGroupKey in group.controls[mainGroupKey]['controls']) {
+          console.log('subGroups in FormGroup = ', formValues[mainGroupKey][subGroupKey]);
+          group.controls[mainGroupKey]['controls'] = this.applyFormValues(
+            group.controls[mainGroupKey]['controls'], 
+            formValues[mainGroupKey][subGroupKey], 
+            0
+          );
         }
-      }
-    }
 
+      } else if (group.controls[mainGroupKey] instanceof FormArray) { /* checking group.controls[mainGroupKey] */
+      
+        let count = 1;
+        for (var i in formValues[mainGroupKey]) {
+          console.log('Element in FormArray = ', i, formValues[mainGroupKey][i], ' count = ', count);
+          // self.docForm = self.applyFormValues(self.docForm, docToUpdateRecord, 0);
+          group.controls[mainGroupKey]['controls'][count] = this.applyFormValues(
+            group.controls[mainGroupKey]['controls'][0], 
+            formValues[mainGroupKey][i], 
+            count
+          );
+          count++;
+        }
+
+      } else { /* checking group.controls[mainGroupKey] */
+        
+        console.log('Updating values for FormControl ' + mainGroupKey + ' = ', group.controls[mainGroupKey]);
+        group.controls[mainGroupKey].setValue(formValues[mainGroupKey]);
+      
+      } /* checking group.controls[mainGroupKey] */
+
+    } /* for (var mainGroupKey in group.controls) */
+
+    return group;
   }
 
   ngOnInit() {
@@ -164,27 +158,30 @@ export class UpdateDocInCollComponent implements OnInit {
     console.log('docId  =', docId);
 
     
-    self.listOfColl = self._af.database.list(`/${cNum}`);
+    self.listOfCollToUpdate = self._af.database.list(`/${cNum}`);
+    console.log('self.listOfCollToUpdate = ', self.listOfCollToUpdate);
+
     self.docOfCocs = self._af.database.object(`/c3/${cDocKey}`);
     console.log('self.docOfCocs = ', self.docOfCocs);
-    console.log('self.listOfColl = ', self.listOfColl);
+    
 
     let docToUpdate = self._af.database.object(`/${cNum}/${docId}`);
+
     console.log('docToUpdate = ', docToUpdate);
 
     self.docOfCocs.subscribe(
       function(cocsRecord) {
         // create class from json and assign to form
-        let { fbg, lf} = self.getFormControlGroup(cocsRecord['fields']);
-        self.docForm = fbg;
+        let groupObject  = self.getFormControlGroup(cocsRecord['fields']);
+        self.docForm = groupObject.fbg;
         console.log('docForm = ', self.docForm);
-        self.fields.push(lf);
+        self.fields.push(groupObject.lf);
         // get the values and assign to form
         docToUpdate.subscribe(
           function (docToUpdateRecord) {
             console.log('docToUpdateRecord = ', docToUpdateRecord);
-            self.applyFormValues(self.docForm, docToUpdateRecord, 0);
-
+            self.docForm = self.applyFormValues(self.docForm, docToUpdateRecord, 0);
+            console.log('docForm after applying values from db = ', self.docForm);
           } /* function (docToUpdateRecord) */
         ); /* docToUpdate.subscribe */
 
@@ -194,7 +191,7 @@ export class UpdateDocInCollComponent implements OnInit {
   } // ngOnInit
 
   onSubmit(model: FormGroup) {
-    this.listOfColl.push(model.value);
+    this.listOfCollToUpdate.push(model.value);
     console.log('model = ', model)
   } // onSubmit
 }
