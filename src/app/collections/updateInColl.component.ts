@@ -108,44 +108,56 @@ export class UpdateDocInCollComponent implements OnInit {
     console.log('applyFormValues group = ', group);
     console.log('applyFormValues formValues = ', formValues);
 
-    for (var mainGroupKey in group.controls) {
-      console.log('=================', mainGroupKey + " -> ", group.controls[mainGroupKey]);
+    let controls = group.controls;
+    if (isFromArray>0) {
+        controls = group['controls'][0]['controls'];
+    }
 
-      if (group.controls[mainGroupKey] instanceof FormGroup) { /* checking group.controls[mainGroupKey] */
+    for (var mainGroupKey in controls) {
+      console.log('=================', mainGroupKey + " -> ", controls[mainGroupKey]);
 
-        for (var subGroupKey in group.controls[mainGroupKey]['controls']) {
+      if (controls[mainGroupKey] instanceof FormGroup) { /* checking controls[mainGroupKey] */
+
+        for (var subGroupKey in controls[mainGroupKey]['controls']) {
           console.log('subGroups in FormGroup = ', formValues[mainGroupKey][subGroupKey]);
-          group.controls[mainGroupKey]['controls'] = this.applyFormValues(
-            group.controls[mainGroupKey]['controls'], 
+          controls[mainGroupKey]['controls'] = this.applyFormValues(
+            controls[mainGroupKey]['controls'], 
             formValues[mainGroupKey][subGroupKey], 
             0
           );
         }
 
-      } else if (group.controls[mainGroupKey] instanceof FormArray) { /* checking group.controls[mainGroupKey] */
+      } else if (controls[mainGroupKey] instanceof FormArray) { /* checking controls[mainGroupKey] */
       
         let count = 1;
+        let controlsArray = [];
         for (var i in formValues[mainGroupKey]) {
           console.log('Element in FormArray = ', i, formValues[mainGroupKey][i], ' count = ', count);
           // self.docForm = self.applyFormValues(self.docForm, docToUpdateRecord, 0);
-          group.controls[mainGroupKey]['controls'][count] = this.applyFormValues(
-            group.controls[mainGroupKey]['controls'][0], 
+          controlsArray[count] = this.applyFormValues(
+            controls[mainGroupKey], 
             formValues[mainGroupKey][i], 
             count
           );
+           
           count++;
         }
+        for (var j in controlsArray) {
+           controls[mainGroupKey]['controls'][j] = controlsArray[j];
+        }
 
-      } else { /* checking group.controls[mainGroupKey] */
+
+      } else { /* checking controls[mainGroupKey] */
         
-        console.log('Updating values for FormControl ' + mainGroupKey + ' = ', group.controls[mainGroupKey]);
-        group.controls[mainGroupKey].setValue(formValues[mainGroupKey]);
+        console.log('Updating values for FormControl ' + mainGroupKey + ' = ', controls[mainGroupKey]);
+        controls[mainGroupKey].setValue(formValues[mainGroupKey]);
       
-      } /* checking group.controls[mainGroupKey] */
+      } /* checking controls[mainGroupKey] */
 
-    } /* for (var mainGroupKey in group.controls) */
+    } /* for (var mainGroupKey in controls) */
 
-    return group;
+
+    return controls;
   }
 
   ngOnInit() {
