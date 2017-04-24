@@ -56,27 +56,22 @@ export class AddDocInCollComponent implements OnInit {
 
   }
 
-  addSubFieldL2(parentFieldName, fieldName, subFields) {
-    console.log('Received ',parentFieldName, ' -> ', fieldName, ' for add = ', subFields);
+  addSubFieldL2(parentFieldName, fieldName, subSubFields) {
+    console.log('Received ',parentFieldName, ' -> ', fieldName, ' for add = ', subSubFields);
 
     if (this.recordValues[parentFieldName] == undefined) {
-      this.recordValues[parentFieldName] = {'sub_fields' : []};
-
-      
-        
-      
-        if (this.recordValues[parentFieldName]['sub_fields'][fieldName] == undefined) {
-          this.recordValues[parentFieldName]['sub_fields'][fieldName] = [];
-
-/*          if (this.recordValues[parentFieldName][fieldName]['sub_fields'] == undefined) {
-               this.recordValues[parentFieldName][fieldName]['sub_fields'] = [];
-            }*/
-        
+      this.recordValues[parentFieldName] = [];
+      this.recordValues[parentFieldName].push(
+        {
+          'sub_fields': [
+            {
+              'sub_fields': subSubFields
+            }
+          ]
         }
+      );
       
     }
-    
-    this.recordValues[parentFieldName]['sub_fields'][fieldName].push({'sub_fields': subFields});
 
     console.log('L2 container after = ', this.recordValues);
   }

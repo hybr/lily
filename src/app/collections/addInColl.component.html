@@ -16,6 +16,7 @@
     >
       <ul>
         <li *ngFor="let field of recordStructure">
+          field = {{field | json}}
           <span *ngIf="field['type'] != 'obj'">
             
             <md-slide-toggle 
@@ -77,7 +78,7 @@
 
                   <ul><!-- loop for sub field -->
                   <li *ngFor="let subField of field['sub_fields']">
-
+                  subField = {{subField | json}}
 
 
 
@@ -171,20 +172,22 @@
 
 
                     </li>
+                    <li>
+                      <button 
+                        md-raised-button
+                        (click)="addSubFieldL2( 
+                          field['name'], 
+                          subField['name'], 
+                          subSubFieldValue
+                        )"
+                        title="Add New in {{field['title']}}"
+                      >Add New in {{subField['title']}}</button>
+                    </li>
+
                   </ul>
                 </li>
 
-                <li>
-                  <button 
-                    md-raised-button
-                    (click)="addSubFieldL2( 
-                      field['name'], 
-                      subField['name'], 
-                      subSubFieldValue
-                    )"
-                    title="Add New in {{field['title']}}"
-                  >Add New in {{subField['title']}}</button>
-                </li>
+
 
               </ul>
             </fieldset><!-- sub sub field is obj -->
