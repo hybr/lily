@@ -24,10 +24,8 @@
 				[class.disabled]="!docOfCocs.active"
 			>
 				{{docOfCocs.number}}.
-				<a 
-				*ngIf="docOfCocs.active" [routerLink]="['/cocs/show', docOfCocs.$key]"
+				<a [routerLink]="['/cocs/show', docOfCocs.$key]"
 				>{{docOfCocs.name}}</a>
-				<span *ngIf="!docOfCocs.active">{{docOfCocs.name}}</span>
 				: {{docOfCocs.detail}}
 			</md-list-item>
 		</md-list>

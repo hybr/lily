@@ -5,6 +5,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { CollectionOfCollections } from './model';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+
 
 
 @Component({
@@ -13,9 +15,11 @@ import { Router } from '@angular/router';
   styleUrls: [ './style.component.css' ]
 })
 export class UpdateDocInCollComponent implements OnInit {
-  public fields: Array<any> = <any>[];
+  public recordStructure: Array<any> = <any>[];
+  public recordValues: Array<any> = <any>[];
 
   public listOfCollToUpdate: FirebaseListObservable<any[]>;
+  public docToUpdate: FirebaseObjectObservable<any>;
   public docOfCocs: FirebaseObjectObservable<CollectionOfCollections>;
 
   public submitted: boolean = false;
@@ -23,29 +27,37 @@ export class UpdateDocInCollComponent implements OnInit {
   constructor(
     private _af: AngularFire,
     private _route: ActivatedRoute,
-    private _lss: LocalStorageService
+    private _lss: LocalStorageService,
+    private _location: Location
   ) {}
 
   removeSubFieldL1(i, fieldName) {
-    (this.fields[fieldName]).removeAt(i);
+    if ( Object.prototype.toString.call( this.recordValues[fieldName] ) === '[object Array]') {
+      this.recordValues[fieldName].splice(i, 1);  
+    }
   }
 
   addSubFieldL1(fieldName, subFields) {
-    this.fields[fieldName]['value'] = subFields;
+    if (
+      this.recordValues[fieldName]['value'] == undefined
+      || (!( Object.prototype.toString.call( this.recordValues[fieldName]['value'] ) === '[object Array]'))
+    ) {
+      this.recordValues[fieldName]['value'] = [];
+    }
+    (this.recordValues[fieldName]['value']).push(subFields);
   }
   
-  createFieldsFromTable(cocsRecord) {
-    let self = this;
+  createRecordStructureFromC3Table(cocsRecord) {
     console.log('cocsRecord received = ', cocsRecord);
-    let formFieldsGroup = {};
+
     let localFields: Array<any> = <any>[];
 
     let sequence = 1;
     for (var property in cocsRecord ) {
       
-      let fValue = '';
+      let fDefaultValue = '';
       if (cocsRecord[property]['default_value']) {
-        fValue = cocsRecord[property]['default_value'];
+        fDefaultValue = cocsRecord[property]['default_value'];
       }
 
       let fType = 'string';
@@ -64,71 +76,42 @@ export class UpdateDocInCollComponent implements OnInit {
         fSequence = cocsRecord[property]['sequence'];
       }
 
+      let fSubFields = [];
       if (fType == 'fields') {
-
-        let groupObject = self.createFieldsFromTable(
+        fSubFields = this.createRecordStructureFromC3Table(
           cocsRecord[property]['fields']
         );
 
-        localFields.push({
-          'name' : property,
-          'title' : fTitle,
-          'subFields': groupObject.lf,
-          'value': fValue,
-          'type': fType,
-          'sequence': fSequence
-        });
-      } else {
-        localFields.push({
-          'name' : property,
-          'title' : fTitle,
-          'value': fValue,
-          'type': fType,
-          'sequence': fSequence
-        });
       }
 
+      localFields.push({
+        'name' : property,
+        'title' : fTitle,
+        'default_value': fDefaultValue,
+        'type': fType,
+        'fields': fSubFields,
+        'sequence': fSequence
+      });
     } /* for */
 
     localFields.sort(function(a, b) { 
         return a.sequence - b.sequence;
     });
 
-    return {lf: localFields};
-  } /* getFormControlGroup */
+    return localFields;
+  } /* createRecordStructureFromC3Table */
 
-  private applyFormValues (fields, formValues) {
-    console.log('-------------------------------------');
-    console.log('applyFormValues fields = ', fields);
-    console.log('applyFormValues formValues = ', formValues);
-
-    for (var i in fields) {
-      console.log('=====================================');
-      console.log('Updating values for ', i, fields[i]);
-      if (fields[i].hasOwnProperty('subFields')) {
-          fields[i]['value'] = [];
-          for (var j in formValues[fields[i]['name']]) {
-            fields[i]['value'][j]  = this.applyFormValues (fields[i]['subFields'], formValues[fields[i]['name']][j]);
-          }
-
-      } else {
-        fields[i]['value'] = formValues[fields[i]['name']];
-        console.log('Assigned value = ', formValues[fields[i]['name']]);
-      }
-    }
-
-    return fields;
-  }
 
   ngOnInit() {
     let self = this;
     let cDocKey = self._route.snapshot.paramMap.get('cDocKey');
     console.log('cDocKey =', cDocKey);
+
     let cNum = self._route.snapshot.paramMap.get('cNum');
     console.log('cNum  =', cNum);
+    
     let docId = self._route.snapshot.paramMap.get('docId');
     console.log('docId  =', docId);
-
     
     self.listOfCollToUpdate = self._af.database.list(`/${cNum}`);
     console.log('self.listOfCollToUpdate = ', self.listOfCollToUpdate);
@@ -136,23 +119,21 @@ export class UpdateDocInCollComponent implements OnInit {
     self.docOfCocs = self._af.database.object(`/c3/${cDocKey}`);
     console.log('self.docOfCocs = ', self.docOfCocs);
     
-    let docToUpdate = self._af.database.object(`/${cNum}/${docId}`);
-    console.log('docToUpdate = ', docToUpdate);
+    self.docToUpdate = self._af.database.object(`/${cNum}/${docId}`);
+    console.log('docToUpdate = ', self.docToUpdate);
 
     self.docOfCocs.subscribe(
       function(cocsRecord) {
         // create class from json and assign to form
-        let groupObject  = self.createFieldsFromTable(cocsRecord['fields']);
-        self.fields = groupObject.lf; // TODO check if this is issue with formbuilder
-
-        console.log('after createFieldsFromTable self.fields = ', self.fields);
+        self.recordStructure = self.createRecordStructureFromC3Table(cocsRecord['fields']);
+        // TODO check if this is issue with formbuilder
+        console.log('after createRecordStructureFromC3Table self.recordStructure = ', self.recordStructure);
 
         // get the values and assign to form
-        docToUpdate.subscribe(
+        self.docToUpdate.subscribe(
           function (docToUpdateRecord) {
-            console.log('docToUpdateRecord = ', docToUpdateRecord);
-            self.fields = self.applyFormValues(self.fields, docToUpdateRecord);
-            console.log('docForm after applying values from db = ', self.fields);
+            self.recordValues = docToUpdateRecord;
+            console.log('self.recordValues = ', self.recordValues);
           } /* function (docToUpdateRecord) */
         ); /* docToUpdate.subscribe */
 
@@ -161,8 +142,8 @@ export class UpdateDocInCollComponent implements OnInit {
     
   } // ngOnInit
 
-  onSubmit(model) {
-    // this.listOfCollToUpdate.push(model.value);
-    console.log('model = ', model)
+  onSubmit() {
+    this.docToUpdate.update(this.recordValues);
+    this._location.back();
   } // onSubmit
 }

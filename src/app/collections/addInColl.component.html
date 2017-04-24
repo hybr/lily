@@ -1,135 +1,222 @@
-<div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading add form...</div>
+<div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading update form...</div>
 <md-card *ngIf="(docOfCocs | async)">
   <md-card-header>
-    <md-card-title><h2>Adding New {{(docOfCocs|async)?.name}} Record</h2></md-card-title>
-    <md-card-subtitle>{{(docOfCocs|async)?.detail}}</md-card-subtitle>
+    <md-card-title><h2>Add {{(docOfCocs|async)?.f3}} Record</h2></md-card-title>
+    <md-card-subtitle>{{(docOfCocs|async)?.f4}}</md-card-subtitle>
   </md-card-header>
 
   <md-card-content>
+    r = <pre>{{record | json}}</pre><hr />
+
+    rV = <pre>{{recordValues | json}}</pre><hr />
+
     <form 
-      [formGroup]="docForm" 
-      novalidate  
-      (ngSubmit)="onSubmit(docForm)" 
-      [hidden]="submitted"
+      #cocsForm="ngForm"
+      novalidate
     >
-      <table><!-- all fields -->
-        <tr><td><!-- all fields -->
-          <md-slide-toggle formControlName="active">Status</md-slide-toggle>
-        </td></tr><!-- all fields -->
-
-        <tr *ngFor="let field of fields[0]"><td><!-- all fields -->
-
-          <span *ngIf="(field['name'] != 'active')"><!-- fields to ignore -->
-          <span *ngIf="(field['type'] != 'fields')"><!-- main fields -->
-            <md-input-container *ngIf="(field['type'] == 'string')">
-              <input 
-              mdInput  
-              placeholder="{{field['title']}}" 
-              type="text" 
-              formControlName="{{field['name']}}"
+      <ul>
+        <li *ngFor="let field of recordStructure">
+          <span *ngIf="field['type'] != 'obj'">
+            
+            <md-slide-toggle 
+              *ngIf="(field['type'] == 'boolean')"
+              name="{{field['name']}}"
+              [(ngModel)]="recordValues[field['name']]"
               id="addInCollField{{field['name']}}Id"
+            >{{field['title']}}</md-slide-toggle> 
+            
+
+            <md-input-container *ngIf="(field['type'] == 'string')">
+              <label for="addInCollField{{field['name']}}Id">{{field['title']}}</label>
+              <input 
+                mdInput  
+                placeholder="{{field['title']}}" 
+                type="text"
+                value="{{field['default_value']}}"
+                name="{{field['name']}}"
+                [(ngModel)]="recordValues[field['name']]"
+                id="addInCollField{{field['name']}}Id"
               />
             </md-input-container>
 
             <md-input-container *ngIf="(field['type'] == 'number')">
               <input 
-              mdInput  
-              placeholder="{{field['title']}}" 
-              type="number" 
-              formControlName="{{field['name']}}"
-              id="addInCollField{{field['name']}}Id"
+                mdInput  
+                placeholder="{{field['title']}}" 
+                type="number"
+                value="{{field['default_value']}}"
+                name="{{field['name']}}"
+                [(ngModel)]="recordValues[field['name']]"
+                id="addInCollField{{field['name']}}Id"
               />
             </md-input-container>
 
             <md-input-container *ngIf="(field['type'] == 'date')">
               <input 
-              mdInput  
-              placeholder="{{field['title']}}" 
-              type="date" 
-              formControlName="{{field['name']}}"
-              id="addInCollField{{field['name']}}Id"
+                mdInput  
+                placeholder="{{field['title']}}" 
+                type="date" 
+                title="{{field['name']}}"
+                value="{{field['default_value']}}"
+                [(ngModel)]="recordValues[field['name']]"
+                id="addInCollField{{field['name']}}Id"
               />
             </md-input-container>
-          </span><!-- main fields -->
+          </span>
+          <span *ngIf="field['type'] == 'obj'">
+            <fieldset><!-- sub field is obj -->
+              <legend>{{field['title']}}</legend>
+              <ul>
+                <li *ngFor="let subFieldValue of recordValues[field['name']]; let i = index; " class="lns_sub_fields_border">
 
-          <table *ngIf="(field['type'] == 'fields')"><!-- show sub fields -->
+                  <div><!--  remove button -->
+                    <button md-raised-button (click)="removeSubFieldL1(i, field['name'])">
+                      Remove {{i+1}}
+                    </button>
+                  </div><!-- remove button -->
 
-            <tr><td><!-- show sub fields -->
-              {{field['title']}}
-            </td></tr><!-- show sub fields -->
-
-            <tr><td><!-- show sub fields -->
-                <table formArrayName="{{field['name']}}">
-                  <tr *ngFor="let singleSubRecord of docForm['controls'][field['name']]['controls']; let i = index; "><td>
-                    <div [formGroupName]="i" class="lns_sub_fields_border"><!-- [formGroupName]="i" -->
-
-                      <div><!--  remove button -->
-                        <button md-raised-button (click)="removeSubFieldL1(i, field['name'])">
-                          Remove {{i + 1}}
-                        </button>
-                      </div><!-- remove button -->
-
-                        <md-list>
-                          <md-list-item *ngFor="let subField of field['value']" ><!-- each sub field -->
-                            <md-input-container md-line *ngIf="(subField['type'] == 'string')">
-                              <input 
-                                mdInput 
-                                placeholder="{{subField['title']}}" 
-                                type="text" 
-                                formControlName="{{subField['name']}}"
-                                id="addInCollField{{subField['name']}}Id"
-                              />
-                            </md-input-container>
-
-                            <md-input-container md-line *ngIf="(subField['type'] == 'number')">
-                              <input 
-                                mdInput  
-                                placeholder="{{subField['title']}}" 
-                                type="number" 
-                                formControlName="{{subField['name']}}"
-                                id="addInCollField{{subField['name']}}Id"
-                              />
-                            </md-input-container>
-
-                            <md-input-container md-line *ngIf="(subField['type'] == 'date')">
-                              <input 
-                                mdInput   
-                                placeholder="{{subField['title']}}" 
-                                type="date" 
-                                formControlName="{{subField['name']}}"
-                                id="addInColmdInput lField{{subField['name']}}Id"
-                              />
-                            </md-input-container>
-                          </md-list-item><!-- each sub field -->
-                        </md-list>
+                  <ul><!-- loop for sub field -->
+                  <li *ngFor="let subField of field['sub_fields']">
 
 
-                    </div><!-- [formGroupName]="i" -->
-
-                  </td></tr><!-- ngFor="let singleSubRecord -->
-
-                </table><!-- formArrayName="{{field['name']}}"-->
-            </td></tr><!-- show sub fields -->
-
-            <tr><td><!-- show sub fields -->
-              <button 
-                md-raised-button
-                (click)="addSubFieldL1(field['name'], docForm['controls'][field['name']]['controls'])"
-                title="Add New in {{field['title']}}"
-              >Add New in {{field['title']}}</button>
-            </td></tr><!-- show sub fields -->
-
-          </table><!-- show sub fields -->
-          </span><!-- fields to ignore -->
-
-        </td></tr><!-- *ngFor="let field of fields[0]" --><!-- all fields -->
 
 
-        <tr><td><!-- all fields -->
+                    <span *ngIf="subField['type'] != 'obj'">
+
+                    <md-slide-toggle 
+                      *ngIf="(subField['type'] == 'boolean')"
+                      name="{{field['name']}}{{i}}{{subField['name']}}"
+                      [(ngModel)]="recordValues[field['name']][i][subField['name']]"
+                      id="addInCollField{{field['name']}}{{i}}{{subField['name']}}Id"
+                    >{{field['title']}}</md-slide-toggle> 
+                    
+
+                    <md-input-container *ngIf="(subField['type'] == 'string')">
+                      <input 
+                        mdInput  
+                        placeholder="{{subField['title']}}" 
+                        type="text"
+                        name="{{field['name']}}{{i}}{{subField['name']}}"
+                        value="{{subFieldValue[subField['name']]}}"
+                        [(ngModel)]="recordValues[field['name']][i][subField['name']]"
+                        id="addInCollField{{field['name']}}{{i}}{{subField['name']}}Id"
+                      />
+                    </md-input-container>
+
+                    <md-input-container *ngIf="(subField['type'] == 'number')">
+                      <input 
+                        mdInput  
+                        placeholder="{{subField['title']}}" 
+                        type="number"
+                        name="{{field['name']}}{{i}}{{subField['name']}}"
+                        value="{{subFieldValue[subField['name']]}}"
+                        [(ngModel)]="recordValues[field['name']][i][subField['name']]"
+                        id="addInCollField{{field['name']}}{{i}}{{subField['name']}}Id"
+                      />
+                    </md-input-container>
+
+                    <md-input-container *ngIf="(subField['type'] == 'date')">
+                      <input 
+                        mdInput  
+                        placeholder="{{subField['title']}}" 
+                        type="date"
+                        name="{{field['name']}}{{i}}{{subField['name']}}"
+                        value="{{subFieldValue[subField['name']]}}"
+                        [(ngModel)]="recordValues[field['name']][i][subField['name']]"
+                        id="addInCollField{{field['name']}}{{i}}{{subField['name']}}Id"
+                      />
+                    </md-input-container>
+
+                    </span><!-- *ngIf="subField['type'] != 'obj'"-->
+
+
+
+
+
+
+                    <span *ngIf="subField['type'] == 'obj'">
+
+
+            <fieldset><!-- sub sub field is obj -->
+              <legend>{{subField['title']}}</legend>
+              <ul>
+                <li *ngFor="let subSubFieldValue of recordValues[field['name']][subField['name']]; let j = index; " class="lns_sub_fields_border">
+
+                ssf = {{subSubFieldValue | json}}
+
+                  <div><!--  remove button -->
+                    <button md-raised-button (click)="removeSubFieldL1(i, field['name'])">
+                      Remove {{i+1}}
+                    </button>
+                  </div><!-- remove button -->
+
+                  <ul>
+                  <li *ngFor="let subSubField of field[subField['name']]['sub_fields']">
+               
+
+
+
+                    <md-input-container >
+                      <input 
+                        mdInput  
+                        placeholder="{{ subSubField['title'] }}" 
+                        type="text"
+                        name="{{  field['name'] }}{{ i }}{{ subField['name'] }}{{ subSubField['name'] }}"
+                        value="{{ subFieldValue [ subField['name'] ]  [ subSubField['name'] ]  }}"
+                        [(ngModel)]="recordValues[  field['name']   ]  [i]  [  subField['name'] ] [j] [ subSubField['name'] ]"
+                        id="addInCollField{{ field['name'] }}{{i}}{{subField['name']}}2Id"
+                      />
+                    </md-input-container>
+
+
+
+                    </li>
+                  </ul>
+                </li>
+
+                <li>
+                  <button 
+                    md-raised-button
+                    (click)="addSubFieldL2( 
+                      field['name'], 
+                      subField['name'], 
+                      subSubFieldValue
+                    )"
+                    title="Add New in {{field['title']}}"
+                  >Add New in {{subField['title']}}</button>
+                </li>
+
+              </ul>
+            </fieldset><!-- sub sub field is obj -->
+
+
+
+
+
+                    </span><!-- *ngIf="subField['type'] == 'obj'" -->
+
+                  </li><!-- *ngFor="let subField of field['sub_fields']"-->
+
+
+                  </ul><!-- loop for sub field -->
+                </li><!-- *ngFor="let subFieldValue of recordValues[field['name']] -->
+                <li>
+                  <button 
+                    md-raised-button
+                    (click)="addSubFieldL1(field['name'], subField)"
+                    title="Add New in {{field['title']}}"
+                  >Add New in {{field['title']}}</button>
+                </li>
+              </ul>
+            </fieldset><!-- sub field is obj -->
+
+          </span>
+        </li>
+        <li>
           <button
             md-raised-button
             type="submit"
-            [disabled]="!docForm.valid"
+            (click)="onSubmit()" 
           >Add Record</button>
           <button
             md-raised-button
@@ -139,9 +226,10 @@
             md-raised-button
             type="reset" 
           >Reset</button>
-        </td></tr><!-- all fields -->
+        </li>
+      </ul>
 
-      </table><!-- all fields -->
     </form>
   </md-card-content>
 </md-card>
+
