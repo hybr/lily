@@ -67,6 +67,7 @@
           <span *ngIf="field['type'] == 'obj'">
             <fieldset><!-- sub field is obj -->
               <legend>{{field['title']}}</legend>
+              field Value = {{recordValues[field['name']] | json}}
               <ul>
                 <li *ngFor="let subFieldValue of recordValues[field['name']]; let i = index; " class="lns_sub_fields_border">
 
@@ -204,9 +205,11 @@
                   </ul><!-- loop for sub field -->
                 </li><!-- *ngFor="let subFieldValue of recordValues[field['name']] -->
                 <li>
+                  <!-- add the record structure of field -->
+                  Add Field = {{field[ field['name'] ] | json}}
                   <button 
                     md-raised-button
-                    (click)="addSubFieldL1(field['name'], subField)"
+                    (click)="addSubFieldL1(field['name'], field[ field['name'] ])"
                     title="Add New in {{field['title']}}"
                   >Add New in {{field['title']}}</button>
                 </li>

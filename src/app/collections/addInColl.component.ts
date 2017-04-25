@@ -32,6 +32,80 @@ export class AddDocInCollComponent implements OnInit {
     private _location: Location
   ) {}
 
+  addPropertyToField(field, property, value) {
+    if (field == undefined) {
+      field = {};
+    }
+    if (property == undefined) {
+      property = 'unknown_property';
+    }
+    if (value == undefined) {
+      value = null;
+    }
+    /* each field is an object */
+    /* field has properties */
+    /* properties cold be a sinble value or array */
+    if (field[property] == undefined) {
+      
+      /* create the property */
+      /* field[property]  does not exists */
+      field[property] = value;  
+
+    } else { /* if (field[property] == undefined) */
+      
+      /* field[property] exists */
+      if (field[property] instanceof Array) {
+        
+        /* insert in the list */
+        if (value instanceof Array) {
+          /* list of elements/fields in array */
+          for(var item of value) {
+            field[property].push(item);
+          }
+        } else {
+          /* single element to be inserted, it could be a variable or object */
+          field[property].push(value); 
+        }
+
+      } else { /* if (value instanceof Array) */
+        if (value instanceof Array) {
+          /* make the property as list, it was single earlier */
+          field[property] = value;
+        } else {
+          /* replace single value by single value */
+          field[property] = value;
+        }
+      } /* if (value instanceof Array) */
+    
+    } /* if (field[property] == undefined) */
+
+
+    return field;
+  } 
+
+  getParentFieldWithChildFieldInserted(parentField, childField) {
+    if (parentField == undefined) {
+      parentField = {};
+    }
+    if (childField == undefined) {
+      childField = {}; /* list of child fields */
+    }
+
+    /* create sub_fields as empty array, if not exists */
+    this.addPropertyToField(parentField, 'sub_fields', []);
+
+    /* insert field in parent field */
+    this.addPropertyToField(parentField, 'sub_fields', childField);
+
+    return parentField;
+  }
+
+  
+  /* one of the property of field is sub_fields */
+  /* sub_fields is a list of other fields */
+
+
+
   removeSubFieldL1(i, fieldName) {
     this.recordValues[fieldName].splice(i, 1);
   }
@@ -40,38 +114,26 @@ export class AddDocInCollComponent implements OnInit {
     console.log('Received ',fieldName,'for add = ', subFields);
 
     console.log('L1 to be inserted in container before = ', this.recordValues[fieldName]);
-
-    if (this.recordValues[fieldName] == undefined) {
-
-      this.recordValues[fieldName] = [];
-/*      if (this.recordValues[fieldName]['sub_fields'] == undefined) {
-         this.recordValues[fieldName]['sub_fields'] = [];
-      }*/
-    }
     
-    this.recordValues[fieldName].push({'sub_fields': subFields});
-    this.recordValues[fieldName]['type'] = 'obj';
-
-    console.log('L1 container after = ', this.recordValues);
+    this.recordValues[fieldName] = this.getParentFieldWithChildFieldInserted(
+       this.recordValues[fieldName],
+       subFields
+    );
 
   }
 
   addSubFieldL2(parentFieldName, fieldName, subSubFields) {
     console.log('Received ',parentFieldName, ' -> ', fieldName, ' for add = ', subSubFields);
 
-    if (this.recordValues[parentFieldName] == undefined) {
-      this.recordValues[parentFieldName] = [];
-      this.recordValues[parentFieldName].push(
-        {
-          'sub_fields': [
-            {
-              'sub_fields': subSubFields
-            }
-          ]
-        }
-      );
-      
-    }
+    this.recordValues[fieldName] = this.addSubFieldL1(
+       this.recordValues[fieldName],
+       subSubFields
+    );
+
+    this.recordValues[parentFieldName] = this.addSubFieldL1(
+       this.recordValues[parentFieldName],
+       this.recordValues[fieldName],
+    );
 
     console.log('L2 container after = ', this.recordValues);
   }
