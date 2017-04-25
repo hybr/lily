@@ -223,6 +223,14 @@ export class AddDocInCollComponent implements OnInit {
         // create class from json and assign to form
         self.recordStructure = self.createRecordStructureFromC3Table(cocsRecord);
         // TODO check if this is issue with formbuilder
+
+
+        // this is to have atleast one loop for sub_fields
+/*        self.recordValues = {};
+        for (var i = 0, len = self.recordStructure.length; i < len; i++) {
+            self.recordValues[self.recordStructure[i].name] = self.recordStructure[i];
+        }*/
+
         console.log('after createRecordStructureFromC3Table self.recordStructure = ', self.recordStructure);
 
       } /* function(cocsRecord)  */

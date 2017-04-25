@@ -7,7 +7,7 @@
 
   <md-card-content>
     r = <pre>{{record | json}}</pre><hr />
-
+    rS = <pre>{{recordStructure | json}}</pre><hr />
     rV = <pre>{{recordValues | json}}</pre><hr />
 
     <form 
@@ -67,9 +67,10 @@
           <span *ngIf="field['type'] == 'obj'">
             <fieldset><!-- sub field is obj -->
               <legend>{{field['title']}}</legend>
-              field Value = {{recordValues[field['name']] | json}}
+              field Value for {{field['name']}} = {{field[field['name']] | json}}
               <ul>
-                <li *ngFor="let subFieldValue of recordValues[field['name']]; let i = index; " class="lns_sub_fields_border">
+
+                <li *ngFor="let subFieldValue of recordValues[field['name']]['sub_fields']; let i = index; " class="lns_sub_fields_border">
 
                   <div><!--  remove button -->
                     <button md-raised-button (click)="removeSubFieldL1(i, field['name'])">
@@ -131,12 +132,8 @@
 
                     </span><!-- *ngIf="subField['type'] != 'obj'"-->
 
-
-
-
-
-
                     <span *ngIf="subField['type'] == 'obj'">
+                }
 
 
             <fieldset><!-- sub sub field is obj -->
