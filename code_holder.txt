@@ -1,4 +1,13 @@
 
+
+<table><!-- L1 -->
+  <tr><td><!-- L1, R1 -->
+    
+  </td></tr><!-- L1, R1 -->
+</table><!-- L1 -->
+
+---------------------------
+
 <table><!-- all fields -->
         <tr><td><!-- all fields -->
           <md-slide-toggle ([ngModal])="active">Status</md-slide-toggle>
