@@ -11,7 +11,9 @@
 
       <table><!-- L2 Form -->
         <tr *ngFor=" let fieldNameL2 of recordStructure['sorted_field_names']; let rsCountL2 = index; "><td><!-- L2 Form, R1 -->
-          <md-input-container>
+          
+
+          <md-input-container *ngIf="recordStructure[fieldNameL2]['type'] != 'obj'">
             <input 
               mdInput  
               placeholder="{{ recordStructure[fieldNameL2]['title'] }}" 
@@ -26,7 +28,21 @@
 
           <table *ngIf="recordStructure[fieldNameL2]['type'] == 'obj'"><!-- L3 Sub Fields -->
 
-            <tr *ngFor=" let fieldNameL3 of recordStructure[fieldNameL2]['sorted_field_names']; let rvCountL3 = index; "><td><!-- L3 Sub Fields, R1 -->
+            <tr *ngFor=" let fieldNameL3 of recordStructure[fieldNameL2]['sorted_field_names']; let rvCountL3 = index; "
+              class="lns_sub_fields_border"
+            ><td><!-- L3 Sub Fields, R1 -->
+
+
+                  <div><!--  remove button -->
+                    <button md-raised-button (click)="removeSubFieldL1(rsCountL2, field['name'])">
+                      Remove {{rsCountL2+1}}
+                    </button>
+                  </div><!-- remove button -->
+
+
+                  
+            <fieldset><!-- sub field is obj -->
+              <legend>{{field['title']}}</legend>
 
             Record Value Count {{rvCountL3}}
 
@@ -45,6 +61,8 @@
                 </md-input-container>
 
               </span>
+
+              </fieldset>
 
             </td></tr><!-- L3 Sub Fields, R1 --><!-- for each value of record -->
 

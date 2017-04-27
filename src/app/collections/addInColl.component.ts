@@ -151,10 +151,11 @@ export class AddDocInCollComponent implements OnInit {
     let convertedRecordValues: Object = {};
 
     let sequence = 1;
-    for (var property in cocsRecord['rs']['v'] ) {
+    /* rs is reccord structure field in the c3 table record */
+    for (var property in cocsRecord['v'] ) {
       
 
-      let field = cocsRecord['rs']['v'][property];
+      let field = cocsRecord['v'][property];
 
       console.log('field of ', property, ' = ', field);
 
@@ -184,14 +185,14 @@ export class AddDocInCollComponent implements OnInit {
       var resultObj : Object  = {};
       if (fType == 'obj' && field['v']) {
         resultObj = this.createRecordStructureFromC3Table(
-          field['v']
+          field
         );
       }
       convertedRecordStructure[fName] = {
         'title' : fTitle,
         'default_value': fDefaultValue,
         'type': fType,
-        'rs' : resultObj['s'],
+        'v' : resultObj['s'],
         'sequence': fSequence
       };
       convertedRecordValues[fName] = {
@@ -221,7 +222,7 @@ export class AddDocInCollComponent implements OnInit {
       function(cocsRecord) {
 
         // create class from json and assign to form
-        var o = self.createRecordStructureFromC3Table(cocsRecord);
+        var o = self.createRecordStructureFromC3Table(cocsRecord['rs']);
         // TODO check if this is issue with formbuilder
         self.recordValues = o['v'];
         self.recordStructure = o['s'];
