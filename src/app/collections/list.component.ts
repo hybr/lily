@@ -32,9 +32,9 @@ export class ListDocsOfCocsComponent implements OnInit {
     this.listOfCocs = this._af.database.list('/c3')
     .map(collections => collections.filter(collection => {
       let rE = new RegExp(this.searchPattern, 'gi');
-      return (rE.test(collection.name) 
-        || rE.test(collection.number) 
-        || rE.test(collection.detail))
+      return (rE.test(collection.f3.v) 
+        || rE.test(collection.f2.v) 
+        || rE.test(collection.f4.v))
     }));
   }
   

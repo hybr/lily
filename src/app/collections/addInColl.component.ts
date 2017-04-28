@@ -144,34 +144,48 @@ export class AddDocInCollComponent implements OnInit {
   }
 
 
-  createRecordStructureFromC3Table(cocsRecord) {
+  createRecordStructureFromC3Table(cocsRecord, cNum) {
     console.log('cocsRecord received = ', cocsRecord);
 
     let convertedRecordStructure: Object = {};
     let convertedRecordValues: Object = {};
 
     let sequence = 1;
-    /* rs is reccord structure field in the c3 table record */
+    
+
     for (var property in cocsRecord['v'] ) {
       
+      if (property == 'sorted_field_names') { continue; }
 
       let field = cocsRecord['v'][property];
 
       console.log('field of ', property, ' = ', field);
 
       let fName = property;
+      if (field['name']) {
+        fName = field['name'];
+      }
+      if (cNum == 'c3' && sequence == 5) {
+        fName = 'rs'; /* rs is reccord structure 5th field in the c3 table record */
+      }
 
       let fDefaultValue = '';
       if (field['default_value']) {
         fDefaultValue = field['default_value'];
       }
 
+      let fValue = fDefaultValue;
+      if (field['v']) {
+        fValue = field['v'];
+      }
+
+
       let fType = 'string';
       if (field['type']) {
         fType = field['type'];
       }
 
-      let fTitle = property.split('_').map(i => i[0].toUpperCase() + i.substr(1).toLowerCase()).join(' ');
+      let fTitle = fName.split('_').map(i => i[0].toUpperCase() + i.substr(1).toLowerCase()).join(' ');
       if (field['title']) {
         fTitle = field['title'];
       }
@@ -182,18 +196,21 @@ export class AddDocInCollComponent implements OnInit {
         fSequence = field['sequence'];
       }
 
-      var resultObj : Object  = {};
+      
+      var resultObj : Object  = {'s' : fDefaultValue, 'v' : fValue};
       if (fType == 'obj' && field['v']) {
         resultObj = this.createRecordStructureFromC3Table(
-          field
+          field, cNum
         );
       }
+
       convertedRecordStructure[fName] = {
+        'name' : fName,
         'title' : fTitle,
+        'sequence': fSequence,
         'default_value': fDefaultValue,
         'type': fType,
-        'v' : resultObj['s'],
-        'sequence': fSequence
+        'v' : resultObj['s']
       };
       convertedRecordValues[fName] = {
         'v' : resultObj['v']
@@ -208,7 +225,15 @@ export class AddDocInCollComponent implements OnInit {
 
   ngOnInit() {
     let self = this;
+
+    /* Actual Collection, new record will be pushed in this llist */
+
+    let cNum = self._route.snapshot.paramMap.get('cNum');
+    console.log('cNum  =', cNum);
     
+    self.listOfCollToUpdate = self._af.database.list(`/${cNum}`);
+    console.log('self.listOfCollToUpdate = ', self.listOfCollToUpdate);
+
     /* Collection Structure */
 
     let cDocKey = self._route.snapshot.paramMap.get('cDocKey');
@@ -222,13 +247,16 @@ export class AddDocInCollComponent implements OnInit {
       function(cocsRecord) {
 
         // create class from json and assign to form
-        var o = self.createRecordStructureFromC3Table(cocsRecord['rs']);
+        var o = self.createRecordStructureFromC3Table(cocsRecord['rs'], cNum);
         // TODO check if this is issue with formbuilder
         self.recordValues = o['v'];
+        
+
         self.recordStructure = o['s'];
+        self.recordValues['rs']['v'] = o['s'];
 
         // this is to have atleast one loop for sub_fields
-/*        self.recordValues = {};
+        /*  self.recordValues = {};
         for (var i = 0, len = self.recordStructure.length; i < len; i++) {
             self.recordValues[self.recordStructure[i].name] = self.recordStructure[i];
         }*/
@@ -238,13 +266,7 @@ export class AddDocInCollComponent implements OnInit {
       } /* function(cocsRecord)  */
     ); /* self.docOfCocs.subscribe */
 
-    /* Actual Collection, new record will be pushed in this llist */
 
-    let cNum = self._route.snapshot.paramMap.get('cNum');
-    console.log('cNum  =', cNum);
-    
-    self.listOfCollToUpdate = self._af.database.list(`/${cNum}`);
-    console.log('self.listOfCollToUpdate = ', self.listOfCollToUpdate);
 
   } // ngOnInit
 

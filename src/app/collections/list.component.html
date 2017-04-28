@@ -1,9 +1,10 @@
-<div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading database detail...</div>
-<md-card *ngIf="(docOfCocs | async)">
+<div class="lns_loading" *ngIf="!((listOfCocs | async) && (docOfCocs | async))">Loading database detail...</div>
 
+
+<md-card *ngIf="((listOfCocs | async) && (docOfCocs | async))">
 	<md-card-header>
-		<md-card-title><h2>{{(docOfCocs|async)?.name}}</h2></md-card-title>
-		<md-card-subtitle>{{(docOfCocs|async)?.detail}}</md-card-subtitle>
+		<md-card-title><h2>{{(docOfCocs|async)?.f3.v}}</h2></md-card-title>
+		<md-card-subtitle>{{(docOfCocs|async)?.f4.v}}</md-card-subtitle>
 	</md-card-header>
 
 	<md-card-content>
@@ -20,13 +21,12 @@
 
 		<md-list>
 			<md-list-item 
-				*ngFor="let docOfCocs of listOfCocs | async" 
-				[class.disabled]="!docOfCocs.active"
-			>
-				-{{docOfCocs.number}}- {{docOfCocs.f2}}.
-				<a [routerLink]="['/cocs/show', docOfCocs.$key]"
-				>-{{docOfCocs.name}}- {{docOfCocs.f3}} Collection</a>
-				: -{{docOfCocs.detail}}- {{docOfCocs.f4}}
+				*ngFor=" let d of (listOfCocs | async); " 
+				[class.disabled]="!d.active"
+			>	
+				{{d.f2.v}}.
+				<a [routerLink]="['/cocs/show', d.$key]" [class.disabled]="!d.active">{{d.f3.v}} Collection</a>
+				: {{d.f4.v}}
 			</md-list-item>
 		</md-list>
 

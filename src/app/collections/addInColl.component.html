@@ -11,56 +11,96 @@
 
       <table><!-- L2 Form -->
         <tr *ngFor=" let fieldNameL2 of recordStructure['sorted_field_names']; let rsCountL2 = index; "><td><!-- L2 Form, R1 -->
+          rs-v-{{fieldNameL2}}
           
-
           <md-input-container *ngIf="recordStructure[fieldNameL2]['type'] != 'obj'">
             <input 
               mdInput  
               placeholder="{{ recordStructure[fieldNameL2]['title'] }}" 
               type="text"
-              value="{{ recordStructure[fieldNameL2]['default_value'] }}"
+              value="{{ recordStructure [fieldNameL2] ['default_value'] }}"
               name="{{ fieldNameL2 }}"
               [(ngModel)]="recordValues[fieldNameL2]['v']"
               id="addInCollField{{ fieldNameL2 }}Id"
             />
           </md-input-container>
 
+          <fieldset *ngIf="recordStructure[fieldNameL2]['type'] == 'obj'"><!-- fieldNameL2 is obj -->
 
-          <table *ngIf="recordStructure[fieldNameL2]['type'] == 'obj'"><!-- L3 Sub Fields -->
+            <legend>{{ recordStructure[fieldNameL2]['title'] }}</legend>
 
-            <tr *ngFor=" let fieldNameL3 of recordStructure[fieldNameL2]['sorted_field_names']; let rvCountL3 = index; "
-              class="lns_sub_fields_border"
+          <table><!-- L3 Sub Fields -->
+          
+
+            <tr *ngFor=" let fieldNameL3 of recordValues[fieldNameL2]['v']['sorted_field_names']; let rvCountL3 = index; "
             ><td><!-- L3 Sub Fields, R1 -->
+            rs-v-{{fieldNameL2}}-v-{{fieldNameL3}}
+
+   
+            <fieldset><!-- fieldNameL3 is obj -->
+              <legend>{{ recordValues[fieldNameL2]['v'][fieldNameL3]['title'] }}</legend>
+
+              <div><!--  remove button -->
+                <button md-raised-button (click)="removeSubFieldL1( rvCountL3, fieldNameL3 )">
+                  Remove {{rvCountL3+1}}
+                </button>
+              </div><!-- remove button -->
+
+              <table>
+                <tr *ngFor=" let fieldNameL4 of recordStructure[fieldNameL2]['v']['sorted_field_names']; let rsCountL4 = index; "><td>
+                rs-v-{{fieldNameL2}}-v-{{fieldNameL4}}
 
 
-                  <div><!--  remove button -->
-                    <button md-raised-button (click)="removeSubFieldL1(rsCountL2, field['name'])">
-                      Remove {{rsCountL2+1}}
-                    </button>
-                  </div><!-- remove button -->
+                  <md-input-container *ngIf=" recordStructure[fieldNameL2]['v'][fieldNameL4]['type'] != 'obj' ">
+                    <input 
+                      mdInput  
+                      placeholder="{{ recordStructure[fieldNameL2]['v'][fieldNameL4]['title'] }}" 
+                      type="text"
+                      name="{{ fieldNameL2 }}{{ fieldNameL3 }}{{ fieldNameL4 }}"
+                      [(ngModel)]="recordValues[fieldNameL2]['v'][fieldNameL3][fieldNameL4]"
+                      id="addInCollField{{ fieldNameL2 }}{{ fieldNameL3 }}{{ fieldNameL4 }}Id"
+                    />
+                  </md-input-container>
+
+                  <fieldset *ngIf=" recordStructure[fieldNameL2]['v'][fieldNameL4]['type'] == 'obj' "><!-- fieldNameL4 is obj -->
+
+                    <legend>{{ recordStructure[fieldNameL2]['v'][fieldNameL4]['title'] }}</legend>
 
 
-                  
-            <fieldset><!-- sub field is obj -->
-              <legend>{{field['title']}}</legend>
+                    <table>
+                      <tr *ngFor=" let fieldNameL5 of recordValues[fieldNameL2]['v'][fieldNameL4]['v']['sorted_field_names']; let rvCountL5 = index; "><td>
+                      rs-v-{{fieldNameL2}}-v-{{fieldNameL4}}-v-{{fieldNameL5}}
 
-            Record Value Count {{rvCountL3}}
+                      <table>
+                        
+                      <tr *ngFor=" let fieldNameL6 of recordStructure[fieldNameL2]['v'][fieldNameL4]['v']['sorted_field_names']; let rvCountL6 = index; "><td>
+                        
+                        <md-input-container>
+                          <input 
+                            mdInput  
+                            placeholder="{{ recordStructure[fieldNameL2]['v'][fieldNameL4]['v'][fieldNameL6]['title'] }}" 
+                            type="text"
+                            name="{{ fieldNameL2 }}{{ fieldNameL3 }}{{ fieldNameL4 }}{{ fieldNameL6 }}"
+                            [(ngModel)]="recordValues[fieldNameL2]['v'][fieldNameL3][fieldNameL4]"
+                            id="addInCollField{{ fieldNameL2 }}{{ fieldNameL3 }}{{ fieldNameL4 }}{{ fieldNameL6 }}Id"
+                          />
+                        </md-input-container>
 
-              <span >
-                
-                <md-input-container>
-                  <input 
-                    mdInput  
-                    placeholder="{{ recordStructure [fieldNameL2] ['v'] [fieldNameL3] ['title'] }}" 
-                    type="text"
-                    value="{{ recordStructure[fieldNameL2]['default_value'] }}"
-                    name="{{ fieldNameL2 }}"
-                    [(ngModel)]="recordValues[fieldNameL2]['v']"
-                    id="addInCollField{{ fieldNameL2 }}Id"
-                  />
-                </md-input-container>
+                      </td></tr>
 
-              </span>
+                      </table>
+                    
+
+
+
+                      </td></tr>
+                    </table>
+
+
+                  </fieldset>
+
+                </td></tr>
+              </table>
 
               </fieldset>
 
@@ -70,10 +110,29 @@
           </table><!-- L3 Sub Fields -->
 
 
-
+          </fieldset>
 
         </td></tr><!-- L2 Form, R1 -->
+
+        <tr><td>
+          <button
+            md-raised-button
+            type="submit"
+            (click)="onSubmit()" 
+          >Add Record</button>
+          <button
+            md-raised-button
+            [routerLink]="['/cocs/list']" 
+          >Cancel</button>
+          <button
+            md-raised-button
+            type="reset" 
+          >Reset</button>
+        </td></tr>
+
       </table><!-- L2  Form -->
+
+
 
     </form>
   </td></tr><!-- L1, R4 -->

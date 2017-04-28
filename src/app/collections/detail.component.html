@@ -11,7 +11,7 @@
 			<md-list-item>
 				<button 
 					md-mini-fab 
-					[routerLink]="['/ac/new/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number]"
+					[routerLink]="['/ac/new/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.f2.v]"
 					title="Add New Record"
 				><md-icon>add</md-icon></button>
 				&nbsp;
@@ -32,12 +32,12 @@
 				[class.disabled]="!docOfCocs.active"
 			>
 						<button md-mini-fab
-							[routerLink]="['/ac/update/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]" 
+							[routerLink]="['/ac/update/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.f2.v, actualCollection.$key]" 
 							title="Update"
 						><md-icon>mode_edit</md-icon></button>
 						
 						<button md-mini-fab
-							[routerLink]="['/ac/remove/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.number, actualCollection.$key]" 
+							[routerLink]="['/ac/remove/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.f2.v, actualCollection.$key]" 
 							title="Remove"
 						><md-icon>delete</md-icon></button>
 
