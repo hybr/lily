@@ -1,0 +1,37 @@
+
+
+<md-slide-toggle 
+	
+	*ngIf="(fieldProperties['value_type'] == 'boolean')"
+	
+	name="{{ fieldProperties['name'] }}"
+	
+	[(ngModel)]="fieldValue[fieldProperties['name']]"
+	(ngModelChange)="fieldValueChanged($event)"
+
+	id="{{ fieldProperties['id'] }}"
+
+>{{ fieldProperties['title'] }}</md-slide-toggle> 
+
+
+<md-input-container
+	*ngIf="(fieldProperties['value_type'] == 'string')"
+>
+	<input 
+	
+		mdInput  
+	
+		id="{{ fieldProperties['id'] }}"
+
+		placeholder="{{ fieldProperties['title'] }}" 
+	
+		type="text"
+	
+		value="{{ fieldProperties['default_value'] }}"
+	
+		name="{{ fieldProperties['name'] }}"
+	
+		[(ngModel)]="fieldValue"
+		(ngModelChange)="fieldValueChanged($event)"
+	/>
+</md-input-container>

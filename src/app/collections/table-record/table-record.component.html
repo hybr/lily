@@ -1,0 +1,58 @@
+<md-card>
+	<md-card-header>
+		<md-card-title><h2>Adding New {{(docOfCocs|async)?.name}} Record</h2></md-card-title>
+		<md-card-subtitle>{{(docOfCocs|async)?.detail}}</md-card-subtitle>
+	</md-card-header>
+
+	<md-card-content>
+		<form #cocsForm="ngForm">
+		<fieldset>
+			<legend>{{recordStructure['title']}}</legend>
+			<table>
+				<tr *ngFor=" let fieldName of recordStructure['fields']['sorted_field_names']; let rfc = index; "><td>
+
+					<app-collections-record-field
+
+						*ngIf="recordStructure['fields'][fieldName]['field_type'] == 'field'"
+
+						[fieldValue]="recordValues[fieldName]"
+
+						[fieldProperties]="recordStructure['fields'][fieldName]" 
+
+						(fieldValueUpdated)="updateFieldValue(fieldName, $event)"
+
+					></app-collections-record-field>
+
+					<app-collections-record-field-group
+
+						*ngIf="recordStructure['fields'][fieldName]['field_type'] == 'field_group'"
+
+						[fieldGroupValues]="recordValues[fieldName]"
+
+						[fieldGroupProperties]="recordStructure['fields'][fieldName]" 
+
+						(fieldGRoupValueUpdated)="updateFieldValue(fieldName, $event)"
+
+					></app-collections-record-field-group>
+
+				</td></tr>
+			</table>
+		</fieldset>
+		<button
+            md-raised-button
+            type="submit"
+            (click)="onSubmit()" 
+          >Add Record</button>
+          <button
+            md-raised-button
+            [routerLink]="['/cocs/list']" 
+          >Cancel</button>
+          <button
+            md-raised-button
+            type="reset" 
+          >Reset</button>
+		</form>
+	</md-card-content>
+</md-card>
+
+Record Data = {{ recordValues | json }}

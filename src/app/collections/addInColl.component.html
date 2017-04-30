@@ -11,7 +11,7 @@
 
       <table><!-- L2 Form -->
         <tr *ngFor=" let fieldNameL2 of recordStructure['sorted_field_names']; let rsCountL2 = index; "><td><!-- L2 Form, R1 -->
-          rs-v-{{fieldNameL2}}
+          recordStructure[{{fieldNameL2}}]
           
           <md-input-container *ngIf="recordStructure[fieldNameL2]['type'] != 'obj'">
             <input 
@@ -34,21 +34,21 @@
 
             <tr *ngFor=" let fieldNameL3 of recordValues[fieldNameL2]['v']['sorted_field_names']; let rvCountL3 = index; "
             ><td><!-- L3 Sub Fields, R1 -->
-            rs-v-{{fieldNameL2}}-v-{{fieldNameL3}}
+            recordValues[{{fieldNameL2}}-v-{{fieldNameL3}}]
 
    
             <fieldset><!-- fieldNameL3 is obj -->
               <legend>{{ recordValues[fieldNameL2]['v'][fieldNameL3]['title'] }}</legend>
 
               <div><!--  remove button -->
-                <button md-raised-button (click)="removeSubFieldL1( rvCountL3, fieldNameL3 )">
-                  Remove {{rvCountL3+1}}
+                <button md-raised-button (click)="removeSubFieldL1( rvCountL3, fieldNameL2 )">
+                  Remove {{ fieldNameL2 }}{{rvCountL3+1}}
                 </button>
               </div><!-- remove button -->
 
               <table>
                 <tr *ngFor=" let fieldNameL4 of recordStructure[fieldNameL2]['v']['sorted_field_names']; let rsCountL4 = index; "><td>
-                rs-v-{{fieldNameL2}}-v-{{fieldNameL4}}
+                recordStructure[{{fieldNameL2}}-v-{{fieldNameL4}}]
 
 
                   <md-input-container *ngIf=" recordStructure[fieldNameL2]['v'][fieldNameL4]['type'] != 'obj' ">
@@ -80,9 +80,9 @@
                             mdInput  
                             placeholder="{{ recordStructure[fieldNameL2]['v'][fieldNameL4]['v'][fieldNameL6]['title'] }}" 
                             type="text"
-                            name="{{ fieldNameL2 }}{{ fieldNameL3 }}{{ fieldNameL4 }}{{ fieldNameL6 }}"
-                            [(ngModel)]="recordValues[fieldNameL2]['v'][fieldNameL3][fieldNameL4]"
-                            id="addInCollField{{ fieldNameL2 }}{{ fieldNameL3 }}{{ fieldNameL4 }}{{ fieldNameL6 }}Id"
+                            name="{{ fieldNameL2 }}{{ fieldNameL3 }}{{ fieldNameL4 }}{{ fieldNameL5 }}{{ fieldNameL6 }}"
+                            [(ngModel)]="recordValues[fieldNameL2]['v'][fieldNameL4]['v']"
+                            id="addInCollField{{ fieldNameL2 }}{{ fieldNameL3 }}{{ fieldNameL4 }}{{ fieldNameL5 }}{{ fieldNameL6 }}Id"
                           />
                         </md-input-container>
 

@@ -17,10 +17,15 @@
     "typeRoots": [
       "../node_modules/@types"
     ],
-	"types": [	
+    "types": [	
       "firebase",
       "hammerjs",
-      "node"
+      "node",
+      "jasmine"
+    ],
+    "exclude": [
+      "node_modules",
+      "**/*.spec.ts"
     ]
   }
 }

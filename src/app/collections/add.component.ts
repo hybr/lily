@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
   styleUrls: [ './style.component.css' ]
 })
 export class AddDocInCocsComponent implements OnInit {
+    public afv = ['val1'];
+    public afp = [{title: 'Title 3'}];
+
     cocsForm: FormGroup;
     cocs = new CollectionOfCollections();
     submitted: boolean = false;

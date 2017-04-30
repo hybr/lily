@@ -1,0 +1,32 @@
+<!-- 
+	<br />fieldGroupProperties = <pre>{{fieldGroupProperties | json}}</pre>
+	<br />fieldGroupValues = {{fieldGroupValues | json }}
+-->
+
+<fieldset>
+	<legend>{{fieldGroupProperties['title']}}</legend>
+	
+	<span *ngFor=" let valueKey of fieldGroupValuesKeys; let fgvc = index; ">
+
+		<div class="lns_sub_fields_border">
+			<button md-button class="warning" (click)="removeValue(valueKey)">Remove {{fgvc + 1}}</button>
+			<table>
+				<tr *ngFor=" let fieldGroupPropertyName of fieldGroupProperties['fields']['sorted_field_names']; let fgpc = index; "><td>
+					<app-collections-record-field
+			  
+					  [fieldValue]="fieldGroupValues[fgvc][fieldGroupPropertyName]"
+
+					  [fieldProperties]=" fieldGroupProperties['fields'][fieldGroupPropertyName]" 
+
+					  (fieldValueUpdated)="updateFieldValue(fgvc, fieldGroupPropertyName, $event)"
+
+					></app-collections-record-field>
+				</td></tr>
+			</table>
+		</div>
+	
+	</span>
+
+	<button md-button (click)="addValue()">Add {{fieldGroupProperties['title']}}</button>
+</fieldset>
+

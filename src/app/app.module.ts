@@ -41,6 +41,10 @@ import { ListDocsOfCocsComponent } from './collections/list.component';
 import { AddDocInCocsComponent } from './collections/add.component';
 import { AddDocInCollComponent } from './collections/addInColl.component';
 import { UpdateDocInCollComponent } from './collections/updateInColl.component';
+import { RecordFieldComponent } from './collections/record-field/record-field.component';
+import { RecordFieldGroupComponent } from './collections/record-field-group/record-field-group.component';
+import { TableRecordComponent } from './collections/table-record/table-record.component';
+import { CreateTableRecordComponent } from './collections/create-table-record/create-table-record.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -67,7 +71,12 @@ const firebaseConfig = {
     AddDocInCocsComponent,
     UpdateDocInCollComponent,
     
-    AddDocInCollComponent
+    AddDocInCollComponent,
+    
+    RecordFieldComponent,
+    RecordFieldGroupComponent,
+    TableRecordComponent,
+    CreateTableRecordComponent
   ],
 
   imports: [

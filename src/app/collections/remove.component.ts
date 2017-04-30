@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators  } from '@angular/forms';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
-import { Collection } from './model';
+import { CollectionOfCollections } from './model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class RemoveDocInCocsComponent implements OnInit {
     collectionForm: FormGroup;
-    collection = new Collection();
+    collection = new CollectionOfCollections();
     submitted: boolean = false;
     constructor(
         private _fb: FormBuilder,
