@@ -9,16 +9,16 @@
 	<span *ngFor=" let valueKey of fieldGroupValuesKeys; let fgvc = index; ">
 
 		<div class="lns_sub_fields_border">
-			<button md-button class="warning" (click)="removeValue(valueKey)">Remove {{fgvc + 1}}</button>
+			<button md-button class="warning" (click)="removeValue(valueKey)">Remove {{valueKey}}</button>
 			<table>
 				<tr *ngFor=" let fieldGroupPropertyName of fieldGroupProperties['fields']['sorted_field_names']; let fgpc = index; "><td>
 					<app-collections-record-field
 			  
-					  [fieldValue]="fieldGroupValues[fgvc][fieldGroupPropertyName]"
+					  [fieldValue]="fieldGroupValues[valueKey][fieldGroupPropertyName]"
 
 					  [fieldProperties]=" fieldGroupProperties['fields'][fieldGroupPropertyName]" 
 
-					  (fieldValueUpdated)="updateFieldValue(fgvc, fieldGroupPropertyName, $event)"
+					  (fieldValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
 
 					></app-collections-record-field>
 				</td></tr>

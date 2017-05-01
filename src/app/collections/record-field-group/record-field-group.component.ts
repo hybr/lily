@@ -15,32 +15,37 @@ export class RecordFieldGroupComponent implements OnInit {
 
 	private fieldGroupValuesKeys : Array<any> = <any>[];
 
-	updateFieldValue(fgvc, fieldGroupPropertyName, value) {
+	updateFieldValue(valueKey, fieldGroupPropertyName, value) {
+		// console.log('Received in field group = valueKey ', valueKey, ' fieldGroupPropertyName ', fieldGroupPropertyName,  ' value ', value);
 		let obj = {};
-		if (this.fieldGroupProperties['name'] == undefined) {
-			this.fieldGroupProperties['name'] = 'unknown_field_group_property';
-		}
-		this.fieldGroupValues[fgvc][fieldGroupPropertyName] = value[fieldGroupPropertyName];
-
+		this.fieldGroupValues[valueKey][fieldGroupPropertyName] = value[fieldGroupPropertyName];
 		obj[this.fieldGroupProperties['name']] = this.fieldGroupValues;
+		// console.log('Field Group is emitting obj = ', obj);
 		this.fieldGroupValueUpdated.emit(obj);
 	}
 
 	removeValue(fgk) {
-		console.log('Remvoe VAlue = ', fgk);
+		let obj = {};
+		console.log('Remvoe VAlue = ', fgk, ' from ', 	this.fieldGroupValues);
 		delete 	this.fieldGroupValues[fgk];
 		this.fieldGroupValuesKeys = Object.keys(this.fieldGroupValues);
- 		this.fieldGroupValueUpdated.emit(this.fieldGroupValues);
+		obj[this.fieldGroupProperties['name']] = this.fieldGroupValues;
+		console.log('Field Group is emitting obj = ', obj);
+ 		this.fieldGroupValueUpdated.emit(obj);
 	}
 
 	addValue() {
+		let obj = {};
 		let group = {};
 		for (var fieldName in this.fieldGroupProperties['fields']['sorted_field_names']) {
 			group[fieldName] = this.fieldGroupProperties['fields'][fieldName];
 		}
+		console.log('group = ', group);
+		console.log('this.fieldGroupValuesKeys.length =', this.fieldGroupValuesKeys.length);
 		this.fieldGroupValues[this.fieldGroupValuesKeys.length] = group;
 		this.fieldGroupValuesKeys = Object.keys(this.fieldGroupValues);
-		this.fieldGroupValueUpdated.emit(this.fieldGroupValues);
+		obj[this.fieldGroupProperties['name']] = this.fieldGroupValues;
+		this.fieldGroupValueUpdated.emit(obj);
 	}
 
 	constructor() { }
