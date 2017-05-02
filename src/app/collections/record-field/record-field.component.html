@@ -2,34 +2,32 @@
 
 <md-slide-toggle 
 	
-	*ngIf="(fieldProperties['value_type'] == 'boolean')"
+	*ngIf="(fieldProperties['f5'] == 'boolean')"
 	
-	name="{{ fieldProperties['name'] }}"
+	name="{{ fieldProperties['f1'] }}"
 	
-	[(ngModel)]="fieldValue[fieldProperties['name']]"
+	[(ngModel)]="fieldValue[fieldProperties['f1']]"
 	(ngModelChange)="fieldValueChanged($event)"
 
-	id="{{ fieldProperties['id'] }}"
+	id="{{ fieldProperties['f1'] }}"
 
->{{ fieldProperties['title'] }}</md-slide-toggle> 
+>{{ fieldProperties['f2'] }}</md-slide-toggle> 
 
 
 <md-input-container
-	*ngIf="(fieldProperties['value_type'] == 'string')"
+	*ngIf="(fieldProperties['f5'] == 'string')"
 >
 	<input 
 	
 		mdInput  
 	
-		id="{{ fieldProperties['id'] }}"
+		id="{{ fieldProperties['f1'] }}"
 
-		placeholder="{{ fieldProperties['title'] }}" 
+		placeholder="{{ fieldProperties['f2'] }}" 
 	
 		type="text"
 	
-		value="{{ fieldProperties['default_value'] }}"
-	
-		name="{{ fieldProperties['name'] }}"
+		name="{{ fieldProperties['f1'] }}"
 	
 		[(ngModel)]="fieldValue"
 		(ngModelChange)="fieldValueChanged($event)"

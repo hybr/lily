@@ -1,32 +1,56 @@
-<!-- 
-	<br />fieldGroupProperties = <pre>{{fieldGroupProperties | json}}</pre>
-	<br />fieldGroupValues = {{fieldGroupValues | json }}
--->
+
+	<hr />fieldGroupProperties = <pre>{{fieldGroupProperties | json}}</pre>
+	<hr />fieldGroupValues = {{fieldGroupValues | json }}
 
 <fieldset>
-	<legend>{{fieldGroupProperties['title']}}</legend>
+	<legend>{{fieldGroupProperties['f2']}}</legend>
 	
 	<span *ngFor=" let valueKey of fieldGroupValuesKeys; let fgvc = index; ">
+		<!-- valueKey are 0, 1, 2 ... -->
 
 		<div class="lns_sub_fields_border">
 			<button md-button class="warning" (click)="removeValue(valueKey)">Remove {{valueKey}}</button>
+
 			<table>
-				<tr *ngFor=" let fieldGroupPropertyName of fieldGroupProperties['fields']['sorted_field_names']; let fgpc = index; "><td>
+				<tr *ngFor=" let fieldGroupPropertyName of fieldGroupProperties['sorted_field_names']; let fgpc = index; "><td>
+		
+					<hr />fieldGroupPropertyName = {{fieldGroupPropertyName | json }}
+					<hr />fieldGroupProperties['sorted_field_names'] = {{fieldGroupProperties['sorted_field_names'] | json }}
+					<hr />fieldGroupValues[valueKey] = {{ fieldGroupValues[valueKey] | json }}
+					<hr />
+				
+
 					<app-collections-record-field
 			  
-					  [fieldValue]="fieldGroupValues[valueKey][fieldGroupPropertyName]"
+			  			*ngIf="fieldGroupProperties[fieldGroupPropertyName]['f3'] == 'field'"
 
-					  [fieldProperties]=" fieldGroupProperties['fields'][fieldGroupPropertyName]" 
+						[fieldValue]="fieldGroupValues[valueKey]"
 
-					  (fieldValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
+						[fieldProperties]="fieldGroupProperties[fieldGroupPropertyName]" 
+
+						(fieldValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
 
 					></app-collections-record-field>
+
+					<app-collections-record-field-group
+
+						*ngIf="fieldGroupProperties[fieldGroupPropertyName]['f3'] == 'field_group'"
+
+						[fieldGroupValues]="fieldGroupValues[valueKey]"
+
+						[fieldGroupProperties]="fieldGroupProperties[fieldGroupPropertyName]" 
+
+						(fieldGroupValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
+
+					></app-collections-record-field-group>
+
 				</td></tr>
 			</table>
+
 		</div>
 	
 	</span>
 
-	<button md-button (click)="addValue()">Add {{fieldGroupProperties['title']}}</button>
+	<button md-button (click)="addValue()">Add {{fieldGroupProperties['f2']}}</button>
 </fieldset>
 

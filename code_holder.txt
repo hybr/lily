@@ -1,5 +1,31 @@
 
 
+          <app-collections-record-field
+        
+              *ngIf="recordStructure['field_type'] == 'field'"
+
+            [fieldValue]="fieldGroupValues[valueKey]"
+
+            [fieldProperties]="fieldGroupProperties[fieldGroupPropertyName]" 
+
+            (fieldValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
+
+          ></app-collections-record-field>
+
+          <app-collections-record-field-group
+
+            *ngIf="recordStructure['field_type'] == 'field_group'"
+
+            [fieldGroupValues]="fieldGroupValues[valueKey]"
+
+            [fieldGroupProperties]="fieldGroupProperties[fieldGroupPropertyName]" 
+
+            (fieldGroupValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
+
+          ></app-collections-record-field-group>
+
+----------------------------
+
 <table><!-- L1 -->
   <tr><td><!-- L1, R1 -->
     

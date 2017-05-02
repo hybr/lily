@@ -16,11 +16,11 @@ export class RecordFieldGroupComponent implements OnInit {
 	private fieldGroupValuesKeys : Array<any> = <any>[];
 
 	updateFieldValue(valueKey, fieldGroupPropertyName, value) {
-		// console.log('Received in field group = valueKey ', valueKey, ' fieldGroupPropertyName ', fieldGroupPropertyName,  ' value ', value);
+		console.log('Received in field group = valueKey ', valueKey, ' fieldGroupPropertyName ', fieldGroupPropertyName,  ' value ', value);
 		let obj = {};
 		this.fieldGroupValues[valueKey][fieldGroupPropertyName] = value[fieldGroupPropertyName];
 		obj[this.fieldGroupProperties['name']] = this.fieldGroupValues;
-		// console.log('Field Group is emitting obj = ', obj);
+		console.log('Field Group is emitting obj = ', obj);
 		this.fieldGroupValueUpdated.emit(obj);
 	}
 
@@ -79,6 +79,9 @@ export class RecordFieldGroupComponent implements OnInit {
 		}
 
 		this.fieldGroupValuesKeys = Object.keys(this.fieldGroupValues);
+
+		console.log('Field Group Properties = ', this.fieldGroupProperties);
+		console.log('Field Group Values = ', this.fieldGroupValues);
 	}
 
 }

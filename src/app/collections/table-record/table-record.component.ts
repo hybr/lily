@@ -17,6 +17,7 @@ export class TableRecordComponent implements OnInit {
 	@Output() recordValuesUpdated: EventEmitter<any> = new EventEmitter<any>();
 
 	updateFieldValue(fieldName, value) {
+		console.log('Received in table record = fieldName ', fieldName, ' value ', value);
 		this.recordValues[fieldName] = value[fieldName];
 	}
 
@@ -25,29 +26,42 @@ export class TableRecordComponent implements OnInit {
 	}
 
 	createRecordStructureFromC3Table(cocsRecord) {
+		console.log('########################################');
 		console.log('cocsRecord received = ', cocsRecord);
 
 		let convertedRecordStructure: Object = {};
 
-		let sequence = 1;
+		let sequenceCounter = 1;
+
+		/* 
+			f1 = name 
+			f2 = title
+			f3 = field_type
+			f4 = sequence
+			f5 = value_type
+		*/
+
+		for (var key of Object.keys(cocsRecord) ) {
+
+			if (key == 'sorted_field_names') { continue; }
+			if (cocsRecord[key]['f1'] == 'sorted_field_names') { continue; }
+			if (cocsRecord[key]['f1'] == undefined) { continue; }
 
 
-		for (var property in cocsRecord ) {
+			let property = cocsRecord[key]['f1'];
 
-			if (property == 'sorted_field_names') { continue; }
-
-			let field = cocsRecord[property];
+			let field = cocsRecord[key];
 
 			console.log('field of ', property, ' = ', field);
 
 			let fFieldType = 'field';
-			if (field['field_type']) {
-				fFieldType = field['field_type'];
+			if (field['f3']) {
+				fFieldType = field['f3'];
 			}
 
 			let fName = property;
-			if (field['name']) {
-				fName = field['name'];
+			if (field['f1']) {
+				fName = field['f1'];
 			}
 
 			let fDefaultValue = '';
@@ -61,48 +75,70 @@ export class TableRecordComponent implements OnInit {
 			}
 
 			let fValueType = 'string';
-			if (field['value_type']) {
-				fValueType = field['value_type'];
+			if (field['f5']) {
+				fValueType = field['f5'];
 			}
 
 			let fTitle = fName.split('_').map(i => i[0].toUpperCase() + i.substr(1).toLowerCase()).join(' ');
-			if (field['title']) {
-				fTitle = field['title'];
+			if (field['f2']) {
+				fTitle = field['f2'];
 			}
 
-			let fSequence = sequence;
-			sequence++;
-			if (field['sequence']) {
-				fSequence = field['sequence'];
-			}
-
-			let fFieldGroup = sequence;
-			sequence++;
-			if (field['sequence']) {
-				fSequence = field['sequence'];
-			}
-
-			var resultObj : Object  = {};
-			if (fFieldType == 'field_group' && field['fields']) {
-				resultObj = this.createRecordStructureFromC3Table(
-					field
-				);
+			let fSequence = sequenceCounter;
+			sequenceCounter++;
+			if (field['f4']) {
+				fSequence = parseInt(field['f4']);
 			}
 
 			convertedRecordStructure[fName] = {
-				'field_type': fFieldType,
-				'name' : fName,
-				'title' : fTitle,
-				'sequence': fSequence,
-				'default_value': fDefaultValue,
-				'value_type': fValueType,
-				'fields' : resultObj
+				'f1' : fName,
+				'f2' : fTitle,
+				'f3' : fFieldType,
+				'f4' : fSequence,
+				'f5' : fValueType
 			};
+
+			var resultObj : Object  = {};
+			if (fFieldType == 'field_group') {
+				resultObj = this.createRecordStructureFromC3Table(
+					field
+				);
+				console.log(' resultObj for property ', property, ' is ', resultObj);
+				let k3 = 0;
+				for (let k1 of Object.keys(resultObj)) {
+
+					console.log(' key of resultObj for property is ', k1);
+
+					convertedRecordStructure[fName][k3] = resultObj[k1];	
+					k3++;
+				}
+			}
+
+			console.log('==============================');
+
 		} /* for */
 
-		let sortedKeys = Object.keys(convertedRecordStructure)
-		convertedRecordStructure['sorted_field_names'] = sortedKeys;
-
+		let localFields = [];
+		/* create array of field objects */
+		for (var k2 of Object.keys(convertedRecordStructure)) {
+			localFields.push(convertedRecordStructure[k2]);
+		}
+		/* sort based on sequence field f4 */
+		localFields.sort(function(a, b) { 
+			if (a.f4 < b.f4) return -1;
+			if (a.f4 > b.f4) return 1;
+			return 0;
+		});
+    	console.log('sorted fields ', localFields, ' of ', convertedRecordStructure);
+		/* store sorted field names */
+		convertedRecordStructure['sorted_field_names'] = [];
+		localFields.forEach(function(fieldObject) {
+			console.log('Pushingin in sorted_field_names ', fieldObject, fieldObject['f1']);
+			convertedRecordStructure['sorted_field_names'].push(fieldObject['f1']);
+		});
+		/* free up memory */
+		// delete localFields; TODO can not delete with defined as var/let
+		console.log('---------------------------');
 		return convertedRecordStructure;
 	} /* createRecordStructureFromC3Table */
 
@@ -132,103 +168,98 @@ export class TableRecordComponent implements OnInit {
 		subject.next(self.tableNumber);
 
 
-		this.recordStructure = 
-		{ 
-			'f1' : true,
-			'f2' : 'c3',
-			'f3' : 'Collections',
-
-			'fields' : [
-			{
-				name: 'f1',
-				value_type: 'boolean',
-				field_type: 'field',
-				title: 'Status',
-				sequence: 1
-
+		
+		this.recordValues =  
+{
+	"f1": true,
+	"f2": "c1",
+	"f3": "Collections",
+	"f4": "The list of collections",
+	"f5": {
+		"0": {
+			"f1": "f1",
+			"f2": "Is Collection Active",
+			"f3": "field",
+			"f5": "boolean",
+			"f4": "1"
+		},
+		"1": {
+			"f1": "f2",
+			"f2": "Collection Number",
+			"f3": "field",
+			"f5": "string",
+			"f4": "3"
+		},
+		"2": {
+			"f1": "f3",
+			"f2": "Collection Name",
+			"f3": "field",
+			"f5": "string",
+			"f4": "2"
+		},
+		"3": {
+			"f1": "f4",
+			"f2": "Detail",
+			"f3": "field",
+			"f5": "string",
+			"f4": "4"
+		},
+		"4": {
+			"0": {
+				"f1": "f1",
+				"f2": "Name",
+				"f3": "field",
+				"f4": 1
 			},
-			{
-				name: 'f2',
-				value_type: 'string',
-				field_type: 'field',
-				title: 'Collection Number',
-				sequence: 2
-
+			"1": {
+				"f1": "f2",
+				"f2": "Title",
+				"f3": "field",
+				"f4": 2
 			},
-			{
-				name: 'f3',
-				value_type: 'string',
-				field_type: 'field',
-				title: 'Collection Name',
-				sequence: 3
-
+			"2": {
+				"f1": "f3",
+				"f2": "Field Type",
+				"f3": "field",
+				"f4": 3
 			},
-			{
-				name: 'f4',
-				value_type: 'string',
-				field_type: 'field',
-				title: 'Detail',
-				sequence: 4
-
+			"3": {
+				"f1": "f4",
+				"f2": "Sequence",
+				"f3": "field",
+				"f4": 5
 			},
-			{
-				field_type: 'field_group',
-				name: 'f5',
-				title: 'Record Fields',
-				multiple: true,
-				field_group: true,
-				sequence: 5,
-				fields: [
-					{
-						name : 'name',
-						title: 'Field Name',
-						value_type: 'string',
-						field_type: 'field',
-						sequence: 2
-					},
-					{
-						name : 'title',
-						title: 'Field Title',
-						value_type: 'string',
-						field_type: 'field',
-						sequence: 3
-					},
-					{
-						name : 'sequence',
-						title: 'Field Sequence',
-						value_type: 'n umber',
-						field_type: 'field',
-						sequence: 1
-					},
-				]
-			}
-			],
-			'title' : 'Collection Defination' 
-		};
+			"4": {
+				"f1": "f5",
+				"f2": "Value Type",
+				"f3": "field",
+				"f4": 4
+			},
+			"5": {
+				"f1": "f6",
+				"f2": "Default Value",
+				"f3": "field",
+				"f4": 6
+			},
+			"6": {
+				"f1": "f7",
+				"f2": "Is Required",
+				"f3": "field",
+				"f4": 7,
+				"f5" : 'boolean'
+			},
+			"f1": "f5",
+			"f2": "Record Structure",
+			"f3": "field_group",
+			"f5": "object",
+			"f4": "5"
+		}
+	}
+}
 
-		this.recordStructure['fields'] = this.createRecordStructureFromC3Table(this.recordStructure['fields']);
-
+		this.recordStructure = this.createRecordStructureFromC3Table(this.recordValues['f5']);
 		console.log('Final Record Structure = ', this.recordStructure);
-
-		this.recordValues =  {
-			
-				"f1": true,
-
-				"f2": "c10", 
-
-				"f3": "Users",
-
-				"f4": "The list of all users",
-
-				"f5": {
-					0: {"name": "f1",	"title": "Email Address"},
-					1: {"name": "f2", 	"title": "Password"	}
-				}
-			
-		};
-
 		console.log('Final Record Values = ', this.recordValues);
-
 	}
 
 }

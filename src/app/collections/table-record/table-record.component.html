@@ -7,17 +7,24 @@
 	<md-card-content>
 		<form #cocsForm="ngForm">
 		<fieldset>
-			<legend>{{recordStructure['title']}}</legend>
+			<legend>{{recordStructure['f2']}}</legend>
+			recordStructure = {{recordStructure | json}}	
 			<table>
-				<tr *ngFor=" let fieldName of recordStructure['fields']['sorted_field_names']; let rfc = index; "><td>
+				<tr *ngFor=" let fieldName of recordStructure['sorted_field_names']; let rfc = index; "><td>
+
+					<hr />fieldName = {{fieldName | json }}
+					<hr />recordStructure['sorted_field_names'] = {{recordStructure['sorted_field_names'] | json }}
+					<hr />recordStructure[fieldName] = {{ recordStructure[fieldName] | json }}
+					<hr />recordValues[fieldName] = {{ recordValues[fieldName] | json }}
+					<hr />
 
 					<app-collections-record-field
 
-						*ngIf="recordStructure['fields'][fieldName]['field_type'] == 'field'"
+						*ngIf="recordStructure[fieldName]['f3'] == 'field'"
 
 						[fieldValue]="recordValues[fieldName]"
 
-						[fieldProperties]="recordStructure['fields'][fieldName]" 
+						[fieldProperties]="recordStructure[fieldName]" 
 
 						(fieldValueUpdated)="updateFieldValue(fieldName, $event)"
 
@@ -25,11 +32,11 @@
 
 					<app-collections-record-field-group
 
-						*ngIf="recordStructure['fields'][fieldName]['field_type'] == 'field_group'"
+						*ngIf="recordStructure[fieldName]['f3'] == 'field_group'"
 
 						[fieldGroupValues]="recordValues[fieldName]"
 
-						[fieldGroupProperties]="recordStructure['fields'][fieldName]" 
+						[fieldGroupProperties]="recordStructure[fieldName]" 
 
 						(fieldGroupValueUpdated)="updateFieldValue(fieldName, $event)"
 
