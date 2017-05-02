@@ -19,7 +19,7 @@ export class RecordFieldGroupComponent implements OnInit {
 		console.log('Received in field group = valueKey ', valueKey, ' fieldGroupPropertyName ', fieldGroupPropertyName,  ' value ', value);
 		let obj = {};
 		this.fieldGroupValues[valueKey][fieldGroupPropertyName] = value[fieldGroupPropertyName];
-		obj[this.fieldGroupProperties['name']] = this.fieldGroupValues;
+		obj[this.fieldGroupProperties['f1']] = this.fieldGroupValues;
 		console.log('Field Group is emitting obj = ', obj);
 		this.fieldGroupValueUpdated.emit(obj);
 	}
@@ -29,7 +29,7 @@ export class RecordFieldGroupComponent implements OnInit {
 		console.log('Remvoe VAlue = ', fgk, ' from ', 	this.fieldGroupValues);
 		delete 	this.fieldGroupValues[fgk];
 		this.fieldGroupValuesKeys = Object.keys(this.fieldGroupValues);
-		obj[this.fieldGroupProperties['name']] = this.fieldGroupValues;
+		obj[this.fieldGroupProperties['f1']] = this.fieldGroupValues;
 		console.log('Field Group is emitting obj = ', obj);
  		this.fieldGroupValueUpdated.emit(obj);
 	}
@@ -44,15 +44,15 @@ export class RecordFieldGroupComponent implements OnInit {
 		console.log('this.fieldGroupValuesKeys.length =', this.fieldGroupValuesKeys.length);
 		this.fieldGroupValues[this.fieldGroupValuesKeys.length] = group;
 		this.fieldGroupValuesKeys = Object.keys(this.fieldGroupValues);
-		obj[this.fieldGroupProperties['name']] = this.fieldGroupValues;
+		obj[this.fieldGroupProperties['f1']] = this.fieldGroupValues;
 		this.fieldGroupValueUpdated.emit(obj);
 	}
 
 	constructor() { }
 
 	ngOnInit() {
-		if (this.fieldGroupProperties['name'] == undefined) {
-			this.fieldGroupProperties['name'] = 'unknown_field_group_property';
+		if (this.fieldGroupProperties['f1'] == undefined) {
+			this.fieldGroupProperties['f1'] = 'unknown_field_group_property';
 		}
 
 		if (this.fieldGroupProperties == undefined) {

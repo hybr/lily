@@ -1,12 +1,14 @@
 
 
+
+
 <md-slide-toggle 
 	
 	*ngIf="(fieldProperties['f5'] == 'boolean')"
 	
 	name="{{ fieldProperties['f1'] }}"
 	
-	[(ngModel)]="fieldValue[fieldProperties['f1']]"
+	[(ngModel)]="fieldValue"
 	(ngModelChange)="fieldValueChanged($event)"
 
 	id="{{ fieldProperties['f1'] }}"

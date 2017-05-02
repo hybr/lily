@@ -1,6 +1,8 @@
-
-	<hr />fieldGroupProperties = <pre>{{fieldGroupProperties | json}}</pre>
-	<hr />fieldGroupValues = {{fieldGroupValues | json }}
+	<!--
+	<hr />fieldGroupProperties = <pre>{{fieldGroupProperties['fields'] | json}}</pre>
+	<hr />fieldGroupValues = <pre>{{fieldGroupValues | json }}</pre>
+	<hr />fieldGroupValuesKeys = <pre>{{fieldGroupValuesKeys | json }}</pre>
+	-->
 
 <fieldset>
 	<legend>{{fieldGroupProperties['f2']}}</legend>
@@ -12,21 +14,22 @@
 			<button md-button class="warning" (click)="removeValue(valueKey)">Remove {{valueKey}}</button>
 
 			<table>
-				<tr *ngFor=" let fieldGroupPropertyName of fieldGroupProperties['sorted_field_names']; let fgpc = index; "><td>
-		
+				<tr *ngFor=" let fieldGroupPropertyName of fieldGroupProperties['fields']['sorted_field_names']; let fgpc = index; "><td>
+					<!--
 					<hr />fieldGroupPropertyName = {{fieldGroupPropertyName | json }}
-					<hr />fieldGroupProperties['sorted_field_names'] = {{fieldGroupProperties['sorted_field_names'] | json }}
+					<hr />fieldGroupProperties['fields']['sorted_field_names'] = {{fieldGroupProperties['fields']['sorted_field_names'] | json }}
 					<hr />fieldGroupValues[valueKey] = {{ fieldGroupValues[valueKey] | json }}
+					<hr />valueKey = {{ valueKey | json }}
 					<hr />
-				
+					-->
 
 					<app-collections-record-field
 			  
-			  			*ngIf="fieldGroupProperties[fieldGroupPropertyName]['f3'] == 'field'"
+			  			*ngIf="fieldGroupProperties['fields'][fieldGroupPropertyName]['f3'] == 'field'"
 
-						[fieldValue]="fieldGroupValues[valueKey]"
+						[fieldValue]="fieldGroupValues[valueKey][fieldGroupPropertyName]"
 
-						[fieldProperties]="fieldGroupProperties[fieldGroupPropertyName]" 
+						[fieldProperties]="fieldGroupProperties['fields'][fieldGroupPropertyName]" 
 
 						(fieldValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
 
@@ -34,11 +37,11 @@
 
 					<app-collections-record-field-group
 
-						*ngIf="fieldGroupProperties[fieldGroupPropertyName]['f3'] == 'field_group'"
+						*ngIf="fieldGroupProperties['fields'][fieldGroupPropertyName]['f3'] == 'field_group'"
 
 						[fieldGroupValues]="fieldGroupValues[valueKey]"
 
-						[fieldGroupProperties]="fieldGroupProperties[fieldGroupPropertyName]" 
+						[fieldGroupProperties]="fieldGroupProperties['fields'][fieldGroupPropertyName]" 
 
 						(fieldGroupValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
 

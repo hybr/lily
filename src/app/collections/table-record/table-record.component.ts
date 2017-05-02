@@ -17,7 +17,7 @@ export class TableRecordComponent implements OnInit {
 	@Output() recordValuesUpdated: EventEmitter<any> = new EventEmitter<any>();
 
 	updateFieldValue(fieldName, value) {
-		console.log('Received in table record = fieldName ', fieldName, ' value ', value);
+		//console.log('Received in table record = fieldName ', fieldName, ' value ', value);
 		this.recordValues[fieldName] = value[fieldName];
 	}
 
@@ -26,8 +26,8 @@ export class TableRecordComponent implements OnInit {
 	}
 
 	createRecordStructureFromC3Table(cocsRecord) {
-		console.log('########################################');
-		console.log('cocsRecord received = ', cocsRecord);
+		//console.log('########################################');
+		//console.log('cocsRecord received = ', cocsRecord);
 
 		let convertedRecordStructure: Object = {};
 
@@ -52,7 +52,7 @@ export class TableRecordComponent implements OnInit {
 
 			let field = cocsRecord[key];
 
-			console.log('field of ', property, ' = ', field);
+			//console.log('field of ', property, ' = ', field);
 
 			let fFieldType = 'field';
 			if (field['f3']) {
@@ -103,18 +103,10 @@ export class TableRecordComponent implements OnInit {
 				resultObj = this.createRecordStructureFromC3Table(
 					field
 				);
-				console.log(' resultObj for property ', property, ' is ', resultObj);
-				let k3 = 0;
-				for (let k1 of Object.keys(resultObj)) {
-
-					console.log(' key of resultObj for property is ', k1);
-
-					convertedRecordStructure[fName][k3] = resultObj[k1];	
-					k3++;
-				}
+				convertedRecordStructure[fName]['fields'] = resultObj;
 			}
 
-			console.log('==============================');
+			//console.log('==============================');
 
 		} /* for */
 
@@ -129,16 +121,17 @@ export class TableRecordComponent implements OnInit {
 			if (a.f4 > b.f4) return 1;
 			return 0;
 		});
-    	console.log('sorted fields ', localFields, ' of ', convertedRecordStructure);
+    	//console.log('sorted localFields ', localFields, ' of convertedRecordStructure ', convertedRecordStructure);
+
 		/* store sorted field names */
 		convertedRecordStructure['sorted_field_names'] = [];
 		localFields.forEach(function(fieldObject) {
-			console.log('Pushingin in sorted_field_names ', fieldObject, fieldObject['f1']);
+			//console.log('Push ', fieldObject['f1'], ' in sorted_field_names in ', convertedRecordStructure['sorted_field_names']);
 			convertedRecordStructure['sorted_field_names'].push(fieldObject['f1']);
 		});
 		/* free up memory */
 		// delete localFields; TODO can not delete with defined as var/let
-		console.log('---------------------------');
+		//console.log('---------------------------');
 		return convertedRecordStructure;
 	} /* createRecordStructureFromC3Table */
 
@@ -161,7 +154,7 @@ export class TableRecordComponent implements OnInit {
 
 		// subscribe to changes
 		queryObservable.subscribe(record => {
-		  console.log('Record for collection number ', this.tableNumber, ' is ', record);  
+		  //console.log('Record for collection number ', this.tableNumber, ' is ', record);  
 		});
 
 		// trigger the query
@@ -171,34 +164,34 @@ export class TableRecordComponent implements OnInit {
 		
 		this.recordValues =  
 {
-	"f1": true,
-	"f2": "c1",
-	"f3": "Collections",
-	"f4": "The list of collections",
-	"f5": {
+	"a1": true,
+	"a2": "c1",
+	"a3": "Collections",
+	"a4": "The list of collections",
+	"a5": {
 		"0": {
-			"f1": "f1",
+			"f1": "a1",
 			"f2": "Is Collection Active",
 			"f3": "field",
 			"f5": "boolean",
 			"f4": "1"
 		},
 		"1": {
-			"f1": "f2",
+			"f1": "a2",
 			"f2": "Collection Number",
 			"f3": "field",
 			"f5": "string",
 			"f4": "3"
 		},
 		"2": {
-			"f1": "f3",
+			"f1": "a3",
 			"f2": "Collection Name",
 			"f3": "field",
 			"f5": "string",
 			"f4": "2"
 		},
 		"3": {
-			"f1": "f4",
+			"f1": "a4",
 			"f2": "Detail",
 			"f3": "field",
 			"f5": "string",
@@ -248,7 +241,7 @@ export class TableRecordComponent implements OnInit {
 				"f4": 7,
 				"f5" : 'boolean'
 			},
-			"f1": "f5",
+			"f1": "a5",
 			"f2": "Record Structure",
 			"f3": "field_group",
 			"f5": "object",
@@ -257,9 +250,9 @@ export class TableRecordComponent implements OnInit {
 	}
 }
 
-		this.recordStructure = this.createRecordStructureFromC3Table(this.recordValues['f5']);
-		console.log('Final Record Structure = ', this.recordStructure);
-		console.log('Final Record Values = ', this.recordValues);
+		this.recordStructure = this.createRecordStructureFromC3Table(this.recordValues['a5']);
+		//console.log('Final Record Structure = ', this.recordStructure);
+		//console.log('Final Record Values = ', this.recordValues);
 	}
 
 }

@@ -15,10 +15,10 @@ export class RecordFieldComponent implements OnInit {
 
 	fieldValueChanged(value) {
 		let obj = {};
-		if (this.fieldProperties['name'] == undefined) {
-			this.fieldProperties['name'] = 'unknown_field_property';
+		if (this.fieldProperties['f1'] == undefined) {
+			this.fieldProperties['f1'] = 'unknown_field_property';
 		}
-		obj[this.fieldProperties['name']] = value;
+		obj[this.fieldProperties['f1']] = value;
 		console.log('Field is emitting obj = ', obj);
 		this.fieldValueUpdated.emit(obj);
 	}
@@ -28,7 +28,7 @@ export class RecordFieldComponent implements OnInit {
 
 
 		console.log(
-			'Name = ', this.fieldProperties['name'], 
+			'Name = ', this.fieldProperties['f1'], 
 			' Data = ', this.fieldValue, 
 			' fieldProperties = ', this.fieldProperties
 		);

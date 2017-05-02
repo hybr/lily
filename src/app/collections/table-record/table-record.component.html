@@ -1,22 +1,26 @@
 <md-card>
 	<md-card-header>
-		<md-card-title><h2>Adding New {{(docOfCocs|async)?.name}} Record</h2></md-card-title>
-		<md-card-subtitle>{{(docOfCocs|async)?.detail}}</md-card-subtitle>
+		<md-card-title><h2>Adding New {{recordValues['a3']}} Record</h2></md-card-title>
+		<md-card-subtitle>{{recordValues['a4']}}</md-card-subtitle>
 	</md-card-header>
 
 	<md-card-content>
 		<form #cocsForm="ngForm">
 		<fieldset>
-			<legend>{{recordStructure['f2']}}</legend>
-			recordStructure = {{recordStructure | json}}	
+			<legend>{{recordValues['a3']}}</legend>
+			<!--
+			<hr />recordStructure = <pre>{{recordStructure | json}}</pre>
+			<hr />recordValues = <pre>{{recordValues | json}}</pre>
+			-->
 			<table>
 				<tr *ngFor=" let fieldName of recordStructure['sorted_field_names']; let rfc = index; "><td>
-
+					<!--
 					<hr />fieldName = {{fieldName | json }}
 					<hr />recordStructure['sorted_field_names'] = {{recordStructure['sorted_field_names'] | json }}
 					<hr />recordStructure[fieldName] = {{ recordStructure[fieldName] | json }}
 					<hr />recordValues[fieldName] = {{ recordValues[fieldName] | json }}
 					<hr />
+					-->
 
 					<app-collections-record-field
 
@@ -62,4 +66,4 @@
 	</md-card-content>
 </md-card>
 
-Record Data = {{ recordValues | json }}
+Record Data = <pre>{{ recordValues | json }}</pre>
