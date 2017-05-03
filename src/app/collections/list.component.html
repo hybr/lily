@@ -3,8 +3,8 @@
 
 <md-card *ngIf="((listOfCocs | async) && (docOfCocs | async))">
 	<md-card-header>
-		<md-card-title><h2>{{(docOfCocs|async)?.f3.v}}</h2></md-card-title>
-		<md-card-subtitle>{{(docOfCocs|async)?.f4.v}}</md-card-subtitle>
+		<md-card-title><h2>{{(docOfCocs|async)?.a3}}</h2></md-card-title>
+		<md-card-subtitle>{{(docOfCocs|async)?.a4}}</md-card-subtitle>
 	</md-card-header>
 
 	<md-card-content>
@@ -19,16 +19,16 @@
 			/>
 		</md-input-container>
 
-		<md-list>
-			<md-list-item 
-				*ngFor=" let d of (listOfCocs | async); " 
-				[class.disabled]="!d.active"
-			>	
-				{{d.f2.v}}.
-				<a [routerLink]="['/cocs/show', d.$key]" [class.disabled]="!d.active">{{d.f3.v}} Collection</a>
-				: {{d.f4.v}}
-			</md-list-item>
-		</md-list>
+		<table>
+			<tr
+				*ngFor=" let d of listOfCocs | async; " 
+				[class.disabled]="!d.a1"
+			><td>
+				{{d.a2}}.
+				<a [routerLink]="['/cocs/show', d.$key]" [class.disabled]="!d.a1">{{d.a3}} Collection</a>
+				: {{d.a4}}
+			</td></tr>
+		</table>
 
 	</md-card-content>
 

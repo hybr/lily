@@ -19,7 +19,7 @@ export class RecordFieldComponent implements OnInit {
 			this.fieldProperties['f1'] = 'unknown_field_property';
 		}
 		obj[this.fieldProperties['f1']] = value;
-		console.log('Field is emitting obj = ', obj);
+		//console.log('Field is emitting obj = ', obj);
 		this.fieldValueUpdated.emit(obj);
 	}
 
@@ -27,11 +27,11 @@ export class RecordFieldComponent implements OnInit {
 		/* default values of properties of field */
 
 
-		console.log(
+		/*console.log(
 			'Name = ', this.fieldProperties['f1'], 
 			' Data = ', this.fieldValue, 
 			' fieldProperties = ', this.fieldProperties
-		);
+		);*/
 		if (this.fieldValue == undefined) {
 			if (this.fieldProperties['value'] != undefined) { 
 				this.fieldValue = this.fieldProperties['value']; 
@@ -43,7 +43,7 @@ export class RecordFieldComponent implements OnInit {
 				}
 			}
 		}
-		console.log(' Updated Data = ', this.fieldValue);
+		//console.log(' Updated Data = ', this.fieldValue);
 	} /* ngOnInit()  */
 
 

@@ -25,16 +25,16 @@ export class ListDocsOfCocsComponent implements OnInit {
     private _lss: LocalStorageService
   ) {
     this.searchCollections();
-    this.docOfCocs = this._af.database.object('/c3/-KgRw3KNYJBPnOGnPw9H');
+    this.docOfCocs = this._af.database.object('/c1/-KjAxiZyYeXzupLkdeXl');
   }
 
   searchCollections(): void {
-    this.listOfCocs = this._af.database.list('/c3')
+    this.listOfCocs = this._af.database.list('/c1')
     .map(collections => collections.filter(collection => {
       let rE = new RegExp(this.searchPattern, 'gi');
-      return (rE.test(collection.f3.v) 
-        || rE.test(collection.f2.v) 
-        || rE.test(collection.f4.v))
+      return (rE.test(collection.a2) 
+        || rE.test(collection.a3) 
+        || rE.test(collection.a4))
     }));
   }
   

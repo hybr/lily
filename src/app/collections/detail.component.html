@@ -1,9 +1,11 @@
-<div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading {{(docOfCocs|async)?.name}}  detail...</div>
+
+
+<div class="lns_loading" *ngIf="!(docOfCocs | async)">Loading {{(docOfCocs|async)?.a2}}  detail...</div>
 <md-card *ngIf="(docOfCocs | async)">
 
 	<md-card-header>
-		<md-card-title><h2>Table {{(docOfCocs|async)?.name}} Details</h2></md-card-title>
-		<md-card-subtitle>{{(docOfCocs|async)?.detail}}</md-card-subtitle>
+		<md-card-title><h2>Table {{(docOfCocs|async)?.a3}} Details</h2></md-card-title>
+		<md-card-subtitle>{{(docOfCocs|async)?.a4}}</md-card-subtitle>
 	</md-card-header>
 
 	<md-card-content>
@@ -11,7 +13,7 @@
 			<md-list-item>
 				<button 
 					md-mini-fab 
-					[routerLink]="['/ac/new/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.f2.v]"
+					[routerLink]="['/ac/new/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.a2]"
 					title="Add New Record"
 				><md-icon>add</md-icon></button>
 				&nbsp;
@@ -29,21 +31,22 @@
 			
 			<md-list-item 
 				*ngFor="let actualCollection of actualCollectionList | async" 
-				[class.disabled]="!docOfCocs.active"
+				[class.disabled]="!docOfCocs.a1
+				"
 			>
 						<button md-mini-fab
-							[routerLink]="['/ac/update/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.f2.v, actualCollection.$key]" 
+							[routerLink]="['/ac/update/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.a2, actualCollection.$key]" 
 							title="Update"
 						><md-icon>mode_edit</md-icon></button>
 						
 						<button md-mini-fab
-							[routerLink]="['/ac/remove/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.f2.v, actualCollection.$key]" 
+							[routerLink]="['/ac/remove/'+(docOfCocs|async)?.$key+'/'+(docOfCocs|async)?.a2, actualCollection.$key]" 
 							title="Remove"
 						><md-icon>delete</md-icon></button>
 
-						{{actualCollection.number}}.
-						{{actualCollection.name}}
-						: {{actualCollection.detail}}
+						{{actualCollection.a2}}.
+						{{actualCollection.a3}}
+						: {{actualCollection.a4}}
 			</md-list-item>
 		</md-list>
 

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AngularFire, FirebaseObjectObservable, FirebaseListObservable, } from 'angularfire2';
 import { Subject } from 'rxjs/Subject';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-collections-table-record',
@@ -8,7 +10,7 @@ import { Subject } from 'rxjs/Subject';
 	styleUrls: ['./table-record.component.css']
 })
 export class TableRecordComponent implements OnInit {
-	
+	public listOfCollToUpdate: FirebaseListObservable<any[]>;
 	public docOfCocs: FirebaseObjectObservable<any>;
 	public recordStructure: Object = {};
 
@@ -21,9 +23,9 @@ export class TableRecordComponent implements OnInit {
 		this.recordValues[fieldName] = value[fieldName];
 	}
 
-	onsubmit() {
-		this.recordValuesUpdated.emit(this.recordValues);
-	}
+
+	
+
 
 	createRecordStructureFromC3Table(cocsRecord) {
 		//console.log('########################################');
@@ -136,11 +138,21 @@ export class TableRecordComponent implements OnInit {
 	} /* createRecordStructureFromC3Table */
 
 	constructor(
-		private _af: AngularFire
+		private _af: AngularFire,
+		private _route: ActivatedRoute,
+		private _location: Location
 	) { }
 
 	ngOnInit() {
 		let self = this;
+
+		/* Actual Collection, new record will be pushed in this llist */
+
+		//let cNum = self._route.snapshot.paramMap.get('cNum');
+		//console.log('cNum  =', cNum);
+
+		self.listOfCollToUpdate = self._af.database.list(`/c1`);
+		console.log('self.listOfCollToUpdate = ', self.listOfCollToUpdate);
 
 		/* Collection Structure of tableNumber */
 		const subject = new Subject();
@@ -254,5 +266,11 @@ export class TableRecordComponent implements OnInit {
 		//console.log('Final Record Structure = ', this.recordStructure);
 		//console.log('Final Record Values = ', this.recordValues);
 	}
+
+	onSubmit() {
+		this.listOfCollToUpdate.push(this.recordValues);
+		// this.route.navigateByUrl('/cocs/list');
+		this._location.back();
+	} // onSubmit
 
 }

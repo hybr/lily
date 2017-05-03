@@ -24,7 +24,7 @@ export class DetailDocOfCocsComponent implements OnInit {
 
   ngOnInit() {
     let key = this._route.snapshot.paramMap.get('key');
-    this.docOfCocs = this._af.database.object(`/c3/${key}`);
+    this.docOfCocs = this._af.database.object(`/c1/${key}`);
     this.searchActualCollections();  
   } // ngOnInit
 
@@ -34,13 +34,13 @@ export class DetailDocOfCocsComponent implements OnInit {
     this.docOfCocs.subscribe(
       function(result) {
         console.log('result =', result);
-        self.actualCollectionList = self._af.database.list('/' + result['number'])
+        self.actualCollectionList = self._af.database.list('/' + result['a2'])
         .map(collections => collections.filter(
           actualCollection => {
             let rE = new RegExp(self.actualCollectionSearchPattern, 'gi');
-            return (rE.test(actualCollection.name) 
-              || rE.test(actualCollection.number) 
-              || rE.test(actualCollection.detail));
+            return (rE.test(actualCollection.a2) 
+              || rE.test(actualCollection.a3) 
+              || rE.test(actualCollection.a4));
           }
           ));
         
