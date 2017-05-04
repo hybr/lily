@@ -1,7 +1,4 @@
 
-
-
-
 <md-slide-toggle 
 	
 	*ngIf="(fieldProperties['f5'] == 'boolean')"
@@ -35,3 +32,44 @@
 		(ngModelChange)="fieldValueChanged($event)"
 	/>
 </md-input-container>
+
+<md-radio-group 
+	*ngIf="(fieldProperties['f5'] == 'field_type')"
+	[(ngModel)]="fieldValue" 
+	(ngModelChange)="fieldValueChanged($event)"
+>
+	{{ fieldProperties['f2'] }}<br />
+	<md-radio-button value="field">Single Field</md-radio-button>
+	<md-radio-button value="field_group">Field Group</md-radio-button>
+</md-radio-group>
+
+
+<md-radio-group 
+	*ngIf="(fieldProperties['f5'] == 'value_type')"
+	[(ngModel)]="fieldValue" 
+	(ngModelChange)="fieldValueChanged($event)"
+>
+	{{ fieldProperties['f2'] }}<br />
+	<md-radio-button value="boolean">boolean</md-radio-button>
+	<md-radio-button value="string">string</md-radio-button>
+	<md-radio-button value="number">number</md-radio-button>
+	<md-radio-button value="field_type">field type</md-radio-button>
+	<md-radio-button value="value_type">value type</md-radio-button>
+	<md-radio-button value="field_sequence">field sequence</md-radio-button>
+</md-radio-group>
+
+<div 
+	*ngIf="(fieldProperties['f5'] == 'field_sequence')"
+>Field Sequence {{fieldValue}}
+	<md-slider
+		[(ngModel)]="fieldValue" 
+		(ngModelChange)="fieldValueChanged($event)"
+	    [max]=20
+	    [min]=1
+	    [step]=1
+	    [thumb-label]=true
+	></md-slider>
+</div>
+
+
+<hr />

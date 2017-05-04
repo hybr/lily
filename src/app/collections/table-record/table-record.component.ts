@@ -15,17 +15,13 @@ export class TableRecordComponent implements OnInit {
 	public recordStructure: Object = {};
 
 	@Input() recordValues : Object  = {};
-	@Input() tableNumber: string = 'c3';
+	@Input() tableNumber: string = 'c2'; /* c1 is table of record structures of all other tables */
 	@Output() recordValuesUpdated: EventEmitter<any> = new EventEmitter<any>();
 
 	updateFieldValue(fieldName, value) {
 		//console.log('Received in table record = fieldName ', fieldName, ' value ', value);
 		this.recordValues[fieldName] = value[fieldName];
 	}
-
-
-	
-
 
 	createRecordStructureFromC3Table(cocsRecord) {
 		//console.log('########################################');
@@ -34,7 +30,6 @@ export class TableRecordComponent implements OnInit {
 		let convertedRecordStructure: Object = {};
 
 		let sequenceCounter = 1;
-
 		/* 
 			f1 = name 
 			f2 = title
@@ -148,123 +143,35 @@ export class TableRecordComponent implements OnInit {
 
 		/* Actual Collection, new record will be pushed in this llist */
 
-		//let cNum = self._route.snapshot.paramMap.get('cNum');
-		//console.log('cNum  =', cNum);
+		this.tableNumber = self._route.snapshot.paramMap.get('cNum');
+		console.log('TableRecordComponent: this.tableNumber cNum  =', this.tableNumber);
 
-		self.listOfCollToUpdate = self._af.database.list(`/c1`);
-		console.log('self.listOfCollToUpdate = ', self.listOfCollToUpdate);
+		self.listOfCollToUpdate = self._af.database.list('/' + this.tableNumber);
+		console.log('TableRecordComponent: self.listOfCollToUpdate = ', self.listOfCollToUpdate);
 
 		/* Collection Structure of tableNumber */
 		const subject = new Subject();
 
-		const queryObservable = self._af.database.list('/c3', {
+		/* c1 table contains the structures of all other tables */
+		const queryObservable = self._af.database.list('/c1', {
 			query: {
-			orderByChild: 'f2', /* collection number */
-			equalTo: subject
+			orderByChild: 'a2', /* a2 is field name for collection number */
+			equalTo: subject /* collection number to be updated */
 			}
 		});
+		console.log('TableRecordComponent: queryObservable = ', queryObservable);
 
 		// subscribe to changes
 		queryObservable.subscribe(record => {
-		  //console.log('Record for collection number ', this.tableNumber, ' is ', record);  
+			/* the result is list of records, so take the first one */
+		   this.recordValues = record[0];
+		   this.recordStructure = this.createRecordStructureFromC3Table(this.recordValues['a5']);
+		   console.log('TableRecordComponent: Record for collection number ', this.tableNumber, ' in c1 table is ', this.recordValues);  
 		});
 
 		// trigger the query
-		subject.next(self.tableNumber);
+		subject.next(this.tableNumber);
 
-
-		
-		this.recordValues =  
-{
-	"a1": true,
-	"a2": "c1",
-	"a3": "Collections",
-	"a4": "The list of collections",
-	"a5": {
-		"0": {
-			"f1": "a1",
-			"f2": "Is Collection Active",
-			"f3": "field",
-			"f5": "boolean",
-			"f4": "1"
-		},
-		"1": {
-			"f1": "a2",
-			"f2": "Collection Number",
-			"f3": "field",
-			"f5": "string",
-			"f4": "3"
-		},
-		"2": {
-			"f1": "a3",
-			"f2": "Collection Name",
-			"f3": "field",
-			"f5": "string",
-			"f4": "2"
-		},
-		"3": {
-			"f1": "a4",
-			"f2": "Detail",
-			"f3": "field",
-			"f5": "string",
-			"f4": "4"
-		},
-		"4": {
-			"0": {
-				"f1": "f1",
-				"f2": "Name",
-				"f3": "field",
-				"f4": 1
-			},
-			"1": {
-				"f1": "f2",
-				"f2": "Title",
-				"f3": "field",
-				"f4": 2
-			},
-			"2": {
-				"f1": "f3",
-				"f2": "Field Type",
-				"f3": "field",
-				"f4": 3
-			},
-			"3": {
-				"f1": "f4",
-				"f2": "Sequence",
-				"f3": "field",
-				"f4": 5
-			},
-			"4": {
-				"f1": "f5",
-				"f2": "Value Type",
-				"f3": "field",
-				"f4": 4
-			},
-			"5": {
-				"f1": "f6",
-				"f2": "Default Value",
-				"f3": "field",
-				"f4": 6
-			},
-			"6": {
-				"f1": "f7",
-				"f2": "Is Required",
-				"f3": "field",
-				"f4": 7,
-				"f5" : 'boolean'
-			},
-			"f1": "a5",
-			"f2": "Record Structure",
-			"f3": "field_group",
-			"f5": "object",
-			"f4": "5"
-		}
-	}
-}
-
-		this.recordStructure = this.createRecordStructureFromC3Table(this.recordValues['a5']);
-		//console.log('Final Record Structure = ', this.recordStructure);
-		//console.log('Final Record Values = ', this.recordValues);
 	}
 
 	onSubmit() {

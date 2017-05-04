@@ -1,4 +1,96 @@
 
+    
+    this.recordValues =  
+{
+  "a1": true,
+  "a2": "c1",
+  "a3": "Collections",
+  "a4": "The list of collections",
+  "a5": {
+    "0": {
+      "f1": "a1",
+      "f2": "Is Collection Active",
+      "f3": "field",
+      "f5": "boolean",
+      "f4": "1"
+    },
+    "1": {
+      "f1": "a2",
+      "f2": "Collection Number",
+      "f3": "field",
+      "f5": "string",
+      "f4": "3"
+    },
+    "2": {
+      "f1": "a3",
+      "f2": "Collection Name",
+      "f3": "field",
+      "f5": "string",
+      "f4": "2"
+    },
+    "3": {
+      "f1": "a4",
+      "f2": "Detail",
+      "f3": "field",
+      "f5": "string",
+      "f4": "4"
+    },
+    "4": {
+      "0": {
+        "f1": "f1",
+        "f2": "Name",
+        "f3": "field",
+        "f4": 1
+      },
+      "1": {
+        "f1": "f2",
+        "f2": "Title",
+        "f3": "field",
+        "f4": 2
+      },
+      "2": {
+        "f1": "f3",
+        "f2": "Field Type",
+        "f3": "field",
+        "f4": 3
+      },
+      "3": {
+        "f1": "f4",
+        "f2": "Sequence",
+        "f3": "field",
+        "f4": 5
+      },
+      "4": {
+        "f1": "f5",
+        "f2": "Value Type",
+        "f3": "field",
+        "f4": 4
+      },
+      "5": {
+        "f1": "f6",
+        "f2": "Default Value",
+        "f3": "field",
+        "f4": 6
+      },
+      "6": {
+        "f1": "f7",
+        "f2": "Is Required",
+        "f3": "field",
+        "f4": 7,
+        "f5" : 'boolean'
+      },
+      "f1": "a5",
+      "f2": "Record Structure",
+      "f3": "field_group",
+      "f5": "object",
+      "f4": "5"
+    }
+  }
+}
+
+
+------------------------------------------------
+
 
           <app-collections-record-field
         

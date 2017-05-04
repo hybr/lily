@@ -30,10 +30,10 @@ export class DetailDocOfCocsComponent implements OnInit {
 
   searchActualCollections(): void {
     let self = this;
-    console.log('cD = ', self.docOfCocs);
+    console.log('detail.component: docOfCocs = ', self.docOfCocs);
     this.docOfCocs.subscribe(
       function(result) {
-        console.log('result =', result);
+        console.log('detail.component: result =', result);
         self.actualCollectionList = self._af.database.list('/' + result['a2'])
         .map(collections => collections.filter(
           actualCollection => {
