@@ -46,6 +46,7 @@ import { RecordFieldGroupComponent } from './collections/record-field-group/reco
 import { TableRecordComponent } from './collections/table-record/table-record.component';
 import { CreateTableRecordComponent } from './collections/create-table-record/create-table-record.component';
 import { UpdateTableRecordComponent } from './collections/update-table-record/update-table-record.component';
+import { RemoveTableRecordComponent } from './collections/remove-table-record/remove-table-record.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -78,7 +79,8 @@ const firebaseConfig = {
     RecordFieldGroupComponent,
     TableRecordComponent,
     CreateTableRecordComponent,
-    UpdateTableRecordComponent
+    UpdateTableRecordComponent,
+    RemoveTableRecordComponent
   ],
 
   imports: [

@@ -13,12 +13,13 @@ export class TableRecordComponent implements OnInit {
 	public listOfCollToUpdate: FirebaseListObservable<any[]>;
 	public docOfCocs: FirebaseObjectObservable<any>;
 	public recordStructure: Object = {};
-	public cA = '';
 	public title = '';
+	public r = {};
 
-	@Input() recordValues : Object  = {};
+	@Input() recordValues: Object;
 	@Input() tableNumber: string = 'c2'; /* c1 is table of record structures of all other tables */
 	@Input() crudAction: string = 'create';
+	@Input() recordKey: string = '';
 	@Output() recordValuesUpdated: EventEmitter<any> = new EventEmitter<any>();
 
 	updateFieldValue(fieldName, value) {
@@ -165,7 +166,7 @@ export class TableRecordComponent implements OnInit {
 			/* the result is list of records, so take the first one */
 		   this.recordStructure = this.createRecordStructureFromC3Table(record[0]['a5']);
 		   this.title = record[0]['a3'];
-		   this.cA = this.crudAction;
+		   this.r = this.recordValues;
 		   console.log('TableRecordComponent: Record for collection number ', this.tableNumber, ' in c1 table is ', this.recordValues);  
 		});
 
@@ -174,7 +175,13 @@ export class TableRecordComponent implements OnInit {
 	}
 
 	onSubmit() {
-		this.listOfCollToUpdate.push(this.recordValues);
+		if (this.crudAction == 'create') {
+			this.listOfCollToUpdate.push(this.recordValues);
+		} else if (this.crudAction == 'update') {
+			this.listOfCollToUpdate.update(this.recordKey, this.recordValues);
+		} else if (this.crudAction == 'remove') {
+			this.listOfCollToUpdate.remove(this.recordKey);
+		}
 		// this.route.navigateByUrl('/cocs/list');
 		this._location.back();
 	} // onSubmit

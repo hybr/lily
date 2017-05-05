@@ -1,9 +1,10 @@
-{{crudAction}}
-<md-card *ngIf="recordValues">
+<pre>
+	{{r | json}}
+</pre><md-card *ngIf="title != ''">
 	<md-card-header>
 		<md-card-title><h2>
-			<span *ngIf="cA == 'create'">Adding New </span>
-			<span *ngIf="cA == 'update'">Updating </span>
+			<span *ngIf="crudAction == 'create'">Adding New </span>
+			<span *ngIf="crudAction == 'update'">Updating </span>
 			{{title}} Record
 		</h2></md-card-title>
 		<md-card-subtitle>{{recordValues['a4']}}</md-card-subtitle>
@@ -12,11 +13,11 @@
 	<md-card-content>
 		<form #cocsForm="ngForm">
 		<fieldset>
-			<legend>{{recordValues['a3']}}</legend>
-			
+			<legend>{{title}}</legend>
+			<!--
 			<hr />recordStructure = <pre>{{recordStructure | json}}</pre>
 			<hr />recordValues = <pre>{{recordValues | json}}</pre>
-			
+			-->
 			<table>
 				<tr *ngFor=" let fieldName of recordStructure['sorted_field_names']; let rfc = index; "><td>
 					<!--
