@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-create-table-record',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateTableRecordComponent implements OnInit {
 
-  constructor() { }
+	public collectionNumber: string = 'c2';
+  constructor(
+  	private _route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+
+		this.collectionNumber = this._route.snapshot.paramMap.get('cNum');
+		console.log('TableRecordComponent: this.collectionNumber cNum  =', this.collectionNumber);
   }
 
 }

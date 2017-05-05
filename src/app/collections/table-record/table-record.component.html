@@ -1,6 +1,11 @@
-<md-card>
+{{crudAction}}
+<md-card *ngIf="recordValues">
 	<md-card-header>
-		<md-card-title><h2>Adding New {{recordValues['a3']}} Record</h2></md-card-title>
+		<md-card-title><h2>
+			<span *ngIf="cA == 'create'">Adding New </span>
+			<span *ngIf="cA == 'update'">Updating </span>
+			{{title}} Record
+		</h2></md-card-title>
 		<md-card-subtitle>{{recordValues['a4']}}</md-card-subtitle>
 	</md-card-header>
 
@@ -8,10 +13,10 @@
 		<form #cocsForm="ngForm">
 		<fieldset>
 			<legend>{{recordValues['a3']}}</legend>
-			<!--
+			
 			<hr />recordStructure = <pre>{{recordStructure | json}}</pre>
 			<hr />recordValues = <pre>{{recordValues | json}}</pre>
-			-->
+			
 			<table>
 				<tr *ngFor=" let fieldName of recordStructure['sorted_field_names']; let rfc = index; "><td>
 					<!--
@@ -53,7 +58,10 @@
             md-raised-button
             type="submit"
             (click)="onSubmit()" 
-          >Add Record</button>
+          >
+          	<span *ngIf="crudAction == 'create'">Adding New </span>
+			<span *ngIf="crudAction == 'update'">Updating </span>
+          Record</button>
           <button
             md-raised-button
             [routerLink]="['/cocs/list']" 

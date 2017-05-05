@@ -45,6 +45,7 @@ import { RecordFieldComponent } from './collections/record-field/record-field.co
 import { RecordFieldGroupComponent } from './collections/record-field-group/record-field-group.component';
 import { TableRecordComponent } from './collections/table-record/table-record.component';
 import { CreateTableRecordComponent } from './collections/create-table-record/create-table-record.component';
+import { UpdateTableRecordComponent } from './collections/update-table-record/update-table-record.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -76,7 +77,8 @@ const firebaseConfig = {
     RecordFieldComponent,
     RecordFieldGroupComponent,
     TableRecordComponent,
-    CreateTableRecordComponent
+    CreateTableRecordComponent,
+    UpdateTableRecordComponent
   ],
 
   imports: [

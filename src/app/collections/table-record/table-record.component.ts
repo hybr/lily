@@ -13,9 +13,12 @@ export class TableRecordComponent implements OnInit {
 	public listOfCollToUpdate: FirebaseListObservable<any[]>;
 	public docOfCocs: FirebaseObjectObservable<any>;
 	public recordStructure: Object = {};
+	public cA = '';
+	public title = '';
 
 	@Input() recordValues : Object  = {};
 	@Input() tableNumber: string = 'c2'; /* c1 is table of record structures of all other tables */
+	@Input() crudAction: string = 'create';
 	@Output() recordValuesUpdated: EventEmitter<any> = new EventEmitter<any>();
 
 	updateFieldValue(fieldName, value) {
@@ -141,11 +144,7 @@ export class TableRecordComponent implements OnInit {
 	ngOnInit() {
 		let self = this;
 
-		/* Actual Collection, new record will be pushed in this llist */
-
-		this.tableNumber = self._route.snapshot.paramMap.get('cNum');
-		console.log('TableRecordComponent: this.tableNumber cNum  =', this.tableNumber);
-
+		/* Actual Collection, new record will be pushed in this list */
 		self.listOfCollToUpdate = self._af.database.list('/' + this.tableNumber);
 		console.log('TableRecordComponent: self.listOfCollToUpdate = ', self.listOfCollToUpdate);
 
@@ -164,14 +163,14 @@ export class TableRecordComponent implements OnInit {
 		// subscribe to changes
 		queryObservable.subscribe(record => {
 			/* the result is list of records, so take the first one */
-		   this.recordValues = record[0];
-		   this.recordStructure = this.createRecordStructureFromC3Table(this.recordValues['a5']);
+		   this.recordStructure = this.createRecordStructureFromC3Table(record[0]['a5']);
+		   this.title = record[0]['a3'];
+		   this.cA = this.crudAction;
 		   console.log('TableRecordComponent: Record for collection number ', this.tableNumber, ' in c1 table is ', this.recordValues);  
 		});
 
 		// trigger the query
 		subject.next(this.tableNumber);
-
 	}
 
 	onSubmit() {

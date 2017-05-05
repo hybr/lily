@@ -4,8 +4,8 @@ import { ListDocsOfCocsComponent } from './list.component';
 import { DetailDocOfCocsComponent } from './detail.component';
 import { AddDocInCocsComponent } from './add.component';
 
-import { TableRecordComponent } from './table-record/table-record.component';
-import { UpdateDocInCollComponent } from './updateInColl.component';
+import { CreateTableRecordComponent } from './create-table-record/create-table-record.component';
+import { UpdateTableRecordComponent } from './update-table-record/update-table-record.component';
 
 export const CollectionComponentRoutes: Routes = [
 	/* { path: 'cocs/new', component: AddDocInCocsComponent }, // C */
@@ -17,7 +17,7 @@ export const CollectionComponentRoutes: Routes = [
 	{ path: 'cocs/remove/:key', component: AddDocInCocsComponent }, // D
 	*/
 
-	{ path: 'ac/new/:cDocKey/:cNum', component: TableRecordComponent },
-	{ path: 'ac/update/:cDocKey/:cNum/:docId', component: UpdateDocInCollComponent },
+	{ path: 'ac/new/:cNum', component: CreateTableRecordComponent },
+	{ path: 'ac/update/:cNum/:docId', component: UpdateTableRecordComponent },
 
 ];
