@@ -6,7 +6,6 @@ import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'a
 import 'rxjs/add/operator/map';
 import "rxjs/add/operator/filter";
 import { Observable } from 'rxjs';
-import { CollectionOfCollections } from './model';
 
 @Component({
   selector: 'app-collection-list',
@@ -16,14 +15,14 @@ import { CollectionOfCollections } from './model';
 })
 export class ListDocsOfCocsComponent implements OnInit {
 
-  public docOfCocs: FirebaseObjectObservable<CollectionOfCollections>;
-  public listOfCocs: Observable<CollectionOfCollections[]>;
+  public docOfCocs: FirebaseObjectObservable<any>;
+  public listOfCocs: Observable<any[]>;
   searchPattern: string = '';
-  
+
   constructor(
     private _af: AngularFire,
     private _lss: LocalStorageService
-  ) {
+    ) {
     this.searchCollections();
     this.docOfCocs = this._af.database.object('/c1/-KjAxiZyYeXzupLkdeXl');
   }
@@ -37,7 +36,7 @@ export class ListDocsOfCocsComponent implements OnInit {
         || rE.test(collection.a4))
     }));
   }
-  
+
   ngOnInit() {
   }
 

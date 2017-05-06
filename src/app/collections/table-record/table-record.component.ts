@@ -14,7 +14,7 @@ export class TableRecordComponent implements OnInit {
 	public docOfCocs: FirebaseObjectObservable<any>;
 	public recordStructure: Object = {};
 	public title = '';
-	public r = {};
+	public detail = '';
 
 	@Input() recordValues: Object;
 	@Input() tableNumber: string = 'c2'; /* c1 is table of record structures of all other tables */
@@ -23,8 +23,9 @@ export class TableRecordComponent implements OnInit {
 	@Output() recordValuesUpdated: EventEmitter<any> = new EventEmitter<any>();
 
 	updateFieldValue(fieldName, value) {
-		//console.log('Received in table record = fieldName ', fieldName, ' value ', value);
+		console.log('TableRecordComponent: Received in table record = fieldName ', fieldName, ' value ', value);
 		this.recordValues[fieldName] = value[fieldName];
+		console.log('TableRecordComponent: Final table record ', this.recordValues);
 	}
 
 	createRecordStructureFromC3Table(cocsRecord) {
@@ -40,6 +41,8 @@ export class TableRecordComponent implements OnInit {
 			f3 = field_type
 			f4 = sequence
 			f5 = value_type
+			f6 = default value
+			f7 = Does Value Required?
 		*/
 
 		for (var key of Object.keys(cocsRecord) ) {
@@ -55,34 +58,18 @@ export class TableRecordComponent implements OnInit {
 
 			//console.log('field of ', property, ' = ', field);
 
-			let fFieldType = 'field';
-			if (field['f3']) {
-				fFieldType = field['f3'];
-			}
-
 			let fName = property;
 			if (field['f1']) {
 				fName = field['f1'];
 			}
 
-			let fDefaultValue = '';
-			if (field['default_value']) {
-				fDefaultValue = field['default_value'];
-			}
-
-			let fValue = fDefaultValue;
-			if (field['v']) {
-				fValue = field['v'];
-			}
-
-			let fValueType = 'string';
-			if (field['f5']) {
-				fValueType = field['f5'];
-			}
-
 			let fTitle = fName.split('_').map(i => i[0].toUpperCase() + i.substr(1).toLowerCase()).join(' ');
 			if (field['f2']) {
 				fTitle = field['f2'];
+			}
+			let fFieldType = 'field';
+			if (field['f3']) {
+				fFieldType = field['f3'];
 			}
 
 			let fSequence = sequenceCounter;
@@ -90,13 +77,34 @@ export class TableRecordComponent implements OnInit {
 			if (field['f4']) {
 				fSequence = parseInt(field['f4']);
 			}
+			let fValueType = 'string';
+			if (field['f5']) {
+				fValueType = field['f5'];
+			}
+
+			let fDefaultValue = '';
+			if (field['f6']) {
+				fDefaultValue = field['f6'];
+			}
+
+			let fRequired = true;
+			if (field['f7']) {
+				fRequired = field['f7'];
+			}
+
+			let fValue = fDefaultValue;
+			if (field['v']) {
+				fValue = field['v'];
+			}
 
 			convertedRecordStructure[fName] = {
 				'f1' : fName,
 				'f2' : fTitle,
 				'f3' : fFieldType,
 				'f4' : fSequence,
-				'f5' : fValueType
+				'f5' : fValueType,
+				'f6' : fDefaultValue,
+				'f7' : fRequired
 			};
 
 			var resultObj : Object  = {};
@@ -147,7 +155,7 @@ export class TableRecordComponent implements OnInit {
 
 		/* Actual Collection, new record will be pushed in this list */
 		self.listOfCollToUpdate = self._af.database.list('/' + this.tableNumber);
-		console.log('TableRecordComponent: self.listOfCollToUpdate = ', self.listOfCollToUpdate);
+		//console.log('TableRecordComponent: self.listOfCollToUpdate = ', self.listOfCollToUpdate);
 
 		/* Collection Structure of tableNumber */
 		const subject = new Subject();
@@ -159,15 +167,15 @@ export class TableRecordComponent implements OnInit {
 			equalTo: subject /* collection number to be updated */
 			}
 		});
-		console.log('TableRecordComponent: queryObservable = ', queryObservable);
+		//console.log('TableRecordComponent: queryObservable = ', queryObservable);
 
 		// subscribe to changes
 		queryObservable.subscribe(record => {
 			/* the result is list of records, so take the first one */
 		   this.recordStructure = this.createRecordStructureFromC3Table(record[0]['a5']);
 		   this.title = record[0]['a3'];
-		   this.r = this.recordValues;
-		   console.log('TableRecordComponent: Record for collection number ', this.tableNumber, ' in c1 table is ', this.recordValues);  
+		   this.detail = record[0]['a4'];
+		   //console.log('TableRecordComponent: Record for collection number ', this.tableNumber, ' in c1 table is ', this.recordValues);  
 		});
 
 		// trigger the query

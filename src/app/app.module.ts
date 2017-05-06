@@ -38,9 +38,6 @@ import { StepAddComponent } from './step/add.component';
 
 import { DetailDocOfCocsComponent } from './collections/detail.component';
 import { ListDocsOfCocsComponent } from './collections/list.component';
-import { AddDocInCocsComponent } from './collections/add.component';
-import { AddDocInCollComponent } from './collections/addInColl.component';
-import { UpdateDocInCollComponent } from './collections/updateInColl.component';
 import { RecordFieldComponent } from './collections/record-field/record-field.component';
 import { RecordFieldGroupComponent } from './collections/record-field-group/record-field-group.component';
 import { TableRecordComponent } from './collections/table-record/table-record.component';
@@ -70,10 +67,6 @@ const firebaseConfig = {
 
     DetailDocOfCocsComponent,
     ListDocsOfCocsComponent,
-    AddDocInCocsComponent,
-    UpdateDocInCollComponent,
-    
-    AddDocInCollComponent,
     
     RecordFieldComponent,
     RecordFieldGroupComponent,

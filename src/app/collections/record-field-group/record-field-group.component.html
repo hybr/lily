@@ -23,6 +23,8 @@
 					<hr />
 					-->
 
+					<!-- {{fieldGroupProperties | json}} -->
+
 					<app-collections-record-field
 			  
 			  			*ngIf="fieldGroupProperties['fields'][fieldGroupPropertyName]['f3'] == 'field'"
@@ -34,6 +36,8 @@
 						(fieldValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
 
 					></app-collections-record-field>
+
+					<h1 *ngIf="fieldGroupProperties['fields'][fieldGroupPropertyName]['f3'] == 'field_group'">Field Group</h1>
 
 					<app-collections-record-field-group
 

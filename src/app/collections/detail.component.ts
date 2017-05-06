@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2';
 import { ActivatedRoute, Params } from '@angular/router';
-import { CollectionOfCollections } from './model';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -11,8 +10,8 @@ import { Observable } from 'rxjs';
 })
 export class DetailDocOfCocsComponent implements OnInit {
 
-  public docOfCocs: FirebaseObjectObservable<CollectionOfCollections>;
-  public actualCollectionList: Observable<CollectionOfCollections[]>;
+  public docOfCocs: FirebaseObjectObservable<any>;
+  public actualCollectionList: Observable<any[]>;
   public actualCollectionSearchPattern: string = '';
   public actualCollectionNumber = '';
   
@@ -30,10 +29,10 @@ export class DetailDocOfCocsComponent implements OnInit {
 
   searchActualCollections(): void {
     let self = this;
-    console.log('detail.component: docOfCocs = ', self.docOfCocs);
+    // console.log('detail.component: docOfCocs = ', self.docOfCocs);
     this.docOfCocs.subscribe(
       function(result) {
-        console.log('detail.component: result =', result);
+        // console.log('detail.component: result =', result);
         self.actualCollectionList = self._af.database.list('/' + result['a2'])
         .map(collections => collections.filter(
           actualCollection => {

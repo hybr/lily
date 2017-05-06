@@ -1,78 +1,84 @@
-<pre>
-	{{r | json}}
-</pre><md-card *ngIf="title != ''">
+<md-card *ngIf="title != ''">
 	<md-card-header>
 		<md-card-title><h2>
 			<span *ngIf="crudAction == 'create'">Adding New </span>
 			<span *ngIf="crudAction == 'update'">Updating </span>
+			<span *ngIf="crudAction == 'remove'">Removing </span>
 			{{title}} Record
 		</h2></md-card-title>
-		<md-card-subtitle>{{recordValues['a4']}}</md-card-subtitle>
+		<md-card-subtitle>{{detail}}</md-card-subtitle>
 	</md-card-header>
 
 	<md-card-content>
 		<form #cocsForm="ngForm">
-		<fieldset>
-			<legend>{{title}}</legend>
-			<!--
-			<hr />recordStructure = <pre>{{recordStructure | json}}</pre>
-			<hr />recordValues = <pre>{{recordValues | json}}</pre>
+			<fieldset>
+				<legend>{{title}}</legend>
+		<!--
+		<hr />recordStructure = <pre>{{recordStructure | json}}</pre>
+		<hr />recordValues = <pre>{{recordValues | json}}</pre>
+	-->
+	<table>
+		<tr *ngFor=" let fieldName of recordStructure['sorted_field_names']; let rfc = index; "><td>
+				<!--
+				<hr />fieldName = {{fieldName | json }}
+				<hr />recordStructure['sorted_field_names'] = {{recordStructure['sorted_field_names'] | json }}
+				<hr />recordStructure[fieldName] = {{ recordStructure[fieldName] | json }}
+				<hr />recordValues[fieldName] = {{ recordValues[fieldName] | json }}
+				<hr />
 			-->
-			<table>
-				<tr *ngFor=" let fieldName of recordStructure['sorted_field_names']; let rfc = index; "><td>
-					<!--
-					<hr />fieldName = {{fieldName | json }}
-					<hr />recordStructure['sorted_field_names'] = {{recordStructure['sorted_field_names'] | json }}
-					<hr />recordStructure[fieldName] = {{ recordStructure[fieldName] | json }}
-					<hr />recordValues[fieldName] = {{ recordValues[fieldName] | json }}
-					<hr />
-					-->
 
-					<app-collections-record-field
+			<app-collections-record-field
 
-						*ngIf="recordStructure[fieldName]['f3'] == 'field'"
+			*ngIf="recordStructure[fieldName]['f3'] == 'field'"
 
-						[fieldValue]="recordValues[fieldName]"
+			[fieldValue]="recordValues[fieldName]"
 
-						[fieldProperties]="recordStructure[fieldName]" 
+			[fieldProperties]="recordStructure[fieldName]" 
 
-						(fieldValueUpdated)="updateFieldValue(fieldName, $event)"
+			(fieldValueUpdated)="updateFieldValue(fieldName, $event)"
 
-					></app-collections-record-field>
+			></app-collections-record-field>
 
-					<app-collections-record-field-group
+			<app-collections-record-field-group
 
-						*ngIf="recordStructure[fieldName]['f3'] == 'field_group'"
+			*ngIf="recordStructure[fieldName]['f3'] == 'field_group'"
 
-						[fieldGroupValues]="recordValues[fieldName]"
+			[fieldGroupValues]="recordValues[fieldName]"
 
-						[fieldGroupProperties]="recordStructure[fieldName]" 
+			[fieldGroupProperties]="recordStructure[fieldName]" 
 
-						(fieldGroupValueUpdated)="updateFieldValue(fieldName, $event)"
+			(fieldGroupValueUpdated)="updateFieldValue(fieldName, $event)"
 
-					></app-collections-record-field-group>
+			></app-collections-record-field-group>
 
-				</td></tr>
-			</table>
-		</fieldset>
-		<button
-            md-raised-button
-            type="submit"
-            (click)="onSubmit()" 
-          >
-          	<span *ngIf="crudAction == 'create'">Adding New </span>
-			<span *ngIf="crudAction == 'update'">Updating </span>
-          Record</button>
-          <button
-            md-raised-button
-            [routerLink]="['/cocs/list']" 
-          >Cancel</button>
-          <button
-            md-raised-button
-            type="reset" 
-          >Reset</button>
-		</form>
-	</md-card-content>
+		</td></tr>
+	</table>
+
+</fieldset>
+
+<button
+	md-raised-button
+	type="submit"
+	(click)="onSubmit()" 
+	color="warn"
+>
+	<span *ngIf="crudAction == 'create'">Add New </span>
+	<span *ngIf="crudAction == 'update'">Update </span>
+	<span *ngIf="crudAction == 'remove'">Remove </span>
+Record</button>
+
+<button
+	md-raised-button
+	[routerLink]="['/cocs/list']" 
+>Cancel</button>
+
+<button
+	md-raised-button
+	type="reset" 
+>Reset</button>
+
+</form>
+</md-card-content>
 </md-card>
 <!--
 Record Data = <pre>{{ recordValues | json }}</pre>

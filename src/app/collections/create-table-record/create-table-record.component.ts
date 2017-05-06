@@ -16,7 +16,7 @@ export class CreateTableRecordComponent implements OnInit {
   ngOnInit() {
 
 		this.collectionNumber = this._route.snapshot.paramMap.get('cNum');
-		console.log('TableRecordComponent: this.collectionNumber cNum  =', this.collectionNumber);
+		//console.log('TableRecordComponent: this.collectionNumber cNum  =', this.collectionNumber);
   }
 
 }
