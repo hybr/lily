@@ -10,7 +10,7 @@ import { AngularFire } from 'angularfire2';
 export class UpdateTableRecordComponent implements OnInit {
 	public collectionNumber: string = '';
 	public recordValue: Object = {};
-	public recordKey:string = '';
+	public recordKey: string = '';
 
 	constructor(
 		private _af: AngularFire,
@@ -18,15 +18,13 @@ export class UpdateTableRecordComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		let self = this;
-
 		this.collectionNumber = this._route.snapshot.paramMap.get('cNum');
 		//console.log('UpdateTableRecordComponent: this.collectionNumber cNum  =', this.collectionNumber);
 
 		this.recordKey = this._route.snapshot.paramMap.get('docId');
 		//console.log('UpdateTableRecordComponent: recordKey docId  =', this.recordKey);
 
-		const queryObservable = self._af.database.object(
+		const queryObservable = this._af.database.object(
 			'/' + this.collectionNumber + '/' + this.recordKey
 		);
 		//console.log('TableRecordComponent: queryObservable = ', queryObservable);
@@ -35,9 +33,12 @@ export class UpdateTableRecordComponent implements OnInit {
 		queryObservable.subscribe(record => {
 			/* the result is list of records, so take the first one */
 			this.recordValue = record;
-			//console.log('TableRecordComponent: Record value ', this.recordValue, ' in table is ', this.collectionNumber);  
+			/* console.log(
+				'TableRecordComponent: Record value ', 
+				this.recordValue, 
+				' in table is ',
+				this.collectionNumber
+			); */
 		});
-
 	}
-
 }

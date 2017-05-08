@@ -18,18 +18,40 @@
 <md-input-container
 	*ngIf="(fieldProperties['f5'] == 'string')"
 >
-	<input 
-	
-		mdInput  
-	
+	<input 	
+		mdInput
 		id="{{ fieldProperties['f1'] }}"
-
-		placeholder="{{ fieldProperties['f2'] }}" 
-	
+		placeholder="{{ fieldProperties['f2'] }}"
 		type="text"
-	
 		name="{{ fieldProperties['f1'] }}"
-	
+		[(ngModel)]="fieldValue"
+		(ngModelChange)="fieldValueChanged($event)"
+	/>
+</md-input-container>
+
+<md-input-container
+	*ngIf="(fieldProperties['f5'] == 'email')"
+>
+	<input 	
+		mdInput
+		id="{{ fieldProperties['f1'] }}"
+		placeholder="{{ fieldProperties['f2'] }}"
+		type="email"
+		name="{{ fieldProperties['f1'] }}"
+		[(ngModel)]="fieldValue"
+		(ngModelChange)="fieldValueChanged($event)"
+	/>
+</md-input-container>
+
+<md-input-container
+	*ngIf="(fieldProperties['f5'] == 'password')"
+>
+	<input 	
+		mdInput
+		id="{{ fieldProperties['f1'] }}"
+		placeholder="{{ fieldProperties['f2'] }}"
+		type="password"
+		name="{{ fieldProperties['f1'] }}"
 		[(ngModel)]="fieldValue"
 		(ngModelChange)="fieldValueChanged($event)"
 	/>
@@ -55,14 +77,17 @@
 	<md-radio-button value="boolean">boolean</md-radio-button>
 	<md-radio-button value="string">string</md-radio-button>
 	<md-radio-button value="number">number</md-radio-button>
+	<md-radio-button value="email">email</md-radio-button>
+	<md-radio-button value="password">password</md-radio-button>
 	<md-radio-button value="field_type">field type</md-radio-button>
 	<md-radio-button value="value_type">value type</md-radio-button>
 	<md-radio-button value="field_sequence">field sequence</md-radio-button>
+	<md-radio-button value="foreign_key">foreign key</md-radio-button>
 </md-radio-group>
 
 <div 
 	*ngIf="(fieldProperties['f5'] == 'field_sequence')"
->Field Sequence {{fieldValue}}
+>Field Sequence<br />{{fieldValue}}
 	<md-slider
 		[(ngModel)]="fieldValue" 
 		(ngModelChange)="fieldValueChanged($event)"
@@ -71,4 +96,43 @@
 	    [step]=1
 	    [thumb-label]=true
 	></md-slider>
+</div>
+
+<div *ngIf="(fieldProperties['f5'] == 'auto_foreign_key')">
+	<md-input-container>
+		<input 
+			mdInput
+			id="{{ fieldProperties['f1'] }}"
+			placeholder="{{ fieldProperties['f2'] }}"
+			type="text"
+			name="{{ fieldProperties['f1'] }}"
+			[(ngModel)]="fieldValue"
+			(ngModelChange)="fieldValueChanged($event)"
+			[mdAutocomplete]="auto"
+		/>
+	</md-input-container>
+	<br />{{ getOptionListTitle(fieldValue) }}
+	<md-autocomplete #auto="mdAutocomplete">
+		<md-option *ngFor="let option of foreignKeyList" [value]="option.value">
+		{{ option.title }}
+		</md-option>
+	</md-autocomplete>
+</div>
+
+<div *ngIf="(fieldProperties['f5'] == 'foreign_key')">
+	<br />
+	<md-select
+			mdInput
+			id="{{ fieldProperties['f1'] }}"
+			placeholder="{{ fieldProperties['f2'] }}"
+			type="text"
+			name="{{ fieldProperties['f1'] }}"
+			[(ngModel)]="fieldValue"
+			(ngModelChange)="fieldValueChanged($event)"
+	>
+		<md-option 
+			*ngFor=" let option of foreignKeyList; " 
+			[value]="option.value"
+		>{{option.title}}</md-option>
+	</md-select>
 </div>

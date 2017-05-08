@@ -52,6 +52,7 @@ export class RecordFieldGroupComponent implements OnInit {
 		}
 		//console.log('RecordFieldGroupComponent: addValue: group = ', group);
 		//console.log('this.fieldGroupValuesKeys.length =', this.fieldGroupValuesKeys.length);
+		if (!this.fieldGroupValues) { this.fieldGroupValues = []; }
 		this.fieldGroupValues[this.fieldGroupValuesKeys.length] = group;
 		this.fieldGroupValuesKeys = Object.keys(this.fieldGroupValues);
 		obj[this.fieldGroupProperties['f1']] = this.fieldGroupValues;
@@ -62,7 +63,9 @@ export class RecordFieldGroupComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
-		this.fieldGroupValuesKeys = Object.keys(this.fieldGroupValues);
+		if (this.fieldGroupValues) {
+			this.fieldGroupValuesKeys = Object.keys(this.fieldGroupValues);
+		}
 		//console.log('Field Group Properties = ', this.fieldGroupProperties);
 		//console.log('Field Group Values = ', this.fieldGroupValues);
 	}

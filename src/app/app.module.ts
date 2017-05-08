@@ -32,18 +32,15 @@ import { ActivityDetailComponent } from './activity/detail.component';
 import { ActivityListComponent } from './activity/list.component';
 import { ActivityAddComponent } from './activity/add.component';
 
-import { StepDetailComponent } from './step/detail.component';
-import { StepListComponent } from './step/list.component';
-import { StepAddComponent } from './step/add.component';
-
 import { DetailDocOfCocsComponent } from './collections/detail.component';
-import { ListDocsOfCocsComponent } from './collections/list.component';
+
 import { RecordFieldComponent } from './collections/record-field/record-field.component';
 import { RecordFieldGroupComponent } from './collections/record-field-group/record-field-group.component';
 import { TableRecordComponent } from './collections/table-record/table-record.component';
 import { CreateTableRecordComponent } from './collections/create-table-record/create-table-record.component';
 import { UpdateTableRecordComponent } from './collections/update-table-record/update-table-record.component';
 import { RemoveTableRecordComponent } from './collections/remove-table-record/remove-table-record.component';
+import { ListDatabaseTablesComponent } from './collections/list-database-tables/list-database-tables.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -61,19 +58,14 @@ const firebaseConfig = {
     ActivityDetailComponent,
     ActivityListComponent,
     ActivityAddComponent,
-    StepDetailComponent,
-    StepListComponent,
-    StepAddComponent,
-
     DetailDocOfCocsComponent,
-    ListDocsOfCocsComponent,
-    
     RecordFieldComponent,
     RecordFieldGroupComponent,
     TableRecordComponent,
     CreateTableRecordComponent,
     UpdateTableRecordComponent,
-    RemoveTableRecordComponent
+    RemoveTableRecordComponent,
+    ListDatabaseTablesComponent
   ],
 
   imports: [

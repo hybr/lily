@@ -22,9 +22,6 @@
 					<hr />valueKey = {{ valueKey | json }}
 					<hr />
 					-->
-
-					<!-- {{fieldGroupProperties | json}} -->
-
 					<app-collections-record-field
 			  
 			  			*ngIf="fieldGroupProperties['fields'][fieldGroupPropertyName]['f3'] == 'field'"
@@ -34,6 +31,9 @@
 						[fieldProperties]="fieldGroupProperties['fields'][fieldGroupPropertyName]" 
 
 						(fieldValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
+
+						[foreignKeyCollectionName]="fieldGroupProperties['fields'][fieldGroupPropertyName]['f8']"
+						[foreignKeyTitleFields]="fieldGroupProperties['fields'][fieldGroupPropertyName]['f9']"
 
 					></app-collections-record-field>
 

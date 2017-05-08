@@ -1,0 +1,54 @@
+<div class="lns_loading" *ngIf="!(listOfCocs | async)">Loading list of tables...</div>
+
+
+<md-card *ngIf="(listOfCocs | async)">
+	<md-card-header>
+		<md-card-title><h2>List of Tables or Collections</h2></md-card-title>
+		<md-card-subtitle>Complete list of tables and collections</md-card-subtitle>
+	</md-card-header>
+
+	<md-card-content>
+		<button 
+			md-mini-fab 
+			[routerLink]="'/ac/new/c1'"
+			title="Add New Table"
+		>
+			<md-icon>add</md-icon>
+		</button>
+		&nbsp;	
+		<md-input-container>
+			<input 
+				mdInput 
+				id="collectionListSearchId" 
+				placeholder="Search Tables" 
+				[(ngModel)]="searchPattern"
+				(ngModelChange) = "searchCollections()"
+			/>
+		</md-input-container>
+
+		<table>
+			<tr
+				*ngFor=" let d of listOfCocs | async; " 
+				[class.disabled]="!d.a1"
+			><td>
+				<button 
+					md-mini-fab
+					[routerLink]="['/cocs/show', d.$key]"
+					title="Update"
+					[class.disabled]="!d.a1"
+				>
+					<md-icon>mode_edit</md-icon> 
+				</button>
+				&nbsp;
+				{{d.a2}}. <u><b>{{d.a3}}</b></u> : {{d.a4}}
+			</td></tr>
+		</table>
+
+	</md-card-content>
+
+	<md-card-actions>
+		Total <strong>{{(listOfCocs|async)?.length}}</strong>
+		{{(listOfCocs|async)?.length <= 1?'table':'tables'}} in list
+	</md-card-actions>
+
+</md-card>

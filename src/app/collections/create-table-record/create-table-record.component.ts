@@ -9,6 +9,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class CreateTableRecordComponent implements OnInit {
 
 	public collectionNumber: string = 'c2';
+  public recordValue: Object = {};
   constructor(
   	private _route: ActivatedRoute
   ) { }

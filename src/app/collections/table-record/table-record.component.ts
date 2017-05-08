@@ -3,6 +3,7 @@ import { AngularFire, FirebaseObjectObservable, FirebaseListObservable, } from '
 import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
+import { Md5 } from 'ts-md5/dist/md5';
 
 @Component({
 	selector: 'app-collections-table-record',
@@ -16,16 +17,16 @@ export class TableRecordComponent implements OnInit {
 	public title = '';
 	public detail = '';
 
-	@Input() recordValues: Object;
+	@Input() recordValues: Object = {};
 	@Input() tableNumber: string = 'c2'; /* c1 is table of record structures of all other tables */
 	@Input() crudAction: string = 'create';
 	@Input() recordKey: string = '';
 	@Output() recordValuesUpdated: EventEmitter<any> = new EventEmitter<any>();
 
 	updateFieldValue(fieldName, value) {
-		console.log('TableRecordComponent: Received in table record = fieldName ', fieldName, ' value ', value);
+		//console.log('TableRecordComponent: Received in table record = fieldName ', fieldName, ' value ', value);
 		this.recordValues[fieldName] = value[fieldName];
-		console.log('TableRecordComponent: Final table record ', this.recordValues);
+		//console.log('TableRecordComponent: Final table record ', this.recordValues);
 	}
 
 	createRecordStructureFromC3Table(cocsRecord) {
@@ -92,6 +93,16 @@ export class TableRecordComponent implements OnInit {
 				fRequired = field['f7'];
 			}
 
+			let fFkTableName = '';
+			if (field['f8']) {
+				fFkTableName = field['f8'];
+			}
+
+			let fFkTitleFields = '';
+			if (field['f9']) {
+				fFkTitleFields = field['f9'];
+			}
+
 			let fValue = fDefaultValue;
 			if (field['v']) {
 				fValue = field['v'];
@@ -104,7 +115,9 @@ export class TableRecordComponent implements OnInit {
 				'f4' : fSequence,
 				'f5' : fValueType,
 				'f6' : fDefaultValue,
-				'f7' : fRequired
+				'f7' : fRequired,
+				'f8' : fFkTableName,
+				'f9' : fFkTitleFields
 			};
 
 			var resultObj : Object  = {};
@@ -175,6 +188,9 @@ export class TableRecordComponent implements OnInit {
 		   this.recordStructure = this.createRecordStructureFromC3Table(record[0]['a5']);
 		   this.title = record[0]['a3'];
 		   this.detail = record[0]['a4'];
+		   if (this.crudAction == 'create') {
+				this.recordValues = {};
+		   }
 		   //console.log('TableRecordComponent: Record for collection number ', this.tableNumber, ' in c1 table is ', this.recordValues);  
 		});
 
@@ -182,7 +198,21 @@ export class TableRecordComponent implements OnInit {
 		subject.next(this.tableNumber);
 	}
 
+	convertBeforeSave(rs, fv) {
+		console.log('rs =', rs);
+		for (var f of rs['sorted_field_names']) {
+			console.log('Convertinf field = ' , f);
+			if (rs[f]['f5'] == 'password' && fv[f]) {
+				fv[f] = Md5.hashStr(fv[f]);
+				console.log('RecordFieldComponent: password value changed to ', fv[f])
+			}
+		}
+		return fv;
+	}
 	onSubmit() {
+		console.log('Record value to be saved ', this.recordValues);
+		this.recordValues = this.convertBeforeSave(this.recordStructure, this.recordValues);
+		console.log('Converted record value to be saved ', this.recordValues);
 		if (this.crudAction == 'create') {
 			this.listOfCollToUpdate.push(this.recordValues);
 		} else if (this.crudAction == 'update') {

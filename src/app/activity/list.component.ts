@@ -20,10 +20,10 @@ export class ActivityListComponent implements OnInit {
   }
 
   searchActivities(): void {
-    this.activities = this._af.database.list('/c1')
+    this.activities = this._af.database.list('/c10')
       .map(activities => activities.filter(activity => {
         let rE = new RegExp(this.searchPattern, 'gi');
-        return rE.test(activity.name) || rE.test(activity.number) || rE.test(activity.detail)
+        return rE.test(activity.a3) || rE.test(activity.a2) || rE.test(activity.a4)
       }));
   }
   

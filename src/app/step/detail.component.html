@@ -1,9 +1,0 @@
-<section>
-  <header>
-    <h2>{{(step|async)?.name}}</h2>
-  </header>
-  <section>
-    {{(step|async)?.detail}}
-    <div class="lns_loading" *ngIf="!(step | async)">Loading step details...</div>
-  </section>
-</section>
