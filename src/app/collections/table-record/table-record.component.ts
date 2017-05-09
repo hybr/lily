@@ -216,9 +216,9 @@ export class TableRecordComponent implements OnInit {
 		if (this.crudAction == 'create') {
 			this.listOfCollToUpdate.push(this.recordValues);
 		} else if (this.crudAction == 'update') {
-			this.listOfCollToUpdate.update(this.recordKey, this.recordValues);
+			this.listOfCollToUpdate.update(this.recordValues['$key'], this.recordValues);
 		} else if (this.crudAction == 'remove') {
-			this.listOfCollToUpdate.remove(this.recordKey);
+			this.listOfCollToUpdate.remove(this.recordValues['$key']);
 		}
 		// this.route.navigateByUrl('/cocs/list');
 		this._location.back();

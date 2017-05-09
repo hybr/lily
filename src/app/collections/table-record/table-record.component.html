@@ -1,75 +1,66 @@
+<div class="lns_loading" *ngIf="title == ''">Loading record...</div>
+
 <md-card *ngIf="title != ''">
-	<md-card-header>
-		<md-card-title><h2>
+
+    <md-card-header>
+        <md-card-title>
+            <h2>
 			<span *ngIf="crudAction == 'create'">Adding New </span>
 			<span *ngIf="crudAction == 'update'">Updating </span>
 			<span *ngIf="crudAction == 'remove'">Removing </span>
 			{{title}} Record
 		</h2></md-card-title>
-		<md-card-subtitle>{{detail}}</md-card-subtitle>
-	</md-card-header>
+        <md-card-subtitle>{{detail}}</md-card-subtitle>
+    </md-card-header>
 
-	<md-card-content>
-		<form #cocsForm="ngForm">
-			<fieldset>
-				<legend>{{title}}</legend>
-		<!--
-		<hr />recordStructure = <pre>{{recordStructure | json}}</pre>
-		<hr />recordValues = <pre>{{recordValues | json}}</pre>
-	-->
-	<table>
-		<tr *ngFor=" let fieldName of recordStructure['sorted_field_names']; let rfc = index; "><td>
-			<!--
-				<hr />fieldName = {{fieldName | json }}
-				<hr />recordStructure['sorted_field_names'] = {{recordStructure['sorted_field_names'] | json }}
-				<hr />recordStructure[fieldName] = {{ recordStructure[fieldName] | json }}
-				<hr />recordValues[fieldName] = {{ recordValues[fieldName] | json }}
-				<hr />
-			-->
-			<app-collections-record-field
-				*ngIf="recordStructure[fieldName]['f3'] == 'field'"
-				[fieldValue]="recordValues[fieldName]"
-				[fieldProperties]="recordStructure[fieldName]" 
-				(fieldValueUpdated)="updateFieldValue(fieldName, $event)"
-				[foreignKeyCollectionName]="recordStructure[fieldName]['f8']"
-				[foreignKeyTitleFields]="recordStructure[fieldName]['f9']"
-			></app-collections-record-field>
+    <md-card-content>
 
-			<app-collections-record-field-group
-				*ngIf="recordStructure[fieldName]['f3'] == 'field_group'"
-				[fieldGroupValues]="recordValues[fieldName]"
-				[fieldGroupProperties]="recordStructure[fieldName]" 
-				(fieldGroupValueUpdated)="updateFieldValue(fieldName, $event)"
-			></app-collections-record-field-group>
+        <form #cocsForm="ngForm">
+            <fieldset>
+                <legend>{{title}}</legend>
+                <!--
+				<hr />recordStructure = <pre>{{recordStructure | json}}</pre>
+				<hr />recordValues = <pre>{{recordValues | json}}</pre>
+-->
+                <table>
+                    <tr *ngFor=" let fieldName of recordStructure['sorted_field_names']; let rfc = index; ">    <td>
+                            <!--
+							<hr />fieldName = {{fieldName | json }}
+							<hr />recordStructure['sorted_field_names'] = {{recordStructure['sorted_field_names'] | json }}
+							<hr />recordStructure[fieldName] = {{ recordStructure[fieldName] | json }}
+							<hr />recordValues[fieldName] = {{ recordValues[fieldName] | json }}
+							<hr />
+-->
+                            <app-collections-record-field 
+	                            *ngIf="recordStructure[fieldName]['f3'] == 'field'" 
+	                            [fieldValue]="recordValues[fieldName]" 
+	                            [fieldProperties]="recordStructure[fieldName]" 
+	                            (fieldValueUpdated)="updateFieldValue(fieldName, $event)" 
+	                            [foreignKeyCollectionName]="recordStructure[fieldName]['f8']" 
+	                            [foreignKeyTitleFields]="recordStructure[fieldName]['f9']"
+                            ></app-collections-record-field>
 
-		</td></tr>
-	</table>
+                            <app-collections-record-field-group 
+                            	*ngIf="recordStructure[fieldName]['f3'] == 'field_group'" 
+                            	[fieldGroupValues]="recordValues[fieldName]" 
+                            	[fieldGroupProperties]="recordStructure[fieldName]" 
+                            	(fieldGroupValueUpdated)="updateFieldValue(fieldName, $event)"
+                            ></app-collections-record-field-group>
 
-</fieldset>
+                        </td>
+                    </tr>
+                </table>
 
-<button
-	md-raised-button
-	type="submit"
-	(click)="onSubmit()" 
-	color="warn"
->
-	<span *ngIf="crudAction == 'create'">Add New </span>
-	<span *ngIf="crudAction == 'update'">Update </span>
-	<span *ngIf="crudAction == 'remove'">Remove </span>
-Record</button>
-
-<button
-	md-raised-button
-	[routerLink]="['/cocs/list']" 
->Cancel</button>
-
-<button
-	md-raised-button
-	type="reset" 
->Reset</button>
-
-</form>
-</md-card-content>
+            </fieldset>
+            <button md-raised-button type="submit" (click)="onSubmit()" color="warn">
+                <span *ngIf="crudAction == 'create'">Add New </span>
+                <span *ngIf="crudAction == 'update'">Update </span>
+                <span *ngIf="crudAction == 'remove'">Remove </span> Record
+            </button>
+            <button md-raised-button [routerLink]="['/cocs/list']">Cancel</button>
+            <button md-raised-button type="reset">Reset</button>
+        </form>
+    </md-card-content>
 </md-card>
-
-Record Data = <pre>{{ recordValues | json }}</pre>
+<hr />Data = <pre>{{ recordValues | json }}</pre>
+<hr />Record = <pre>{{ recordStructure | json }}</pre>

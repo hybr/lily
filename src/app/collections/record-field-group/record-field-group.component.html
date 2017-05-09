@@ -7,21 +7,45 @@
 <fieldset>
 	<legend>{{fieldGroupProperties['f2']}}</legend>
 	
-	<span *ngFor=" let valueKey of fieldGroupValuesKeys; let fgvc = index; ">
-		<!-- valueKey are 0, 1, 2 ... -->
+	<!--
+	<hr />fieldGroupProperties = <pre>{{fieldGroupProperties | json }}</pre>
+	-->
 
-		<br /><div class="lns_sub_fields_border">
+
+	<span *ngFor=" let valueKey of fieldGroupValuesKeys; let fgvc = index; ">
+
+		<!-- valueKey are 0, 1, 2 ... -->
+		<!--
+		<hr />fieldGroupValues[valueKey] = {{ fieldGroupValues[valueKey] | json }}
+		<hr />valueKey = {{ valueKey | json }}
+		-->
+
+		<app-collections-record-field-group 
+
+			*ngIf="fieldGroupValues[valueKey]['f3'] == 'field_group'"
+
+			[fieldGroupValues]="fieldGroupValues[valueKey]"
+
+			[fieldGroupProperties]="fieldGroupProperties" 
+
+			(fieldGroupValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
+
+		></app-collections-record-field-group>
+
+		<br />
+		<div 
+			*ngIf="fieldGroupValues[valueKey]['f3'] == 'field'"
+			class="lns_sub_fields_border"
+		>
 			<button md-button-raised class="warning" (click)="removeValue(valueKey)">Remove {{valueKey}}</button>
 
 			<table>
 				<tr *ngFor=" let fieldGroupPropertyName of fieldGroupProperties['fields']['sorted_field_names']; let fgpc = index; "><td>
-					<!--
-					<hr />fieldGroupPropertyName = {{fieldGroupPropertyName | json }}
-					<hr />fieldGroupProperties['fields']['sorted_field_names'] = {{fieldGroupProperties['fields']['sorted_field_names'] | json }}
-					<hr />fieldGroupValues[valueKey] = {{ fieldGroupValues[valueKey] | json }}
-					<hr />valueKey = {{ valueKey | json }}
-					<hr />
+					
+					<!-- 
+					<hr />fieldGroupPropertyName = {{fieldGroupPropertyName | json }} 
 					-->
+
 					<app-collections-record-field
 			  
 			  			*ngIf="fieldGroupProperties['fields'][fieldGroupPropertyName]['f3'] == 'field'"
@@ -36,20 +60,6 @@
 						[foreignKeyTitleFields]="fieldGroupProperties['fields'][fieldGroupPropertyName]['f9']"
 
 					></app-collections-record-field>
-
-					<h1 *ngIf="fieldGroupProperties['fields'][fieldGroupPropertyName]['f3'] == 'field_group'">Field Group</h1>
-
-					<app-collections-record-field-group
-
-						*ngIf="fieldGroupProperties['fields'][fieldGroupPropertyName]['f3'] == 'field_group'"
-
-						[fieldGroupValues]="fieldGroupValues[valueKey]"
-
-						[fieldGroupProperties]="fieldGroupProperties['fields'][fieldGroupPropertyName]" 
-
-						(fieldGroupValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
-
-					></app-collections-record-field-group>
 
 				</td></tr>
 			</table>
