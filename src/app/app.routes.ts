@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { WebPageRoutes } from './views/web-page/web-page.routes';
 import { PageNotFoundRoutes } from './views/page-not-found/page-not-found.routes';
-import { ActivityComponentRoutes } from './activity/routes';
 import { CollectionComponentRoutes } from './collections/routes';
 
 // Route Configuration
@@ -15,7 +14,6 @@ export const routes: Routes = [
   },
   ...WebPageRoutes,
   ...CollectionComponentRoutes,
-  ...ActivityComponentRoutes,
   ...PageNotFoundRoutes /* keep it as last route */
 ];
 

@@ -17,20 +17,13 @@ import { LocalStorageModule } from 'angular-2-local-storage';
 import { routing } from './app.routes';
 
 /* authentication */
-import {
-  AngularFireModule,
-  AuthMethods,
-  AuthProviders
-} from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 /* Application Components */
 import { AppComponent } from './app.component';
 import { WebPageComponent } from './views/web-page/web-page.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
-
-import { ActivityDetailComponent } from './activity/detail.component';
-import { ActivityListComponent } from './activity/list.component';
-import { ActivityAddComponent } from './activity/add.component';
 
 import { DetailDocOfCocsComponent } from './collections/detail.component';
 
@@ -55,9 +48,6 @@ const firebaseConfig = {
     AppComponent,
     WebPageComponent,
     PageNotFoundComponent,
-    ActivityDetailComponent,
-    ActivityListComponent,
-    ActivityAddComponent,
     DetailDocOfCocsComponent,
     RecordFieldComponent,
     RecordFieldGroupComponent,
@@ -75,10 +65,7 @@ const firebaseConfig = {
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpModule, JsonpModule,
-    AngularFireModule.initializeApp (firebaseConfig, {
-      provider: AuthProviders.Google,
-      method: AuthMethods.Popup
-    }),
+    AngularFireModule.initializeApp (firebaseConfig),
     LocalStorageModule.withConfig({
       prefix: 'app-root',
       storageType: 'localStorage'

@@ -22,4 +22,4 @@ describe('RemoveTableRecordComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-});
+}); 

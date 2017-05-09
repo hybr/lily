@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { AngularFire, AuthMethods, AuthProviders } from 'angularfire2';
+import { Observable } from 'rxjs/Observable';
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-root',
@@ -8,28 +10,17 @@ import { AngularFire, AuthMethods, AuthProviders } from 'angularfire2';
 })
 export class AppComponent {
   title = 'app works!';
-  user = {};
+  user: Observable<firebase.User>;
 
-  constructor(private _af: AngularFire) {
-      this._af.auth.subscribe(user => {
-        if (user) {
-          // user logged in
-          this.user = user;
-        } else {
-          // user not logged in
-          this.user = {};
-        }
-      });
+  constructor(private _af: AngularFireAuth) {
+      this.user = _af.authState;
   }
 
   login() {
-      this._af.auth.login({
-        provider: AuthProviders.Google,
-        method: AuthMethods.Redirect
-      });
+    this._af.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
 
   logout() {
-    this._af.auth.logout();
+    this._af.auth.signOut();
   }
 }

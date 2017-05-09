@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AngularFire } from 'angularfire2';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Component({
 	selector: 'app-remove-table-record',
@@ -13,7 +13,7 @@ export class RemoveTableRecordComponent implements OnInit {
 	public recordKey:string = '';
 
 	constructor(
-		private _af: AngularFire,
+		private _af: AngularFireDatabase,
 		private _route: ActivatedRoute
 	) { }
 
@@ -26,7 +26,7 @@ export class RemoveTableRecordComponent implements OnInit {
 		this.recordKey = this._route.snapshot.paramMap.get('docId');
 		//console.log('UpdateTableRecordComponent: recordKey docId  =', this.recordKey);
 
-		const queryObservable = self._af.database.object(
+		const queryObservable = self._af.object(
 			'/' + this.collectionNumber + '/' + this.recordKey
 		);
 		//console.log('RemoveTableRecordComponent: queryObservable = ', queryObservable);

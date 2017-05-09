@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2';
+import { AngularFireDatabase, FirebaseObjectObservable , FirebaseListObservable } from 'angularfire2/database';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -16,14 +16,14 @@ export class DetailDocOfCocsComponent implements OnInit {
   public actualCollectionNumber = '';
   
   constructor(
-    private _af: AngularFire,
+    private _afdb: AngularFireDatabase,
     private _route: ActivatedRoute
     ) {
   } // constructor
 
   ngOnInit() {
     let key = this._route.snapshot.paramMap.get('key');
-    this.docOfCocs = this._af.database.object(`/c1/${key}`);
+    this.docOfCocs = this._afdb.object(`/c1/${key}`);
     this.searchActualCollections();  
   } // ngOnInit
 
@@ -33,7 +33,7 @@ export class DetailDocOfCocsComponent implements OnInit {
     this.docOfCocs.subscribe(
       function(result) {
         // console.log('detail.component: result =', result);
-        self.actualCollectionList = self._af.database.list('/' + result['a2'])
+        self.actualCollectionList = self._afdb.list('/' + result['a2'])
         .map(collections => collections.filter(
           actualCollection => {
             let rE = new RegExp(self.actualCollectionSearchPattern, 'gi');

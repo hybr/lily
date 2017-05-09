@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFire } from 'angularfire2';
+import { AngularFireDatabase } from 'angularfire2/database';
 import 'rxjs/add/operator/map';
 import "rxjs/add/operator/filter";
 import { Observable } from 'rxjs';
@@ -15,7 +15,7 @@ export class ListDatabaseTablesComponent implements OnInit {
 	public searchPattern: string = '';
 
 	constructor(
-		private _af: AngularFire
+		private _af: AngularFireDatabase
 	) {}
 
 	ngOnInit() {
@@ -23,7 +23,7 @@ export class ListDatabaseTablesComponent implements OnInit {
 	};
 
 	searchCollections(): void {
-		this.listOfCocs = this._af.database.list('/c1').map(
+		this.listOfCocs = this._af.list('/c1').map(
 			collections => collections.filter(
 				collection => {
 					let rE = new RegExp(this.searchPattern, 'gi');

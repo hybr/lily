@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AngularFire, FirebaseObjectObservable, FirebaseListObservable, } from 'angularfire2';
+import { AngularFireDatabase, FirebaseObjectObservable , FirebaseListObservable } from 'angularfire2/database';
 import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
@@ -158,7 +158,7 @@ export class TableRecordComponent implements OnInit {
 	} /* createRecordStructureFromC3Table */
 
 	constructor(
-		private _af: AngularFire,
+		private _af: AngularFireDatabase,
 		private _route: ActivatedRoute,
 		private _location: Location
 	) { }
@@ -167,14 +167,14 @@ export class TableRecordComponent implements OnInit {
 		let self = this;
 
 		/* Actual Collection, new record will be pushed in this list */
-		self.listOfCollToUpdate = self._af.database.list('/' + this.tableNumber);
+		self.listOfCollToUpdate = self._af.list('/' + this.tableNumber);
 		//console.log('TableRecordComponent: self.listOfCollToUpdate = ', self.listOfCollToUpdate);
 
 		/* Collection Structure of tableNumber */
 		const subject = new Subject();
 
 		/* c1 table contains the structures of all other tables */
-		const queryObservable = self._af.database.list('/c1', {
+		const queryObservable = self._af.list('/c1', {
 			query: {
 			orderByChild: 'a2', /* a2 is field name for collection number */
 			equalTo: subject /* collection number to be updated */

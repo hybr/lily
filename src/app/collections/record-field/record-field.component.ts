@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AngularFire } from 'angularfire2';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Component({
 	selector: 'app-collections-record-field',
@@ -17,7 +17,7 @@ export class RecordFieldComponent implements OnInit {
 	@Input() foreignKeyTitleFields : string = '';
 
 	constructor(
-		private _af: AngularFire
+		private _af: AngularFireDatabase
 	) {}
 
 	fieldValueChanged(value) {
@@ -45,7 +45,7 @@ export class RecordFieldComponent implements OnInit {
 		let self = this;
 
 		if (this.fieldProperties['f5'] == 'foreign_key') {		
-			self._af.database.list('/' + self.foreignKeyCollectionName).subscribe(record => {
+			self._af.list('/' + self.foreignKeyCollectionName).subscribe(record => {
 				for (var r of record ) {
 					let t = '';
 					for (var tf of self.foreignKeyTitleFields.split(',')) {
