@@ -16,11 +16,11 @@ export class RecordFieldGroupComponent implements OnInit {
 	private fieldGroupValuesKeys : Array<any> = <any>[];
 
 	updateFieldValue(valueKey, fieldGroupPropertyName, value) {
-		//console.log('RecordFieldGroupComponent: Received in field group = valueKey ', valueKey, ' fieldGroupPropertyName ', fieldGroupPropertyName,  ' value ', value);
+		console.log('RecordFieldGroupComponent: Received in field group = valueKey ', valueKey, ' fieldGroupPropertyName ', fieldGroupPropertyName,  ' value ', value);
 		let obj = {};
 		this.fieldGroupValues[valueKey][fieldGroupPropertyName] = value[fieldGroupPropertyName];
 		obj[this.fieldGroupProperties['f1']] = this.fieldGroupValues;
-		//console.log('RecordFieldGroupComponent: updateFieldValue: Field Group is emitting obj = ', obj);
+		console.log('RecordFieldGroupComponent: updateFieldValue: Field Group is emitting obj = ', obj);
 		this.fieldGroupValueUpdated.emit(obj);
 	}
 

@@ -1,8 +1,8 @@
-	<!--
-	<hr />fieldGroupProperties = <pre>{{fieldGroupProperties['fields'] | json}}</pre>
-	<hr />fieldGroupValues = <pre>{{fieldGroupValues | json }}</pre>
-	<hr />fieldGroupValuesKeys = <pre>{{fieldGroupValuesKeys | json }}</pre>
-	-->
+<!--	
+<hr />fieldGroupProperties = <pre>{{fieldGroupProperties['fields'] | json}}</pre>
+<hr />fieldGroupValues = <pre>{{fieldGroupValues | json }}</pre>
+<hr />fieldGroupValuesKeys = <pre>{{fieldGroupValuesKeys | json }}</pre>
+-->
 
 <fieldset>
 	<legend>{{fieldGroupProperties['f2']}}</legend>
@@ -13,8 +13,10 @@
 
 
 	<span *ngFor=" let valueKey of fieldGroupValuesKeys; let fgvc = index; ">
+		<br />
 
 		<!-- valueKey are 0, 1, 2 ... -->
+
 		<!--
 		<hr />fieldGroupValues[valueKey] = {{ fieldGroupValues[valueKey] | json }}
 		<hr />valueKey = {{ valueKey | json }}
@@ -22,17 +24,17 @@
 
 		<app-collections-record-field-group 
 
-			*ngIf="fieldGroupValues[valueKey]['f3'] == 'field_group'"
+			*ngIf="fieldGroupProperties['f3'] == 'field_group'"
 
 			[fieldGroupValues]="fieldGroupValues[valueKey]"
 
 			[fieldGroupProperties]="fieldGroupProperties" 
 
-			(fieldGroupValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
+			(fieldGroupValueUpdated)="updateFieldValue(valueKey, fieldGroupValues[valueKey]['f1'], $event)"
 
 		></app-collections-record-field-group>
 
-		<br />
+		
 		<div 
 			*ngIf="fieldGroupValues[valueKey]['f3'] == 'field'"
 			class="lns_sub_fields_border"

@@ -26,7 +26,7 @@ export class RecordFieldComponent implements OnInit {
 			this.fieldProperties['f1'] = 'unknown_field_property';
 		}
 		obj[this.fieldProperties['f1']] = value;
-		//console.log('RecordFieldComponent: Field is emitting obj = ', obj);
+		console.log('RecordFieldComponent: Field is emitting obj = ', obj);
 		this.fieldValueUpdated.emit(obj);
 	}
 

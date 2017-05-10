@@ -24,9 +24,9 @@ export class TableRecordComponent implements OnInit {
 	@Output() recordValuesUpdated: EventEmitter<any> = new EventEmitter<any>();
 
 	updateFieldValue(fieldName, value) {
-		//console.log('TableRecordComponent: Received in table record = fieldName ', fieldName, ' value ', value);
+		console.log('TableRecordComponent: Received in table record = fieldName ', fieldName, ' value ', value);
 		this.recordValues[fieldName] = value[fieldName];
-		//console.log('TableRecordComponent: Final table record ', this.recordValues);
+		console.log('TableRecordComponent: Final table record ', this.recordValues);
 	}
 
 	createRecordStructureFromC3Table(cocsRecord) {
