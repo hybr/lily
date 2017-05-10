@@ -18,10 +18,10 @@
         <form #cocsForm="ngForm">
             <fieldset>
                 <legend>{{title}}</legend>
-                <!--
+
 				<hr />recordStructure = <pre>{{recordStructure | json}}</pre>
 				<hr />recordValues = <pre>{{recordValues | json}}</pre>
--->
+
                 <table>
                     <tr *ngFor=" let fieldName of recordStructure['sorted_field_names']; let rfc = index; ">    <td>
                             <!--

@@ -18,7 +18,9 @@ import { routing } from './app.routes';
 
 /* authentication */
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+
 
 /* Application Components */
 import { AppComponent } from './app.component';
@@ -66,6 +68,8 @@ const firebaseConfig = {
     ReactiveFormsModule,
     HttpModule, JsonpModule,
     AngularFireModule.initializeApp (firebaseConfig),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
     LocalStorageModule.withConfig({
       prefix: 'app-root',
       storageType: 'localStorage'

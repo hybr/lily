@@ -11,12 +11,12 @@
     </button>
     
     <md-menu #menu="mdMenu">
-      <button md-menu-item *ngIf="(user | json) == '{}'" (click)="login()">
+      <button md-menu-item *ngIf="!(user | async)" (click)="login()">
         <md-icon>fingerprint</md-icon>
         <span>Login</span>
       </button>
       
-      <button md-menu-item *ngIf="(user | json) != '{}'" (click)="logout()">
+      <button md-menu-item *ngIf="(user | async)" (click)="logout()">
         <md-icon>exit_to_app</md-icon>
         <span>Logout</span>
       </button>
