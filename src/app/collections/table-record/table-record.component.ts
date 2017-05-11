@@ -29,9 +29,9 @@ export class TableRecordComponent implements OnInit {
 		console.log('TableRecordComponent: Final table record ', this.recordValues);
 	}
 
-	createRecordStructureFromC3Table(cocsRecord) {
-		//console.log('########################################');
-		//console.log('cocsRecord received = ', cocsRecord);
+	createRecordStructureFromC3Table(f, cocsRecord = {}) {
+		console.log('########################################');
+		console.log('cocsRecord received ', 'for field ', f, ' = ', cocsRecord);
 
 		let convertedRecordStructure: Object = {};
 
@@ -45,7 +45,10 @@ export class TableRecordComponent implements OnInit {
 			f6 = default value
 			f7 = Does Value Required?
 		*/
-
+/*		if (Object.keys(cocsRecord).length == 1) {
+			console.log('No fields in ', cocsRecord);
+			cocsRecord['a1'] = { 'f1':  'a1', 'f3' : 'field', 'f4' : 1};
+		}*/
 		for (var key of Object.keys(cocsRecord) ) {
 
 			if (key == 'sorted_field_names') { continue; }
@@ -122,9 +125,12 @@ export class TableRecordComponent implements OnInit {
 
 			var resultObj : Object  = {};
 			if (fFieldType == 'field_group') {
+				console.log('Converting ', field);
 				resultObj = this.createRecordStructureFromC3Table(
-					field
-				);
+					fName, { 0: field }
+ 				);
+				console.log('keys in result = ', resultObj);
+
 				convertedRecordStructure[fName]['fields'] = resultObj;
 			}
 
@@ -134,6 +140,8 @@ export class TableRecordComponent implements OnInit {
 
 		let localFields = [];
 		/* create array of field objects */
+		console.log('Convereted structure convertedRecordStructure = ', convertedRecordStructure)
+
 		for (var k2 of Object.keys(convertedRecordStructure)) {
 			localFields.push(convertedRecordStructure[k2]);
 		}
@@ -143,17 +151,17 @@ export class TableRecordComponent implements OnInit {
 			if (a.f4 > b.f4) return 1;
 			return 0;
 		});
-    	//console.log('sorted localFields ', localFields, ' of convertedRecordStructure ', convertedRecordStructure);
+    	console.log('sorted localFields ', localFields, ' of convertedRecordStructure ', convertedRecordStructure);
 
 		/* store sorted field names */
 		convertedRecordStructure['sorted_field_names'] = [];
 		localFields.forEach(function(fieldObject) {
-			//console.log('Push ', fieldObject['f1'], ' in sorted_field_names in ', convertedRecordStructure['sorted_field_names']);
+			console.log('Push ', fieldObject['f1'], ' in sorted_field_names in ', convertedRecordStructure['sorted_field_names']);
 			convertedRecordStructure['sorted_field_names'].push(fieldObject['f1']);
 		});
 		/* free up memory */
 		// delete localFields; TODO can not delete with defined as var/let
-		//console.log('---------------------------');
+		console.log('---------------------------');
 		return convertedRecordStructure;
 	} /* createRecordStructureFromC3Table */
 
@@ -185,7 +193,7 @@ export class TableRecordComponent implements OnInit {
 		// subscribe to changes
 		queryObservable.subscribe(record => {
 			/* the result is list of records, so take the first one */
-		   this.recordStructure = this.createRecordStructureFromC3Table(record[0]['a5']);
+		   this.recordStructure = this.createRecordStructureFromC3Table('main', record[0]['a5']);
 		   this.title = record[0]['a3'];
 		   this.detail = record[0]['a4'];
 		   if (this.crudAction == 'create') {
