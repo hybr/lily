@@ -24,13 +24,13 @@
 
                 <table>
                     <tr *ngFor=" let fieldName of recordStructure['sorted_field_names']; let rfc = index; ">    <td>
-                            <!--
+                       
 							<hr />fieldName = {{fieldName | json }}
 							<hr />recordStructure['sorted_field_names'] = {{recordStructure['sorted_field_names'] | json }}
 							<hr />recordStructure[fieldName] = {{ recordStructure[fieldName] | json }}
 							<hr />recordValues[fieldName] = {{ recordValues[fieldName] | json }}
 							<hr />
--->
+
                             <app-collections-record-field 
 	                            *ngIf="recordStructure[fieldName]['f3'] == 'field'" 
 	                            [fieldValue]="recordValues[fieldName]" 
@@ -43,7 +43,7 @@
                             <app-collections-record-field-group 
                             	*ngIf="recordStructure[fieldName]['f3'] == 'field_group'" 
                             	[fieldGroupValues]="recordValues[fieldName]" 
-                            	[fieldGroupProperties]="recordStructure[fieldName]" 
+                            	[fieldGroupProperties]="recordStructure[fieldName]['fields']" 
                             	(fieldGroupValueUpdated)="updateFieldValue(fieldName, $event)"
                             ></app-collections-record-field-group>
 

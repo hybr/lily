@@ -6,6 +6,8 @@
 
     <span class="spacer"></span>
 
+    {{ (user|async)?.email }}
+
     <button md-icon-button [mdMenuTriggerFor]="menu">
       <md-icon>more_vert</md-icon>
     </button>

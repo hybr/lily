@@ -23,7 +23,8 @@ export class ListDatabaseTablesComponent implements OnInit {
 	};
 
 	searchCollections(): void {
-		this.listOfCocs = this._af.list('/c1').map(
+		this.listOfCocs = this._af.list('/c1')
+		.map(
 			collections => collections.filter(
 				collection => {
 					let rE = new RegExp(this.searchPattern, 'gi');

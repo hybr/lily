@@ -11,8 +11,13 @@ import * as firebase from 'firebase/app';
 export class AppComponent {
   title = 'app works!';
   user: Observable<firebase.User>;
+  public userDetail = {};
+
   constructor(private afAuth: AngularFireAuth) {
     this.user = afAuth.authState;
+    this.user.subscribe(
+      data => { this.userDetail; }
+    );
   }
 
   login() {
@@ -21,5 +26,6 @@ export class AppComponent {
   logout() {
     this.afAuth.auth.signOut();
   }
+
 
 }

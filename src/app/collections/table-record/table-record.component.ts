@@ -126,8 +126,11 @@ export class TableRecordComponent implements OnInit {
 			var resultObj : Object  = {};
 			if (fFieldType == 'field_group') {
 				console.log('Converting ', field);
+				if (!field['fields']) {
+					field['fields'] = { 'f1' : 'a1'  };
+				}
 				resultObj = this.createRecordStructureFromC3Table(
-					fName, { 0: field }
+					fName, { 0: field['fields'] }
  				);
 				console.log('keys in result = ', resultObj);
 
@@ -191,7 +194,8 @@ export class TableRecordComponent implements OnInit {
 		//console.log('TableRecordComponent: queryObservable = ', queryObservable);
 
 		// subscribe to changes
-		queryObservable.subscribe(record => {
+		queryObservable.subscribe(
+			record => {
 			/* the result is list of records, so take the first one */
 		   this.recordStructure = this.createRecordStructureFromC3Table('main', record[0]['a5']);
 		   this.title = record[0]['a3'];
@@ -200,7 +204,11 @@ export class TableRecordComponent implements OnInit {
 				this.recordValues = {};
 		   }
 		   //console.log('TableRecordComponent: Record for collection number ', this.tableNumber, ' in c1 table is ', this.recordValues);  
-		});
+			},
+			err => {
+				alert(err);
+			}
+		);
 
 		// trigger the query
 		subject.next(this.tableNumber);

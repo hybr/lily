@@ -22,7 +22,17 @@
 		<hr />valueKey = {{ valueKey | json }}
 		-->
 
+		<app-collections-record-field-group 
 
+			*ngIf="fieldGroupProperties['f3'] == 'field_group'"
+
+			[fieldGroupValues]="fieldGroupValues[valueKey]"
+
+			[fieldGroupProperties]="fieldGroupProperties" 
+
+			(fieldGroupValueUpdated)="updateFieldValue(valueKey, fieldGroupValues[valueKey]['f1'], $event)"
+
+		></app-collections-record-field-group>
 
 		
 		<div 
