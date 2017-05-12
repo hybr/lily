@@ -19,17 +19,17 @@
             <fieldset>
                 <legend>{{title}}</legend>
 
-				<hr />recordStructure = <pre>{{recordStructure | json}}</pre>
-				<hr />recordValues = <pre>{{recordValues | json}}</pre>
+<!-- 				<hr />recordStructure = <pre>{{recordStructure | json}}</pre>
+				<hr />recordValues = <pre>{{recordValues | json}}</pre> -->
 
                 <table>
                     <tr *ngFor=" let fieldName of recordStructure['sorted_field_names']; let rfc = index; ">    <td>
                        
-							<hr />fieldName = {{fieldName | json }}
+<!-- 							<hr />fieldName = {{fieldName | json }}
 							<hr />recordStructure['sorted_field_names'] = {{recordStructure['sorted_field_names'] | json }}
 							<hr />recordStructure[fieldName] = {{ recordStructure[fieldName] | json }}
 							<hr />recordValues[fieldName] = {{ recordValues[fieldName] | json }}
-							<hr />
+							<hr /> -->
 
                             <app-collections-record-field 
 	                            *ngIf="recordStructure[fieldName]['f3'] == 'field'" 
@@ -45,6 +45,7 @@
                             	[fieldGroupValues]="recordValues[fieldName]" 
                             	[fieldGroupProperties]="recordStructure[fieldName]['fields']" 
                             	(fieldGroupValueUpdated)="updateFieldValue(fieldName, $event)"
+                                [fieldGroupTitle]="recordStructure[fieldName]['f2']"
                             ></app-collections-record-field-group>
 
                         </td>
@@ -62,5 +63,5 @@
         </form>
     </md-card-content>
 </md-card>
-<hr />Data = <pre>{{ recordValues | json }}</pre>
-<hr />Record = <pre>{{ recordStructure | json }}</pre>
+<!-- <hr />Data = <pre>{{ recordValues | json }}</pre>
+<hr />Record = <pre>{{ recordStructure | json }}</pre> -->

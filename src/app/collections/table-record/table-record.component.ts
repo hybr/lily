@@ -49,18 +49,14 @@ export class TableRecordComponent implements OnInit {
 			console.log('No fields in ', cocsRecord);
 			cocsRecord['a1'] = { 'f1':  'a1', 'f3' : 'field', 'f4' : 1};
 		}*/
-		for (var key of Object.keys(cocsRecord) ) {
-
-			if (key == 'sorted_field_names') { continue; }
+		for (let key of Object.keys(cocsRecord)) {
 			if (cocsRecord[key]['f1'] == 'sorted_field_names') { continue; }
 			if (cocsRecord[key]['f1'] == undefined) { continue; }
 
-
 			let property = cocsRecord[key]['f1'];
-
 			let field = cocsRecord[key];
 
-			//console.log('field of ', property, ' = ', field);
+			console.log('field of ', property, ' = ', field);
 
 			let fName = property;
 			if (field['f1']) {
@@ -126,11 +122,11 @@ export class TableRecordComponent implements OnInit {
 			var resultObj : Object  = {};
 			if (fFieldType == 'field_group') {
 				console.log('Converting ', field);
-				if (!field['fields']) {
-					field['fields'] = { 'f1' : 'a1'  };
+				if (field[0] == undefined || field[0]['f1'] == undefined) { 
+					field[0] = { 'f1' : 'a1'}
 				}
 				resultObj = this.createRecordStructureFromC3Table(
-					fName, { 0: field['fields'] }
+					fName, field
  				);
 				console.log('keys in result = ', resultObj);
 

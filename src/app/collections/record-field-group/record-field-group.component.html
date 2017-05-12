@@ -1,15 +1,15 @@
-<!--	
-<hr />fieldGroupProperties = <pre>{{fieldGroupProperties['fields'] | json}}</pre>
+	
+<!-- <hr />fieldGroupProperties = <pre>{{fieldGroupProperties['fields'] | json}}</pre>
 <hr />fieldGroupValues = <pre>{{fieldGroupValues | json }}</pre>
 <hr />fieldGroupValuesKeys = <pre>{{fieldGroupValuesKeys | json }}</pre>
--->
+ -->
 
 <fieldset>
-	<legend>{{fieldGroupProperties['f2']}}</legend>
+	<legend>{{fieldGroupTitle}}</legend>
 	
-	<!--
-	<hr />fieldGroupProperties = <pre>{{fieldGroupProperties | json }}</pre>
-	-->
+
+<!-- 	<hr />fieldGroupProperties = <pre>{{fieldGroupProperties | json }}</pre> -->
+
 
 
 	<span *ngFor=" let valueKey of fieldGroupValuesKeys; let fgvc = index; ">
@@ -17,49 +17,49 @@
 
 		<!-- valueKey are 0, 1, 2 ... -->
 
-		<!--
-		<hr />fieldGroupValues[valueKey] = {{ fieldGroupValues[valueKey] | json }}
-		<hr />valueKey = {{ valueKey | json }}
-		-->
+		
+<!-- 		<hr />fieldGroupValues[valueKey] = {{ fieldGroupValues[valueKey] | json }}
+		<hr />valueKey = {{ valueKey | json }} -->
+		
 
 		<app-collections-record-field-group 
 
-			*ngIf="fieldGroupProperties['f3'] == 'field_group'"
+			*ngIf="fieldGroupValues && [valueKey] && fieldGroupProperties['f3'] == 'field_group'"
 
 			[fieldGroupValues]="fieldGroupValues[valueKey]"
 
-			[fieldGroupProperties]="fieldGroupProperties" 
+			[fieldGroupProperties]="fieldGroupProperties['fields']" 
 
 			(fieldGroupValueUpdated)="updateFieldValue(valueKey, fieldGroupValues[valueKey]['f1'], $event)"
+			[fieldGroupTitle]="recordStructure['f2']"
 
 		></app-collections-record-field-group>
 
 		
 		<div 
-			*ngIf="fieldGroupValues[valueKey]['f3'] == 'field'"
+			*ngIf="fieldGroupValues && fieldGroupValues[valueKey] && fieldGroupValues[valueKey]['f3'] == 'field'"
 			class="lns_sub_fields_border"
 		>
 			<button md-button-raised class="warning" (click)="removeValue(valueKey)">Remove {{valueKey}}</button>
 
 			<table>
-				<tr *ngFor=" let fieldGroupPropertyName of fieldGroupProperties['fields']['sorted_field_names']; let fgpc = index; "><td>
+				<tr *ngFor=" let fieldGroupPropertyName of fieldGroupProperties['sorted_field_names']; let fgpc = index; "><td>
 					
-					<!-- 
-					<hr />fieldGroupPropertyName = {{fieldGroupPropertyName | json }} 
-					-->
+					<!-- <hr />fieldGroupPropertyName = {{fieldGroupPropertyName | json }}  -->
+					
 
 					<app-collections-record-field
 			  
-			  			*ngIf="fieldGroupProperties['fields'][fieldGroupPropertyName]['f3'] == 'field'"
+			  			*ngIf="fieldGroupProperties[fieldGroupPropertyName]['f3'] == 'field'"
 
 						[fieldValue]="fieldGroupValues[valueKey][fieldGroupPropertyName]"
 
-						[fieldProperties]="fieldGroupProperties['fields'][fieldGroupPropertyName]" 
+						[fieldProperties]="fieldGroupProperties[fieldGroupPropertyName]" 
 
 						(fieldValueUpdated)="updateFieldValue(valueKey, fieldGroupPropertyName, $event)"
 
-						[foreignKeyCollectionName]="fieldGroupProperties['fields'][fieldGroupPropertyName]['f8']"
-						[foreignKeyTitleFields]="fieldGroupProperties['fields'][fieldGroupPropertyName]['f9']"
+						[foreignKeyCollectionName]="fieldGroupProperties[fieldGroupPropertyName]['f8']"
+						[foreignKeyTitleFields]="fieldGroupProperties[fieldGroupPropertyName]['f9']"
 
 					></app-collections-record-field>
 
@@ -69,7 +69,6 @@
 		</div>
 	
 	</span>
-
-	<button md-button (click)="addValue()">Add {{fieldGroupProperties['f2']}}</button>
+	<button md-button (click)="addValue()">Add {{fieldGroupTitle}} </button>
 </fieldset>
 

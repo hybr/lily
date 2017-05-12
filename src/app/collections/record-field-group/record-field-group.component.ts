@@ -11,6 +11,7 @@ export class RecordFieldGroupComponent implements OnInit {
 
 	@Input() fieldGroupProperties: Object = {};
 	@Input() fieldGroupValues : Object = {};
+	@Input() fieldGroupTitle : string = '';
 	@Output() fieldGroupValueUpdated: EventEmitter<any> = new EventEmitter<any>();
 
 	private fieldGroupValuesKeys : Array<any> = <any>[];
@@ -45,17 +46,17 @@ export class RecordFieldGroupComponent implements OnInit {
 			"this.fieldGroupProperties['fields'] = ", 
 			this.fieldGroupProperties['fields']
 		); */
-		for (var fieldName of this.fieldGroupProperties['fields']['sorted_field_names']) {
+		if (!this.fieldGroupValues) { this.fieldGroupValues = []; }
+		for (var fieldName of this.fieldGroupProperties['sorted_field_names']) {
 			console.log('RecordFieldGroupComponent: addValue: fieldName = ', fieldName);
 			/* f6 is default value */
-			group[fieldName] = this.fieldGroupProperties['fields'][fieldName]['f6'];
+			group[fieldName] = this.fieldGroupProperties[fieldName]['f6'];
 		}
-		//console.log('RecordFieldGroupComponent: addValue: group = ', group);
-		//console.log('this.fieldGroupValuesKeys.length =', this.fieldGroupValuesKeys.length);
-		if (!this.fieldGroupValues) { this.fieldGroupValues = []; }
 		this.fieldGroupValues[this.fieldGroupValuesKeys.length] = group;
 		this.fieldGroupValuesKeys = Object.keys(this.fieldGroupValues);
 		obj[this.fieldGroupProperties['f1']] = this.fieldGroupValues;
+		//console.log('RecordFieldGroupComponent: addValue: group = ', group);
+		//console.log('this.fieldGroupValuesKeys.length =', this.fieldGroupValuesKeys.length);
 		//console.log('RecordFieldGroupComponent: addValue: Field Group is emitting obj = ', obj);
 		this.fieldGroupValueUpdated.emit(obj);
 	}
