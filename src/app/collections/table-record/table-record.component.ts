@@ -49,88 +49,49 @@ export class TableRecordComponent implements OnInit {
 			console.log('No fields in ', cocsRecord);
 			cocsRecord['a1'] = { 'f1':  'a1', 'f3' : 'field', 'f4' : 1};
 		}*/
+		var field : Object = {};
+
 		for (let key of Object.keys(cocsRecord)) {
 			if (cocsRecord[key]['f1'] == 'sorted_field_names') { continue; }
 			if (cocsRecord[key]['f1'] == undefined) { continue; }
 
-			let property = cocsRecord[key]['f1'];
-			let field = cocsRecord[key];
+			field = cocsRecord[key];
 
-			console.log('field of ', property, ' = ', field);
+			if (field['f1'] == undefined) { field['f1'] = 'x'; }
+			
+			console.log('field of ', field['f1'], ' = ', field);
 
-			let fName = property;
-			if (field['f1']) {
-				fName = field['f1'];
+			if (field['f2'] == undefined) {
+				field['f2'] = field['f1'].split('_').map(i => i[0].toUpperCase() + i.substr(1).toLowerCase()).join(' ');;
 			}
 
-			let fTitle = fName.split('_').map(i => i[0].toUpperCase() + i.substr(1).toLowerCase()).join(' ');
-			if (field['f2']) {
-				fTitle = field['f2'];
-			}
-			let fFieldType = 'field';
-			if (field['f3']) {
-				fFieldType = field['f3'];
-			}
+			if (field['f3'] == undefined) { field['f3'] = 'field'; }
 
-			let fSequence = sequenceCounter;
-			sequenceCounter++;
-			if (field['f4']) {
-				fSequence = parseInt(field['f4']);
-			}
-			let fValueType = 'string';
-			if (field['f5']) {
-				fValueType = field['f5'];
-			}
+			if (field['f4'] == undefined) { field['f4'] = sequenceCounter++; }
+			field['f4'] = parseInt(field['f4']);
 
-			let fDefaultValue = '';
-			if (field['f6']) {
-				fDefaultValue = field['f6'];
-			}
+			if (field['f5'] == undefined) { field['f5'] = 'string'; }
 
-			let fRequired = true;
-			if (field['f7']) {
-				fRequired = field['f7'];
-			}
+			if (field['f6'] == undefined) { field['f6'] = ''; }
 
-			let fFkTableName = '';
-			if (field['f8']) {
-				fFkTableName = field['f8'];
-			}
+			if (field['f7'] == undefined) { field['f7'] = true; }
 
-			let fFkTitleFields = '';
-			if (field['f9']) {
-				fFkTitleFields = field['f9'];
-			}
+			if (field['f8'] == undefined) { field['f8'] = ''; }
 
-			let fValue = fDefaultValue;
-			if (field['v']) {
-				fValue = field['v'];
-			}
-
-			convertedRecordStructure[fName] = {
-				'f1' : fName,
-				'f2' : fTitle,
-				'f3' : fFieldType,
-				'f4' : fSequence,
-				'f5' : fValueType,
-				'f6' : fDefaultValue,
-				'f7' : fRequired,
-				'f8' : fFkTableName,
-				'f9' : fFkTitleFields
-			};
+			if (field['f9'] == undefined ) { field['f9'] = ''; }
 
 			var resultObj : Object  = {};
-			if (fFieldType == 'field_group') {
+			if (field['f3']  == 'field_group') {
 				console.log('Converting ', field);
 				if (field[0] == undefined || field[0]['f1'] == undefined) { 
 					field[0] = { 'f1' : 'a1'}
 				}
 				resultObj = this.createRecordStructureFromC3Table(
-					fName, field
+					field['f1'], field
  				);
 				console.log('keys in result = ', resultObj);
 
-				convertedRecordStructure[fName]['fields'] = resultObj;
+				field['fields'] = resultObj;
 			}
 
 			//console.log('==============================');
@@ -138,30 +99,33 @@ export class TableRecordComponent implements OnInit {
 		} /* for */
 
 		let localFields = [];
-		/* create array of field objects */
-		console.log('Convereted structure convertedRecordStructure = ', convertedRecordStructure)
-
-		for (var k2 of Object.keys(convertedRecordStructure)) {
-			localFields.push(convertedRecordStructure[k2]);
+		/* create array of field objects for sequence sorting */
+		console.log('Convereted structure  = ', field)
+		for (var k2 of Object.keys(field)) {
+			localFields.push(field[k2]);
 		}
+
 		/* sort based on sequence field f4 */
 		localFields.sort(function(a, b) { 
 			if (a.f4 < b.f4) return -1;
 			if (a.f4 > b.f4) return 1;
 			return 0;
 		});
-    	console.log('sorted localFields ', localFields, ' of convertedRecordStructure ', convertedRecordStructure);
+    	console.log('sorted localFields ', localFields);
 
 		/* store sorted field names */
-		convertedRecordStructure['sorted_field_names'] = [];
+		field['sorted_field_names'] = [];
+
 		localFields.forEach(function(fieldObject) {
-			console.log('Push ', fieldObject['f1'], ' in sorted_field_names in ', convertedRecordStructure['sorted_field_names']);
-			convertedRecordStructure['sorted_field_names'].push(fieldObject['f1']);
+			console.log('Push ', fieldObject['f1'], ' in sorted_field_names in ', field['sorted_field_names']);
+			field['sorted_field_names'].push(fieldObject['f1']);
 		});
+
 		/* free up memory */
 		// delete localFields; TODO can not delete with defined as var/let
 		console.log('---------------------------');
-		return convertedRecordStructure;
+		return field;
+		
 	} /* createRecordStructureFromC3Table */
 
 	constructor(

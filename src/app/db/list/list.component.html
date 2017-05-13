@@ -1,0 +1,58 @@
+<app-loading [isLoading]="!dataArrived" [title]="'table list'"></app-loading>
+<app-alert *ngIf="errorArrived" [title]="'Error'" [code]="response.code"></app-alert>
+
+<md-card *ngIf="dataArrived">
+
+	<md-card-header>
+		<md-card-title><h2>List of Tables or Collections in Database</h2></md-card-title>
+		<md-card-subtitle>Complete list of tables and collections</md-card-subtitle>
+	</md-card-header>
+
+	<md-card-content>
+		<button 
+			md-mini-fab 
+			[routerLink]="'/ac/new/c1'"
+			title="Add New Table"
+		>
+			<md-icon>add</md-icon>
+		</button>
+
+		&nbsp;
+		<md-input-container>
+			<input 
+				mdInput 
+				id="collectionListSearchId" 
+				placeholder="Search Tables" 
+				[(ngModel)]="searchPattern"
+				(ngModelChange) = "searchCollections()"
+			/>
+		</md-input-container>
+
+		&nbsp;
+		<table>
+			<tr
+				*ngFor=" let d of response; " 
+				[class.disabled]="!d.a1"
+			><td><hr />
+				<button 
+					md-mini-fab
+					[routerLink]="['/cocs/show', d.$key]"
+					title="Update"
+					[class.disabled]="!d.a1"
+				>
+					<md-icon>mode_edit</md-icon> 
+				</button>
+				
+				&nbsp;
+				{{d.a2}}. <b>{{d.a3}}</b>: {{d.a4}}
+			</td></tr>
+		</table>
+
+	</md-card-content>
+
+	<md-card-actions>
+		Total <strong>{{response.length}}</strong>
+		{{(response.length <= 1)?'table':'tables'}} in list
+	</md-card-actions>
+
+</md-card>

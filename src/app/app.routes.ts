@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { WebPageRoutes } from './views/web-page/web-page.routes';
 import { PageNotFoundRoutes } from './views/page-not-found/page-not-found.routes';
-import { CollectionComponentRoutes } from './collections/routes';
+import { DbRoutes } from './db/routes';
 
 // Route Configuration
 export const routes: Routes = [
@@ -13,7 +13,7 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   ...WebPageRoutes,
-  ...CollectionComponentRoutes,
+  ...DbRoutes,
   ...PageNotFoundRoutes /* keep it as last route */
 ];
 

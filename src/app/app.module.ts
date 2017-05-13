@@ -36,6 +36,10 @@ import { CreateTableRecordComponent } from './collections/create-table-record/cr
 import { UpdateTableRecordComponent } from './collections/update-table-record/update-table-record.component';
 import { RemoveTableRecordComponent } from './collections/remove-table-record/remove-table-record.component';
 import { ListDatabaseTablesComponent } from './collections/list-database-tables/list-database-tables.component';
+import { ListComponent } from './db/list/list.component';
+import { AlertComponent } from './views/alert/alert.component';
+import { LoadingComponent } from './views/loading/loading.component';
+import { UpdateComponent } from './db/update/update.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -57,7 +61,11 @@ const firebaseConfig = {
     CreateTableRecordComponent,
     UpdateTableRecordComponent,
     RemoveTableRecordComponent,
-    ListDatabaseTablesComponent
+    ListDatabaseTablesComponent,
+    ListComponent,
+    AlertComponent,
+    LoadingComponent,
+    UpdateComponent
   ],
 
   imports: [
