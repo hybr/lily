@@ -21,25 +21,19 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 
-
 /* Application Components */
 import { AppComponent } from './app.component';
 import { WebPageComponent } from './views/web-page/web-page.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
-
-import { DetailDocOfCocsComponent } from './collections/detail.component';
-
-import { RecordFieldComponent } from './collections/record-field/record-field.component';
-import { RecordFieldGroupComponent } from './collections/record-field-group/record-field-group.component';
-import { TableRecordComponent } from './collections/table-record/table-record.component';
-import { CreateTableRecordComponent } from './collections/create-table-record/create-table-record.component';
-import { UpdateTableRecordComponent } from './collections/update-table-record/update-table-record.component';
-import { RemoveTableRecordComponent } from './collections/remove-table-record/remove-table-record.component';
-import { ListDatabaseTablesComponent } from './collections/list-database-tables/list-database-tables.component';
-import { ListComponent } from './db/list/list.component';
 import { AlertComponent } from './views/alert/alert.component';
 import { LoadingComponent } from './views/loading/loading.component';
+import { DebugComponent } from './views/debug/debug.component';
+
+import { ListComponent } from './db/list/list.component';
 import { UpdateComponent } from './db/update/update.component';
+import { TableRecordComponent } from './db/table-record/table-record.component';
+import { GroupFieldComponent } from './db/group-field/group-field.component';
+import { FieldComponent } from './db/field/field.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -54,18 +48,14 @@ const firebaseConfig = {
     AppComponent,
     WebPageComponent,
     PageNotFoundComponent,
-    DetailDocOfCocsComponent,
-    RecordFieldComponent,
-    RecordFieldGroupComponent,
     TableRecordComponent,
-    CreateTableRecordComponent,
-    UpdateTableRecordComponent,
-    RemoveTableRecordComponent,
-    ListDatabaseTablesComponent,
     ListComponent,
     AlertComponent,
     LoadingComponent,
-    UpdateComponent
+    UpdateComponent,
+    DebugComponent,
+    GroupFieldComponent,
+    FieldComponent
   ],
 
   imports: [

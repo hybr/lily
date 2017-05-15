@@ -1,0 +1,19 @@
+
+
+<div *ngFor="let f of keysOfObject(fieldGroup);">
+	<br />
+	
+	<fieldset *ngIf="isVariableObject(fieldGroup[f])">
+	<legend>{{fieldGroup[f]['t']}}</legend>
+	<app-db-group-field	
+		[fieldGroup]="fieldGroup[f]"
+	></app-db-group-field>
+	</fieldset>
+
+	<div *ngIf="!isVariableObject(fieldGroup[f])">
+		<app-db-field
+			[fieldValue]=""
+			[fieldProperties]="fieldGroup[f]" 
+		></app-db-field>
+	</div>
+</div>

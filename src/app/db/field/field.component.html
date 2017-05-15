@@ -1,0 +1,16 @@
+<hr /> 
+
+fieldProperties = {{fieldProperties | json}}
+<md-input-container
+	*ngIf="(fieldProperties['f5'] == 'string')"
+>
+	<input 	
+		mdInput
+		id="{{ fieldProperties['f1'] }}"
+		placeholder="{{ fieldProperties['f2'] }}"
+		type="text"
+		name="{{ fieldProperties['f1'] }}"
+		[(ngModel)]="fieldValue"
+
+	/>
+</md-input-container>

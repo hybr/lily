@@ -1,0 +1,7 @@
+<app-loading [isLoading]="!dataArrived" [title]="crudAction + ' record'"></app-loading>
+<app-alert *ngIf="errorArrived" [title]="'Error'" [code]="response.code"></app-alert>
+<div *ngIf="debug">db-table-record tableRecord = <pre>{{ tableRecord | json}}</pre></div>
+<app-db-group-field
+	*ngIf="dataArrived"
+	[fieldGroup]="response"
+></app-db-group-field>

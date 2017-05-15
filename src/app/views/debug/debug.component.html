@@ -1,0 +1,6 @@
+<span *ngIf="debugCode">
+	<hr />
+	<span *ngFor="let msg of messages">
+		<pre>{{ msg | json}}</pre>
+	</span>
+</span>

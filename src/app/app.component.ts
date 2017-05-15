@@ -9,7 +9,7 @@ import * as firebase from 'firebase/app';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  
   user: Observable<firebase.User>;
   public userDetail = {};
 
