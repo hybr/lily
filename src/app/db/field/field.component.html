@@ -1,16 +1,137 @@
-<hr /> 
+<hr />
 
-fieldProperties = {{fieldProperties | json}}
+<md-slide-toggle 
+	
+	*ngIf="(fieldProperties['y'] == 'boolean')"
+	
+	name="{{ fieldProperties['n'] }}"
+	
+	[(ngModel)]="fieldValue"
+	(ngModelChange)="changedNgModel($event)"
+
+	id="{{ fieldProperties['n'] }}"
+
+>{{ fieldProperties['t'] }}</md-slide-toggle> 
+
+
 <md-input-container
-	*ngIf="(fieldProperties['f5'] == 'string')"
+	*ngIf="(fieldProperties['y'] == 'string')"
 >
 	<input 	
 		mdInput
-		id="{{ fieldProperties['f1'] }}"
-		placeholder="{{ fieldProperties['f2'] }}"
+		id="{{ fieldProperties['n'] }}"
+		placeholder="{{ fieldProperties['t'] }}"
 		type="text"
-		name="{{ fieldProperties['f1'] }}"
+		name="{{ fieldProperties['n'] }}"
 		[(ngModel)]="fieldValue"
-
+		(ngModelChange)="changedNgModel($event)"
 	/>
 </md-input-container>
+
+<md-input-container
+	*ngIf="(fieldProperties['y'] == 'email')"
+>
+	<input 	
+		mdInput
+		id="{{ fieldProperties['n'] }}"
+		placeholder="{{ fieldProperties['t'] }}"
+		type="email"
+		name="{{ fieldProperties['n'] }}"
+		[(ngModel)]="fieldValue"
+		(ngModelChange)="changedNgModel($event)"
+	/>
+</md-input-container>
+
+<md-input-container
+	*ngIf="(fieldProperties['y'] == 'password')"
+>
+	<input 	
+		mdInput
+		id="{{ fieldProperties['n'] }}"
+		placeholder="{{ fieldProperties['t'] }}"
+		type="password"
+		name="{{ fieldProperties['n'] }}"
+		[(ngModel)]="fieldValue"
+		(ngModelChange)="changedNgModel($event)"
+	/>
+</md-input-container>
+
+<md-radio-group 
+	*ngIf="(fieldProperties['y'] == 'field_type')"
+	[(ngModel)]="fieldValue" 
+	(ngModelChange)="changedNgModel($event)"
+>
+	{{ fieldProperties['t'] }}<br />
+	<md-radio-button value="field">Single Field</md-radio-button>
+	<md-radio-button value="field_group">Field Group</md-radio-button>
+</md-radio-group>
+
+
+<md-radio-group 
+	*ngIf="(fieldProperties['y'] == 'value_type')"
+	[(ngModel)]="fieldValue" 
+	(ngModelChange)="changedNgModel($event)"
+>
+	{{ fieldProperties['t'] }}<br />
+	<md-radio-button value="boolean">boolean</md-radio-button>
+	<md-radio-button value="string">string</md-radio-button>
+	<md-radio-button value="number">number</md-radio-button>
+	<md-radio-button value="email">email</md-radio-button>
+	<md-radio-button value="password">password</md-radio-button>
+	<md-radio-button value="field_type">field type</md-radio-button>
+	<md-radio-button value="value_type">value type</md-radio-button>
+	<md-radio-button value="field_sequence">field sequence</md-radio-button>
+	<md-radio-button value="foreign_key">foreign key</md-radio-button>
+</md-radio-group>
+
+<div 
+	*ngIf="(fieldProperties['y'] == 'field_sequence')"
+>Field Sequence<br />{{fieldValue}}
+	<md-slider
+		[(ngModel)]="fieldValue" 
+		(ngModelChange)="changedNgModel($event)"
+	    [max]=20
+	    [min]=1
+	    [step]=1
+	    [thumb-label]=true
+	></md-slider>
+</div>
+
+<div *ngIf="(fieldProperties['y'] == 'auto_foreign_key')">
+	<md-input-container>
+		<input 
+			mdInput
+			id="{{ fieldProperties['n'] }}"
+			placeholder="{{ fieldProperties['t'] }}"
+			type="text"
+			name="{{ fieldProperties['n'] }}"
+			[(ngModel)]="fieldValue"
+			(ngModelChange)="changedNgModel($event)"
+			[mdAutocomplete]="auto"
+		/>
+	</md-input-container>
+	<br />{{ getOptionListTitle(fieldValue) }}
+	<md-autocomplete #auto="mdAutocomplete">
+		<md-option *ngFor="let option of foreignKeyList" [value]="option.value">
+		{{ option.title }}
+		</md-option>
+	</md-autocomplete>
+</div>
+
+<div *ngIf="(fieldProperties['y'] == 'foreign_key')">
+	<br />
+	<md-select
+			mdInput
+			id="{{ fieldProperties['n'] }}"
+			placeholder="{{ fieldProperties['t'] }}"
+			type="text"
+			name="{{ fieldProperties['n'] }}"
+			[(ngModel)]="fieldValue"
+			(ngModelChange)="changedNgModel($event)"
+	>
+		<md-option 
+			*ngFor=" let option of foreignKeyList; " 
+			[value]="option.value"
+		>{{option.title}}</md-option>
+	</md-select>
+</div>

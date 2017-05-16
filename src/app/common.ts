@@ -1,7 +1,7 @@
 
 
 export class AppCommon {
-	public debug: boolean = false;
+	public debug: boolean = true;
 
 	public dataArrived: boolean = false;
 	public errorArrived: boolean = false;
@@ -26,5 +26,9 @@ export class AppCommon {
 
 	isVariableObject(v) {
 		return (v !== null && typeof v === 'object');
-	}
+	} /* isVariableObject */
+
+	logIt(messages) {
+		this.debug && console.log(messages);
+	} /* debug */
 }

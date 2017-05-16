@@ -1,7 +1,30 @@
 <app-loading [isLoading]="!dataArrived" [title]="crudAction + ' record'"></app-loading>
 <app-alert *ngIf="errorArrived" [title]="'Error'" [code]="response.code"></app-alert>
 <div *ngIf="debug">db-table-record tableRecord = <pre>{{ tableRecord | json}}</pre></div>
-<app-db-group-field
-	*ngIf="dataArrived"
-	[fieldGroup]="response"
-></app-db-group-field>
+
+
+<md-card *ngIf="dataArrived">
+	<md-card-header>
+		<md-card-title>
+			<h2>
+				<span *ngIf="crudAction == 'create'">Adding New </span>
+				<span *ngIf="crudAction == 'update'">Updating </span>
+				<span *ngIf="crudAction == 'remove'">Removing </span>
+				{{response['a3']}} Record
+			</h2>
+		</md-card-title>
+		<md-card-subtitle>{{response['a4']}}</md-card-subtitle>
+	</md-card-header>
+
+	<md-card-content>
+		<app-db-group-field 
+			*ngIf="dataArrived"
+			[fieldGroupProperties]="response['a5']"
+			[fieldGroupValue]="response"
+			(fieldGroupValueUpdated)="updateFieldGroupValue('a5', $event)"
+		></app-db-group-field>
+	</md-card-content>
+
+</md-card>
+
+{{ logIt(response) }}

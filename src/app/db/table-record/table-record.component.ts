@@ -17,11 +17,14 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 	@Input() crudAction: string = 'create';
 	@Input() recordKey: string = '';
 	@Output() tableRecordUpdated: EventEmitter<any> = new EventEmitter<any>();
+
+	updateRecordValue()
 	
+
 	constructor(
 		private _afd: AngularFireDatabase,
 		private _route: ActivatedRoute
-	) { 
+		) { 
 		super();
 	}
 
@@ -33,8 +36,8 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 		/* c1 table contains the structures of all other tables */
 		const queryObservable = this._afd.list('/c1', {
 			query: {
-			orderByChild: 'a2', /* a2 is field name for collection number */
-			equalTo: subject /* collection number to be updated */
+				orderByChild: 'a2', /* a2 is field name for collection number */
+				equalTo: subject /* collection number to be updated */
 			}
 		});
 		//console.log('TableRecordComponent: queryObservable = ', queryObservable);
@@ -52,70 +55,99 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 					a4: 'list of tables',
 					a5: {
 
-							a1: { 
-								n: 'a1',
-								t: 'Is Table Active?',
-								y: 'boolean',
-								d: true,
+						a1: { 
+							n: 'a1',
+							t: 'Is Table Active?',
+							y: 'boolean',
+							d: true,
+							s: 1,
+							f: true,
+							a: '',
+							b: '',
+							m: 0
+						},
+						a2: { 
+							n: 'a2',
+							t: 'Table Name',
+							y: 'string',
+							d: '',
+							s: 3,
+							f: true,
+							a: '',
+							b: '',
+							m: 0
+						},
+						a3: { 
+							n: 'a3',
+							t: 'Table Number',
+							y: 'string',
+							d: true,
+							s: 2,
+							f: true,
+							a: '',
+							b: '',
+							m: 0
+						},
+						a4: { 
+							n: 'a4',
+							t: 'Detail',
+							y: 'string',
+							d: '',
+							s: 4,
+							f: true,
+							a: '',
+							b: '',
+							m: 0
+						},
+						a5: { 
+							n: 'a5',
+							t: 'Record Structure',
+							y: 'string',
+							d: '',
+							s: 5,
+							f: false,
+							a: '',
+							b: '',
+							m: 1,
+							0: {
+								n: 'n',
+								t: 'Name',
+								y: 'string',
+								d: '',
 								s: 1,
-								f: 1,
+								f: true,
 								a: '',
-								b: ''
+								b: '',
+								m: 0
 							},
-							a2: { 
-								n: 'a2',
-								t: 'Table Name',
+							1: {
+								n: 't',
+								t: 'Type',
+								y: 'string',
+								d: '',
+								s: 2,
+								f: true,
+								a: '',
+								b: '',
+								m: 0
+							},
+							2: {
+								n: 'y',
+								t: 'Value Type',
 								y: 'string',
 								d: '',
 								s: 3,
-								f: 1,
-								a: '',
-								b: ''
-							},
-							a3: { 
-								n: 'a3',
-								t: 'Table Number',
-								y: 'string',
-								d: true,
-								s: 2,
-								f: 1,
-								a: '',
-								b: ''
-							},
-							a4: { 
-								n: 'a4',
-								t: 'Detail',
-								y: 'string',
-								d: '',
-								s: 4,
-								f: 1,
-								a: '',
-								b: ''
-							},
-							a5: { 
-								n: 'a5',
-								t: 'Record Structure',
-								y: 'string',
-								d: '',
-								s: 5,
-								f: 0,
+								f: true,
 								a: '',
 								b: '',
-								0: {
-									n: 'n',
-									t: 'Name',
-									y: 'string',
-									d: '',
-									s: 1,
-									f: 1,
-									a: '',
-									b: ''
-								}
+								m: 0
 							},
-						}
+
+						},
 					}
+				}
 				;
-				this.response = r['a5'];
+				this.response = r;
 			},
 			err => {
 				this.errorArrived = true;
@@ -124,7 +156,7 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 			() => {
 				this.queryComplete = true;
 			}
-		);
+			);
 
 		// trigger the query
 		subject.next(this.tableNumber);

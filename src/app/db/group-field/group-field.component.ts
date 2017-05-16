@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AppDbCommon } from '../common';
 
 @Component({
@@ -8,7 +8,46 @@ import { AppDbCommon } from '../common';
 })
 export class GroupFieldComponent extends AppDbCommon implements OnInit {
 
-	@Input() fieldGroup: Object;
+	@Input() fieldGroupProperties: Object;
+	@Input() fieldGroupValue: Object;
+	@Output() fieldGroupValueUpdated: EventEmitter<any> = new EventEmitter<any>();
+	@Output() fieldRecordValueUpdated: EventEmitter<any> = new EventEmitter<any>();
+
+	updateFieldValue(fieldGroupPropertyName, value) {
+		this.logIt([
+			'GroupFieldComponent: Received in field = fieldGroupPropertyName ', 
+			fieldGroupPropertyName, 
+			' value ', value
+		]);
+		let obj = {};
+
+		this.fieldGroupValue[fieldGroupPropertyName] = value;
+		obj[fieldGroupPropertyName] = this.fieldGroupValue;
+		this.logIt([
+			'GroupFieldComponent: Field is emitting obj = { ', 
+			fieldGroupPropertyName, 
+			' = ', value, ' }'
+		]);
+		this.fieldGroupValueUpdated.emit(obj);
+	}
+
+	updateFieldGroupValue(fieldGroupPropertyName, value) {
+		this.logIt([
+			'GroupFieldComponent: Received in group = field ', 
+			fieldGroupPropertyName, 
+			' value ', value
+		]);
+		let obj = {};
+
+		this.fieldGroupValue[fieldGroupPropertyName] = value;
+		obj[fieldGroupPropertyName] = this.fieldGroupValue;
+		this.logIt([
+			'GroupFieldComponent: Field is emitting obj = { ', 
+			fieldGroupPropertyName, 
+			' = ', value, ' }'
+		]);
+		this.fieldRecordValueUpdated.emit(obj);
+	}
 
 	constructor() { 
 		super();

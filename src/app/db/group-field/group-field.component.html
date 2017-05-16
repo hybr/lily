@@ -1,19 +1,68 @@
 
+<div *ngFor="let field of keysOfObject(fieldGroupProperties);">
 
-<div *ngFor="let f of keysOfObject(fieldGroup);">
-	<br />
+	<div *ngIf="isVariableObject(fieldGroupProperties[field])"><br /></div>
 	
-	<fieldset *ngIf="isVariableObject(fieldGroup[f])">
-	<legend>{{fieldGroup[f]['t']}}</legend>
-	<app-db-group-field	
-		[fieldGroup]="fieldGroup[f]"
-	></app-db-group-field>
-	</fieldset>
+	<fieldset *ngIf="isVariableObject(fieldGroupProperties[field]) && !fieldGroupProperties[field]['f'] ">
+		<legend>{{fieldGroupProperties[field]['t']}}</legend>
 
-	<div *ngIf="!isVariableObject(fieldGroup[f])">
-		<app-db-field
-			[fieldValue]=""
-			[fieldProperties]="fieldGroup[f]" 
-		></app-db-field>
+			<div *ngIf="fieldGroupProperties[field]['m'] > 0">
+
+				<div class="lns_sub_fields_border" >
+			
+					<button md-button-raised class="warning" (click)="removeValue(valueKey)">Remove {{valueKey}}</button>
+
+					<app-db-group-field	
+						[fieldGroupProperties]="fieldGroupProperties[field]"
+						[fieldGroupValue]="fieldGroupProperties[field]"
+						(fieldGroupValueUpdated)="updateFieldGroupValue(field, $event)"
+					></app-db-group-field>
+
+				</div>
+				
+				<button md-button (click)="addValue()">Add {{fieldGroupPropertiesTitle}} </button>
+
+			</div>
+
+			<div *ngIf="fieldGroupProperties[field]['m'] == 0">
+				<app-db-group-field	
+					[fieldGroupProperties]="fieldGroupProperties[field]"
+					[fieldGroupValue]="fieldGroupProperties[field]"
+					(fieldGroupValueUpdated)="updateFieldGroupValue(field, $event)"
+				></app-db-group-field>
+			</div>
+	</fieldset>
+	
+	<div *ngIf="isVariableObject(fieldGroupProperties[field]) && fieldGroupProperties[field]['f']">
+
+		
+		<div *ngIf="fieldGroupProperties[field]['m'] > 0">
+
+			<div class="lns_sub_fields_border" >
+		
+				<button md-button-raised class="warning" (click)="removeValue(valueKey)">Remove {{valueKey}}</button>
+
+				<app-db-field
+					[fieldValue]="fieldGroupProperties[field]"
+					[fieldProperties]="fieldGroupProperties[field]"
+					(fieldValueUpdated)="updateFieldValue(field, $event)"
+				></app-db-field>
+
+			</div>
+
+			<button md-button (click)="addValue()">Add {{fieldGroupPropertiesTitle}} </button>
+
+		</div>
+
+		<div *ngIf="fieldGroupProperties[field]['m'] == 0">
+			
+			<app-db-field
+				[fieldValue]="fieldGroupProperties[field]"
+				[fieldProperties]="fieldGroupProperties[field]" 
+				(fieldValueUpdated)="updateFieldValue(field, $event)"
+			></app-db-field>
+
+		</div>
 	</div>
+
 </div>
