@@ -54,7 +54,7 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 				/* the result is list of records, so take the first one */
 				this.dataArrived = true;
 				this.response = record[0]['a5'];
-				let r = {
+/*				let r = {
 					a1: true,
 					a2: 'c1',
 					a3: 'Tables',
@@ -152,7 +152,19 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 						},
 					}
 				}
-				;
+				;*/
+
+				let r = {
+					data: {},
+					record: {
+						field: {
+							m: 1,
+							property: {
+								m: 1
+							}
+						}
+					}
+				};
 				this.response = r;
 			},
 			err => {

@@ -19,9 +19,10 @@
 	<md-card-content>
 		<app-db-group-field 
 			*ngIf="dataArrived"
-			[fieldGroupProperties]="response['a5']"
-			[fieldGroupValue]="response"
-			(emitingRecordValue)="updateRecordValues('a5', $event)"
+			[fieldGroupProperties]="response['record']"
+			[fieldGroupValueKey]="'record'"
+			[fieldGroupValue]="response['data']"
+			(emitingRecordValue)="updateRecordValues('record', $event)"
 		></app-db-group-field>
 	</md-card-content>
 
