@@ -14,8 +14,8 @@
 
 					<app-db-group-field	
 						[fieldGroupProperties]="fieldGroupProperties[field]"
-						[fieldGroupValue]="fieldGroupProperties[field]"
-						(fieldGroupValueUpdated)="updateFieldGroupValue(field, $event)"
+						[fieldGroupValue]="fieldGroupValue[field]"
+						(emitingFieldGroupValue)="updateFieldGroupValue(field, $event, 3)"
 					></app-db-group-field>
 
 				</div>
@@ -27,8 +27,8 @@
 			<div *ngIf="fieldGroupProperties[field]['m'] == 0">
 				<app-db-group-field	
 					[fieldGroupProperties]="fieldGroupProperties[field]"
-					[fieldGroupValue]="fieldGroupProperties[field]"
-					(fieldGroupValueUpdated)="updateFieldGroupValue(field, $event)"
+					[fieldGroupValue]="fieldGroupValue[field]"
+					(emitingFieldGroupValue)="updateFieldGroupValue(field, $event, 4)"
 				></app-db-group-field>
 			</div>
 	</fieldset>
@@ -43,9 +43,9 @@
 				<button md-button-raised class="warning" (click)="removeValue(valueKey)">Remove {{valueKey}}</button>
 
 				<app-db-field
-					[fieldValue]="fieldGroupProperties[field]"
+					[fieldValue]="fieldGroupValue[field]"
 					[fieldProperties]="fieldGroupProperties[field]"
-					(fieldValueUpdated)="updateFieldValue(field, $event)"
+					(emitingFieldValue)="updateFieldValue(field, $event, 1)"
 				></app-db-field>
 
 			</div>
@@ -57,9 +57,9 @@
 		<div *ngIf="fieldGroupProperties[field]['m'] == 0">
 			
 			<app-db-field
-				[fieldValue]="fieldGroupProperties[field]"
+				[fieldValue]="fieldGroupValue[field]"
 				[fieldProperties]="fieldGroupProperties[field]" 
-				(fieldValueUpdated)="updateFieldValue(field, $event)"
+				(emitingFieldValue)="updateFieldValue(field, $event, 2)"
 			></app-db-field>
 
 		</div>

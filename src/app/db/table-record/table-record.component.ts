@@ -18,7 +18,13 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 	@Input() recordKey: string = '';
 	@Output() tableRecordUpdated: EventEmitter<any> = new EventEmitter<any>();
 
-	updateRecordValue()
+	updateRecordValues(fieldName, value) {
+		this.logIt([
+			'TableRecordComponent: updateRecordValues: ',
+			' fieldName = ', fieldName, 
+			' value = ', value
+		]);
+	}
 	
 
 	constructor(

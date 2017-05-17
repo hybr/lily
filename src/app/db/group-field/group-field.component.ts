@@ -10,43 +10,47 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 
 	@Input() fieldGroupProperties: Object;
 	@Input() fieldGroupValue: Object;
-	@Output() fieldGroupValueUpdated: EventEmitter<any> = new EventEmitter<any>();
-	@Output() fieldRecordValueUpdated: EventEmitter<any> = new EventEmitter<any>();
+	@Output() emitingFieldGroupValue: EventEmitter<any> = new EventEmitter<any>();
+	@Output() emitingRecordValue: EventEmitter<any> = new EventEmitter<any>();
 
-	updateFieldValue(fieldGroupPropertyName, value) {
+	updateFieldValue(fieldName, value, c) {
 		this.logIt([
-			'GroupFieldComponent: Received in field = fieldGroupPropertyName ', 
-			fieldGroupPropertyName, 
-			' value ', value
+			'GroupFieldComponent: updateFieldValue: ',
+			' fieldName = ', fieldName, 
+			' value = ', value,
+			' code = ', c
 		]);
 		let obj = {};
 
-		this.fieldGroupValue[fieldGroupPropertyName] = value;
-		obj[fieldGroupPropertyName] = this.fieldGroupValue;
+		this.fieldGroupValue[fieldName] = value;
+		obj[fieldName] = this.fieldGroupValue;
 		this.logIt([
-			'GroupFieldComponent: Field is emitting obj = { ', 
-			fieldGroupPropertyName, 
-			' = ', value, ' }'
+			'GroupFieldComponent: updateFieldValue: is emitting obj = { ', 
+			fieldName, 
+			' = ', obj[fieldName], ' }',
+			' code = ', c
 		]);
-		this.fieldGroupValueUpdated.emit(obj);
+		this.emitingFieldGroupValue.emit(value);
 	}
 
-	updateFieldGroupValue(fieldGroupPropertyName, value) {
+	updateFieldGroupValue(fieldName, value, c) {
 		this.logIt([
-			'GroupFieldComponent: Received in group = field ', 
-			fieldGroupPropertyName, 
-			' value ', value
-		]);
+			'GroupFieldComponent: updateFieldGroupValue: ',
+			' fieldName = ', fieldName, 
+			' value = ', value,
+			' code = ', c
+		])
 		let obj = {};
 
-		this.fieldGroupValue[fieldGroupPropertyName] = value;
-		obj[fieldGroupPropertyName] = this.fieldGroupValue;
+		this.fieldGroupValue[fieldName] = value;
+		obj[fieldName] = this.fieldGroupValue;
 		this.logIt([
-			'GroupFieldComponent: Field is emitting obj = { ', 
-			fieldGroupPropertyName, 
-			' = ', value, ' }'
+			'GroupFieldComponent: updateFieldGroupValue: is emitting obj = { ', 
+			fieldName, 
+			' = ', obj[fieldName], ' }',
+			' code = ', c
 		]);
-		this.fieldRecordValueUpdated.emit(obj);
+		this.emitingRecordValue.emit(obj);
 	}
 
 	constructor() { 
