@@ -50,10 +50,10 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 
 		// subscribe to changes
 		queryObservable.subscribe(
-			record => {
+			recordReceived => {
 				/* the result is list of records, so take the first one */
 				this.dataArrived = true;
-				this.response = record[0]['a5'];
+				this.response = recordReceived[0]['a5'];
 /*				let r = {
 					a1: true,
 					a2: 'c1',
@@ -154,18 +154,7 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 				}
 				;*/
 
-				let r = {
-					data: {},
-					record: {
-						field: {
-							m: 1,
-							property: {
-								m: 1
-							}
-						}
-					}
-				};
-				this.response = r;
+				this.record = this.response = {};
 			},
 			err => {
 				this.errorArrived = true;

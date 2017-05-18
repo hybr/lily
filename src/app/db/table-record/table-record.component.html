@@ -1,6 +1,6 @@
 <app-loading [isLoading]="!dataArrived" [title]="crudAction + ' record'"></app-loading>
 <app-alert *ngIf="errorArrived" [title]="'Error'" [code]="response.code"></app-alert>
-<div *ngIf="debug">db-table-record tableRecord = <pre>{{ tableRecord | json}}</pre></div>
+<div *ngIf="debug">TableRecordComponent record = <pre>{{ record | json}}</pre></div>
 
 
 <md-card *ngIf="dataArrived">
@@ -19,13 +19,9 @@
 	<md-card-content>
 		<app-db-group-field 
 			*ngIf="dataArrived"
-			[fieldGroupProperties]="response['record']"
-			[fieldGroupValueKey]="'record'"
-			[fieldGroupValue]="response['data']"
+			[fieldGroupValue]="record"
 			(emitingRecordValue)="updateRecordValues('record', $event)"
 		></app-db-group-field>
 	</md-card-content>
 
 </md-card>
-
-{{ logIt(response) }}

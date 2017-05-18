@@ -1,107 +1,84 @@
 
-{{ logIt(['GroupFieldComponent: fieldGroupProperties = ', fieldGroupProperties]) }}
-
-<div *ngFor="let field of keysOfObject(fieldGroupProperties);">
-	{{ logIt(['GroupFieldComponent: field = ', field]) }}
 
 
-	<div *ngIf="isVariableObject(fieldGroupProperties[field])"><br /></div>
-	
-	<fieldset *ngIf="isVariableObject(fieldGroupProperties[field]) && !fieldGroupProperties[field]['f'] ">
-		<legend>{{field}}</legend>
+<div *ngIf="!isObjectEmpty(fieldGroupValue)">
 
-			
+	<div *ngFor="let key of keysOfObject(fieldGroupValue);">
+	<div *ngIf="keysOfFieldProperties.indexOf(key) === -1">
+		
+		<br />
 
-			<div *ngIf="fieldGroupProperties[field]['m'] != undefined && fieldGroupProperties[field]['m'] > 0">
+		<fieldset *ngIf="!fieldGroupValue[key]['_f']">
 
-				<div *ngIf="fieldGroupValue[field] != undefined">
-					
-					<div class="lns_sub_fields_border" *ngFor="let value of fieldGroupValue[field];">
-				
-						<button md-button-raised color="warn" (click)="removeValue(field)">Remove {{field}}</button>
+			<legend>{{fieldGroupValue[key]['_t']}}</legend>
 
-						<app-db-group-field	
-							[fieldGroupProperties]="fieldGroupProperties[field]"
-							[fieldGroupValue]="applyFieldValue(value, field)"
-							(emitingFieldGroupValue)="updateFieldGroupValue(field, $event, 3)"
-						></app-db-group-field>
-
-					</div>
-
-				</div>
+			<div *ngIf="fieldGroupValue[key]['_m'] > 0">
 
 				<div class="lns_sub_fields_border" >
-			
-					<button md-button-raised color="warn" (click)="removeValue(field)">Remove {{field}}</button>
+
+					<button md-button-raised color="warn" (click)="removeValue(key)">Remove {{key}}</button>
 
 					<app-db-group-field	
-						[fieldGroupProperties]="fieldGroupProperties[field]"
-						[fieldGroupValue]="applyFieldValue(fieldGroupValue, field)"
-						(emitingFieldGroupValue)="updateFieldGroupValue(field, $event, 3)"
+					[fieldGroupValue]="fieldGroupValue[key]"
+					(emitingFieldGroupValue)="updateFieldGroupValue(key, $event, 3)"
 					></app-db-group-field>
 
 				</div>
-				
-				<button md-button (click)="addValue(field)">Add {{field}} </button>
 
 			</div>
 
-			<div *ngIf="fieldGroupProperties[field]['m'] == undefined || fieldGroupProperties[field]['m'] == 0">
+			<div *ngIf="fieldGroupValue[key]['_m'] == 0">
 
 				<app-db-group-field	
-					[fieldGroupProperties]="fieldGroupProperties[field]"
-					[fieldGroupValue]="applyFieldValue(fieldGroupValue, field)"
-					(emitingFieldGroupValue)="updateFieldGroupValue(field, $event, 4)"
+				[fieldGroupValue]="fieldGroupValue[key]"
+				(emitingFieldGroupValue)="updateFieldGroupValue(key, $event, 4)"
 				></app-db-group-field>
 
 			</div>
-	</fieldset>
-	
 
-	<div *ngIf="isVariableObject(fieldGroupProperties[field]) && fieldGroupProperties[field]['f']">
-
-		
-		<div *ngIf="fieldGroupProperties[field]['m'] != undefined && fieldGroupProperties[field]['m'] > 0">
-
-			<div class="lns_sub_fields_border" *ngFor="let value of fieldGroupValue[field];">
-		
-				<button md-button-raised class="warning" (click)="removeValue(field)">Remove {{field}}</button>
-
-				<app-db-field
-					[fieldValue]="value"
-					[fieldProperties]="applyFieldValue(fieldGroupProperties, field)"
-					(emitingFieldValue)="updateFieldValue(field, $event, 1)"
-				></app-db-field>
-
-			</div>
+		</fieldset>
 
 
-			<div class="lns_sub_fields_border" >
-		
-				<button md-button-raised class="warning" (click)="removeValue(field)">Remove {{field}}</button>
+		<div *ngIf="fieldGroupValue[key]['_f']">
 
-				<app-db-field
-					[fieldValue]="fieldGroupValue[field]"
-					[fieldProperties]="applyFieldValue(fieldGroupProperties, field)"
-					(emitingFieldValue)="updateFieldValue(field, $event, 1)"
-				></app-db-field>
+
+			<div *ngIf="fieldGroupValue[key]['_m'] > 0">
+
+				<div class="lns_sub_fields_border" >
+
+					<button md-button-raised color="warn" (click)="removeValue(key)">Remove {{key}}</button>
+
+					<app-db-field
+					[fieldValue]="fieldGroupValue[key]['_v']"
+					[fieldProperties]="applyFieldValue(fieldGroupValue, key)"
+					(emitingFieldValue)="updateFieldValue(key, $event, 1)"
+					></app-db-field>
+
+				</div>
 
 			</div>
 
-			<button md-button (click)="addValue(field)">Add {{field}} </button>
+			<div *ngIf="fieldGroupValue[key]['_m'] == 0">
 
-		</div>
+				<app-db-field
+				[fieldValue]="fieldGroupValue[key]['_v']"
+				[fieldProperties]="applyFieldValue(fieldGroupValue, key)" 
+				(emitingFieldValue)="updateFieldValue(key, $event, 2)"
+				></app-db-field>
 
-		<div *ngIf="fieldGroupProperties[field] == undefined || fieldGroupProperties[field]['m'] == 0">
-			
-			<app-db-field
-				[fieldValue]="fieldGroupValue[field]"
-				[fieldProperties]="applyFieldValue(fieldGroupProperties, field)" 
-				(emitingFieldValue)="updateFieldValue(field, $event, 2)"
-			></app-db-field>
+			</div>
 
 		</div>
 
 	</div>
+	</div>
 
 </div>
+
+
+<div *ngIf="isObjectEmpty(fieldGroupValue)">
+	<button md-button (click)="addNewField(1)">Add First Field</button>
+</div>
+<div *ngIf="!isObjectEmpty(fieldGroupValue)">
+	<button md-button (click)="addNewField(0)">Add Next Field</button>
+</div>				

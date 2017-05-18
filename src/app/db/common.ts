@@ -10,21 +10,12 @@ import { ActivatedRoute, Params } from '@angular/router';
 })
 export class AppDbCommon extends AppCommon {
 
+	public record: Object = {};
+	
 	constructor() {
 		super();
 	}
 
-	getTableStructure(afd, tableNumber) {
-		this.dataArrived = false;
-		this.errorArrived = false;
-		this.queryComplete = false;
-		this.response = {};
-
-		let r: Object;
-
-
-
-	}
 
 	getParam(r, param, paramValue) {
 		this.dataArrived = false;

@@ -18,6 +18,21 @@ export class FieldComponent extends AppDbCommon implements OnInit {
 		this.emitingFieldValue.emit(value);
 	}
 
+	updateFieldProperties(value) {
+		let v: any;
+		if (this.fieldValue['_v'] = undefined) {
+			v = this.fieldValue['_v'];
+		} else {
+			if (this.fieldValue['_d'] = undefined) {
+				v = this.fieldValue['_d'];
+			} else {
+				v = '';
+			}
+		}
+		this.fieldValue = value;
+		this.fieldValue['_v'] = v;
+	}
+
 	constructor() { 
 		super();
 	}

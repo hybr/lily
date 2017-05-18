@@ -34,6 +34,7 @@ import { UpdateComponent } from './db/update/update.component';
 import { TableRecordComponent } from './db/table-record/table-record.component';
 import { GroupFieldComponent } from './db/group-field/group-field.component';
 import { FieldComponent } from './db/field/field.component';
+import { FieldPropertyComponent } from './db/field-property/field-property.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -55,7 +56,8 @@ const firebaseConfig = {
     UpdateComponent,
     DebugComponent,
     GroupFieldComponent,
-    FieldComponent
+    FieldComponent,
+    FieldPropertyComponent
   ],
 
   imports: [
