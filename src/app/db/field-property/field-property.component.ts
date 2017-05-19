@@ -13,8 +13,9 @@ export class FieldPropertyComponent extends AppDbCommon implements OnInit {
 
 	changedNgModel(key, value) {
 		this.logIt([
-			'FieldPropertyComponent: changedNgModel: emitting ', value
-			]);
+			'FieldPropertyComponent: changedNgModel: emitting ', 
+			JSON.stringify(this.field)
+		]);
 		this.field[key] = value;
 		this.emitingPropertyValue.emit(this.field);
 	}

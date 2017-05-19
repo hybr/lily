@@ -9,8 +9,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 	templateUrl: './common'
 })
 export class AppDbCommon extends AppCommon {
-
-	public record: Object = {};
 	
 	constructor() {
 		super();

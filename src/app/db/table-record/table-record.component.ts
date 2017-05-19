@@ -10,9 +10,10 @@ import { Subject } from 'rxjs/Subject';
 	styleUrls: ['./table-record.component.css']
 })
 export class TableRecordComponent extends AppDbCommon implements OnInit {
+	public tableRecordStructure: Object = {};
 	public searchPattern: string = '';
 
-	@Input() tableRecord: Object = {};
+	@Input() tableRecordValues: Object = {};
 	@Input() tableNumber: string = 'c2'; /* c1 is table of record structures of all other tables */
 	@Input() crudAction: string = 'create';
 	@Input() recordKey: string = '';
@@ -26,14 +27,12 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 		]);
 	}
 	
-
 	constructor(
 		private _afd: AngularFireDatabase,
 		private _route: ActivatedRoute
 		) { 
 		super();
 	}
-
 
 	ngOnInit() {
 		/* Collection Structure of tableNumber */
@@ -154,7 +153,8 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 				}
 				;*/
 
-				this.record = this.response = {};
+				this.tableRecordStructure = this.response = {};
+				this.tableRecordValues = {};
 			},
 			err => {
 				this.errorArrived = true;

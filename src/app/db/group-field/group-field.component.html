@@ -1,37 +1,39 @@
 
 
 
-<div *ngIf="!isObjectEmpty(fieldGroupValue)">
+<div *ngIf="!isObjectEmpty(fieldGroupValues)">
 
-	<div *ngFor="let key of keysOfObject(fieldGroupValue);">
+	<div *ngFor="let key of keysOfObject(fieldGroupValues);">
 	<div *ngIf="keysOfFieldProperties.indexOf(key) === -1">
 		
 		<br />
 
-		<fieldset *ngIf="!fieldGroupValue[key]['_f']">
+		<fieldset *ngIf="!fieldGroupValues[key]['_f']">
 
-			<legend>{{fieldGroupValue[key]['_t']}}</legend>
+			<legend>{{fieldGroupValues[key]['_t']}}</legend>
 
-			<div *ngIf="fieldGroupValue[key]['_m'] > 0">
+			<div *ngIf="fieldGroupValues[key]['_m'] > 0">
 
 				<div class="lns_sub_fields_border" >
 
 					<button md-button-raised color="warn" (click)="removeValue(key)">Remove {{key}}</button>
 
 					<app-db-group-field	
-					[fieldGroupValue]="fieldGroupValue[key]"
-					(emitingFieldGroupValue)="updateFieldGroupValue(key, $event, 3)"
+					[fieldGroupValues]="tableRecordValues[key]"
+					[fieldGroupStructure]="tableRecordStructure[key]"
+					(emitingfieldGroupValues)="updatefieldGroupValues(key, $event, 3)"
 					></app-db-group-field>
 
 				</div>
 
 			</div>
 
-			<div *ngIf="fieldGroupValue[key]['_m'] == 0">
+			<div *ngIf="fieldGroupValues[key]['_m'] == 0">
 
 				<app-db-group-field	
-				[fieldGroupValue]="fieldGroupValue[key]"
-				(emitingFieldGroupValue)="updateFieldGroupValue(key, $event, 4)"
+				[fieldGroupValues]="tableRecordValues[key]"
+				[fieldGroupStructure]="tableRecordStructure[key]"
+				(emitingfieldGroupValues)="updatefieldGroupValues(key, $event, 4)"
 				></app-db-group-field>
 
 			</div>
@@ -39,18 +41,18 @@
 		</fieldset>
 
 
-		<div *ngIf="fieldGroupValue[key]['_f']">
+		<div *ngIf="fieldGroupValues[key]['_f']">
 
 
-			<div *ngIf="fieldGroupValue[key]['_m'] > 0">
+			<div *ngIf="fieldGroupValues[key]['_m'] > 0">
 
 				<div class="lns_sub_fields_border" >
 
 					<button md-button-raised color="warn" (click)="removeValue(key)">Remove {{key}}</button>
 
 					<app-db-field
-					[fieldValue]="fieldGroupValue[key]['_v']"
-					[fieldProperties]="applyFieldValue(fieldGroupValue, key)"
+					[fieldValue]="fieldGroupValues[key]['_v']"
+					[fieldProperties]="applyFieldValue(fieldGroupValues, key)"
 					(emitingFieldValue)="updateFieldValue(key, $event, 1)"
 					></app-db-field>
 
@@ -58,11 +60,11 @@
 
 			</div>
 
-			<div *ngIf="fieldGroupValue[key]['_m'] == 0">
+			<div *ngIf="fieldGroupValues[key]['_m'] == 0">
 
 				<app-db-field
-				[fieldValue]="fieldGroupValue[key]['_v']"
-				[fieldProperties]="applyFieldValue(fieldGroupValue, key)" 
+				[fieldValue]="fieldGroupValues[key]['_v']"
+				[fieldProperties]="applyFieldValue(fieldGroupValues, key)" 
 				(emitingFieldValue)="updateFieldValue(key, $event, 2)"
 				></app-db-field>
 
@@ -75,10 +77,9 @@
 
 </div>
 
-
-<div *ngIf="isObjectEmpty(fieldGroupValue)">
+<div *ngIf="isObjectEmpty(fieldGroupValues)">
 	<button md-button (click)="addNewField(1)">Add First Field</button>
 </div>
-<div *ngIf="!isObjectEmpty(fieldGroupValue)">
+<div *ngIf="!isObjectEmpty(fieldGroupValues)">
 	<button md-button (click)="addNewField(0)">Add Next Field</button>
 </div>				

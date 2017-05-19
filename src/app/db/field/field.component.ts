@@ -8,7 +8,7 @@ import { AppDbCommon } from '../common';
 })
 export class FieldComponent extends AppDbCommon implements OnInit {
 	@Input() fieldProperties: Object = {};
-	@Input() fieldValue : string = '';
+	@Input() fieldValue: Object = {};
 	@Output() emitingFieldValue: EventEmitter<any> = new EventEmitter<any>();
 
 	changedNgModel(value) {
@@ -20,10 +20,10 @@ export class FieldComponent extends AppDbCommon implements OnInit {
 
 	updateFieldProperties(value) {
 		let v: any;
-		if (this.fieldValue['_v'] = undefined) {
+		if (this.fieldValue['_v'] == undefined) {
 			v = this.fieldValue['_v'];
 		} else {
-			if (this.fieldValue['_d'] = undefined) {
+			if (this.fieldValue['_d'] == undefined) {
 				v = this.fieldValue['_d'];
 			} else {
 				v = '';
