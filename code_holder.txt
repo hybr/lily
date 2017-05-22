@@ -1,3 +1,53 @@
+    /* Collection Structure of tableNumber */
+    const subject = new Subject();
+
+    /* c1 table contains the structures of all other tables */
+    const queryObservable = this._afd.list('/1', {
+      query: {
+        orderByChild: 'a2', /* a2 is field name for collection number */
+        equalTo: subject /* collection number to be updated */
+      }
+    });
+    //console.log('TableRecordComponent: queryObservable = ', queryObservable);
+
+    // subscribe to changes
+    queryObservable.subscribe(
+      recordReceived => {
+        /* the result is list of records, so take the first one */
+        this.dataArrived = true;
+        if (this.lengthOfVariable(recordReceived) > 0) {
+          this.tableRecordStructure = recordReceived[0];
+        } else {
+          this.tableRecordStructure = {};
+        }
+        
+      },
+      err => {
+        this.errorArrived = true;
+        this.response = err;
+      },
+      () => {
+        this.queryComplete = true;
+      }
+      );
+
+    // trigger the query
+    subject.next(this.tableNumber);
+    
+
+--------------------------------------
+
+  UpdateComponent Sending
+    [tableNumber]="collectionNumber"
+    [tableRecordValues]="response"
+
+  UpdateComponent Receiving
+    Event (emitTableRecord) will execute "saveUpdatedRecord($event)"
+
+
+
+
+------------------------------
 
     
     this.recordValues =  
@@ -28,6 +78,7 @@
       "f5": "string",
       "f4": "2"
     },
+    
     "3": {
       "f1": "a4",
       "f2": "Detail",

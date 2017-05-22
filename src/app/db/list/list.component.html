@@ -11,7 +11,7 @@
 	<md-card-content>
 		<button 
 			md-mini-fab 
-			[routerLink]="'/ac/new/c1'"
+			[routerLink]="'/db/ctr/' + tableOfTables"
 			title="Add New Table"
 		>
 			<md-icon>add</md-icon>
@@ -31,20 +31,20 @@
 		&nbsp;
 		<table>
 			<tr
-				*ngFor=" let d of response; " 
-				[class.disabled]="!d.a1"
+				*ngFor="let recordCount of keysOfObject(response);"
+				[class.disabled]="!response[recordCount]['1']"
 			><td><hr />
 				<button 
 					md-mini-fab
-					[routerLink]="['/db/utr/' + d.a2 + '/' + d.$key]"
+					[routerLink]="['/db/utr/' + response[recordCount]['2'] + '/' + response[recordCount].$key]"
 					title="Update"
-					[class.disabled]="!d.a1"
+					[class.disabled]="!response[recordCount]['1']"
 				>
 					<md-icon>mode_edit</md-icon> 
 				</button>
 				
 				&nbsp;
-				{{d.a2}}. <b>{{d.a3}}</b>: {{d.a4}}
+				{{response[recordCount]['2']}}. <b>{{response[recordCount]['3']}}</b>: {{response[recordCount]['4']}}
 			</td></tr>
 		</table>
 

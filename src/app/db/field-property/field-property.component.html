@@ -1,38 +1,35 @@
-<table>
+<table class="lns_sub_fields_border">
 	<tr>
 		<td class="lns_sub_fields_border">
 			<md-input-container>
-				<input mdInput placeholder="Name" type="text" [(ngModel)]="field['_n']" (ngModelChange)="changedNgModel('_n', $event)" />
+				<input mdInput placeholder="Name" type="text" [(ngModel)]="fieldProperties['_n']" (ngModelChange)="changedNgModel('_n', $event)" />
 			</md-input-container>
 		</td>
 	</tr>
 	<tr>
 		<td class="lns_sub_fields_border">
 			<md-input-container>
-				<input mdInput placeholder="Title" type="text" [(ngModel)]="field['_t']" (ngModelChange)="changedNgModel('_t', $event)" />
+				<input mdInput placeholder="Title" type="text" [(ngModel)]="fieldProperties['_t']" (ngModelChange)="changedNgModel('_t', $event)" />
 			</md-input-container>
 		</td>
 	</tr>
 	<tr>
 		<td class="lns_sub_fields_border">
 			Value Type<br />
-			<md-radio-group [(ngModel)]="field['_y']" (ngModelChange)="changedNgModel('_y', $event)">
+			<md-radio-group [(ngModel)]="fieldProperties['_y']" (ngModelChange)="changedNgModel('_y', $event)">
 				<br />
 				<md-radio-button value="boolean">boolean</md-radio-button>
 				<md-radio-button value="string">string</md-radio-button>
 				<md-radio-button value="number">number</md-radio-button>
 				<md-radio-button value="email">email</md-radio-button>
 				<md-radio-button value="password">password</md-radio-button>
-				<md-radio-button value="field_type">field type</md-radio-button>
-				<md-radio-button value="value_type">value type</md-radio-button>
-				<md-radio-button value="field_sequence">field sequence</md-radio-button>
 				<md-radio-button value="foreign_key">foreign key</md-radio-button>
 			</md-radio-group>
 		</td>
 	</tr>
 	<tr>
 		<td class="lns_sub_fields_border">
-		<md-slide-toggle [(ngModel)]="field['_f']" (ngModelChange)="changedNgModel('_f', $event)" >
+		<md-slide-toggle [(ngModel)]="fieldProperties['_f']" (ngModelChange)="changedNgModel('_f', $event)" >
 				This is of type field (not field group)?
 			</md-slide-toggle>
 		</td>
@@ -40,22 +37,22 @@
 	<tr>
 		<td class="lns_sub_fields_border">
 			Field Sequence
-			<br />{{field['_s']}}
-			<md-slider [(ngModel)]="field['_s']" (ngModelChange)="changedNgModel('_s', $event)" [max]=50 [min]=1 [step]=1 [thumb-label]=true></md-slider>
+			<br />{{fieldProperties['_s']}}
+			<md-slider [(ngModel)]="fieldProperties['_s']" (ngModelChange)="changedNgModel('_s', $event)" [max]=50 [min]=1 [step]=1 [thumb-label]=true></md-slider>
 		</td>
 	</tr>
 	<tr>
 		<td class="lns_sub_fields_border">
 			<md-input-container>
-				<input mdInput placeholder="Default Value" type="text" [(ngModel)]="field['_d']" (ngModelChange)="changedNgModel('_d', $event)" />
+				<input mdInput placeholder="Default Value" type="text" [(ngModel)]="fieldProperties['_d']" (ngModelChange)="changedNgModel('_d', $event)" />
 			</md-input-container>
 		</td>
 	</tr>
 	<tr>
 		<td class="lns_sub_fields_border">
 			How many multiple values?
-			<br />{{field['_m']}}
-			<md-slider [(ngModel)]="field['_m']" (ngModelChange)="changedNgModel('_m', $event)" [max]=50 [min]=0 [step]=1 [thumb-label]=true></md-slider>
+			<br />{{fieldProperties['_m']}}
+			<md-slider [(ngModel)]="fieldProperties['_m']" (ngModelChange)="changedNgModel('_m', $event)" [max]=50 [min]=0 [step]=1 [thumb-label]=true></md-slider>
 		</td>
 	</tr>
 </table>

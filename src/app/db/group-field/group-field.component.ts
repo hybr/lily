@@ -8,15 +8,19 @@ import { AppDbCommon } from '../common';
 })
 export class GroupFieldComponent extends AppDbCommon implements OnInit {
 	public keysOfFieldProperties: string[] = [];
+	public showProperty: boolean = false;
 
 	//@Input() fieldGroupProperties: Object;
 	@Input() fieldGroupValueKey: string = 'uk';
 	
 	@Input() fieldGroupValues: Object = {};
-	@Input() fieldGroupStructure: Object = {};
+	@Input() fieldGroupStructure: any[] = [];
 
-	@Output() emitingFieldGroupValue: EventEmitter<any> = new EventEmitter<any>();
-	@Output() emitingRecordValue: EventEmitter<any> = new EventEmitter<any>();
+	@Output() fieldEmiting: EventEmitter<any> = new EventEmitter<any>();
+
+	@Output() groupFieldValueIsUpdated: EventEmitter<any> = new EventEmitter<any>();
+	@Output() groupFieldStructureIsUpdated: EventEmitter<any> = new EventEmitter<any>();
+	@Output() userAction: EventEmitter<any> = new EventEmitter<any>();
 
 	applyFieldValue(a, i) {
 		if (i == undefined || a == undefined || a[i] == undefined) {
@@ -26,83 +30,160 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 		}
 	}
 
-	updateFieldValue(fieldName, value, c) {
-		this.logIt([
-			'GroupFieldComponent: updateFieldValue: ',
-			' fieldName = ', fieldName, 
-			' value = ', value,
-			' code = ', c
-		]);
-		this.fieldGroupValues[fieldName]['_v'] = value;
-		this.emitingFieldGroupValue.emit(this.fieldGroupValues);
+	updateFieldValue(fieldName, value, code) {
+		this.fieldGroupValues[fieldName] = value;
+		this.announceIt(
+			this.fieldGroupValues,
+			this.groupFieldValueIsUpdated,
+			'GroupFieldComponent: updateFieldValue: groupFieldValueIsUpdated ' + code
+		);
 	}
 
-	updateFieldGroupValue(fieldName, value, c) {
-		this.logIt([
-			'GroupFieldComponent: updateFieldGroupValue: ',
-			' fieldName = ', fieldName, 
-			' value = ', value,
-			' code = ', c
-		])
-		let obj = {};
+	updateFieldProperties(fieldName, updatedProperties, code) {
+		this.fieldGroupStructure[fieldName] = updatedProperties;
+		this.announceIt(
+			this.fieldGroupStructure,
+			this.groupFieldStructureIsUpdated,
+			'GroupFieldComponent: updateFieldProperties: groupFieldStructureIsUpdated ' + code
+		);	
+	}
 
+
+
+	updateFieldGroupValue(fieldName, value, code) {
 		this.fieldGroupValues[fieldName] = value;
-		obj[this.fieldGroupValueKey] = this.fieldGroupValues;
-		this.logIt([
-			'GroupFieldComponent: updateFieldGroupValue: is emitting obj = { ', 
-			this.fieldGroupValueKey, 
-			' = ', obj[this.fieldGroupValueKey], ' }',
-			' code = ', c
-		]);
-		this.emitingRecordValue.emit(this.fieldGroupValues);
+		this.announceIt(
+			this.fieldGroupValues,
+			this.groupFieldValueIsUpdated,
+			'GroupFieldComponent: updateFieldGroupValue: groupFieldValueIsUpdated ' + code
+		);
+	}
+
+	updateFieldGroupStructure(fieldName, value, code) {
+		this.fieldGroupStructure[fieldName] = value;
+		this.announceIt(
+			this.fieldGroupStructure,
+			this.groupFieldStructureIsUpdated,
+			'GroupFieldComponent: updateFieldGroupStructure: groupFieldStructureIsUpdated ' + code
+		);
 	}
 
 	removeValue(fgk) {
 		if (fgk != undefined && this.fieldGroupValues[fgk] != undefined) {
 			delete 	this.fieldGroupValues[fgk];
-			this.logIt(['Remvoed Value = ', fgk, ' from ', 	this.fieldGroupValues]);
-
-			let obj = {};
-			obj[this.fieldGroupValueKey] = this.fieldGroupValues;
-			this.emitingFieldGroupValue.emit(obj);
+			delete this.fieldGroupStructure[fgk];
+			this.announceIt(
+				this.fieldGroupValues,
+				this.groupFieldValueIsUpdated,
+				'GroupFieldComponent: removeValue: groupFieldValueIsUpdated '
+			);
+			this.announceIt(
+				this.fieldGroupStructure,
+				this.groupFieldStructureIsUpdated,
+				'GroupFieldComponent: updateFieldGroupStructure: groupFieldStructureIsUpdated '
+			);
 		}
 	}
 
-	addNewField(key) {
+	getNewKey(values, key) {
+		if (key == undefined) key = 1;
 		if (key == 0) {
-			for (var i = 1; i <= this.lengthOfObject(this.fieldGroupValues) + 1; i++) {
-				if (!this.doesKeyExistsInObject(i, this.fieldGroupValues)) {
+			for (var i = 0; i <= this.lengthOfVariable(values); i++) {
+				if (!this.doesKeyExists(i, values)) {
 					if (this.keysOfFieldProperties.indexOf(key) != -1) continue;
 					key = i;
 				}
 			}
 		}
-		this.fieldGroupValues[key] = {
-			_n: 0, // name
-			_t: 'New Field', // title
+		return key;
+	}
+
+	addNewFieldStructure(structure, key) {
+		var defaultField = {
+			_n: key, // name
+			_t: 'Field Title', // title
 			_y: 'string', // type
-			_s: 1, // sequence
+			_s: key, // sequence
 			_f: true, // field type is field
-			_d: 'D', // default value
+			_d: '', // default value
 			_m: 0 // multiple values
+		};	
+		if (!this.isVariableObject(structure)) {
+			structure = {};
 		}
+		if (structure[key] == undefined) {
+			structure[key] = defaultField;
+		}
+		return structure;
 	}
 
-	addValue(fgk) {
-		if (fgk != undefined) {
-			if (this.fieldGroupValues == undefined) {
-				this.fieldGroupValues = {};
+	addNewFieldValues(values, key) {
+		if (!this.isVariableObject(values)) {
+			values = {};
+		}
+		var newKey = this.getNewKey(values, key);
+		if (values[newKey] == undefined) {
+			values[newKey] = '';
+		}
+		return [values, newKey];
+	}
+
+
+	addNewField(values, structure, key) {
+		let newKey = key;
+
+		let a = this.addNewFieldValues(
+			values,
+			newKey
+		);
+		values = a[0];
+		newKey = a[1];
+
+		structure = this.addNewFieldStructure(
+			structure,
+			newKey
+		);
+
+
+		this.announceIt(
+			values,
+			this.groupFieldValueIsUpdated,
+			'GroupFieldComponent: addNewField: groupFieldValueIsUpdated ' + newKey
+		);
+		this.announceIt(
+			structure,
+			this.groupFieldStructureIsUpdated,
+			'GroupFieldComponent: addNewField: groupFieldStructureIsUpdated ' + newKey
+		);		
+	}
+
+	getKeysOfRecordStructures() {
+		if (this.isVariableObject(this.fieldGroupStructure)) {
+			let rs = [];
+			for(let key of this.keysOfObject(this.fieldGroupStructure)) {
+				rs.push(this.fieldGroupStructure[key]);
 			}
-			this.logIt(['Added Value = ', fgk, ' to ', 	this.fieldGroupValues]);
+			return rs;
 		}
+		return this.fieldGroupStructure;
 	}
-
+	
 	constructor() { 
 		super();
 		this.keysOfFieldProperties = ['_n', '_t', '_y', '_s', '_f', '_v', '_d', '_m'];
 	}
 
 	ngOnInit() {
+		if (this.fieldGroupValues == undefined || !this.isVariableObject(this.fieldGroupValues)) {
+			this.fieldGroupValues = {};
+		}
+		// if (this.fieldGroupStructure == undefined) {
+		// 	this.fieldGroupStructure = [];
+		// } 
+		// if (this.isVariableObject(this.fieldGroupStructure)) {
+		// 	this.fieldGroupStructure = [this.fieldGroupStructure];
+		// }
+		this.logIt(['GroupFieldComponent: ngOnInit: fieldGroupValues received', this.fieldGroupValues]);
+		this.logIt(['GroupFieldComponent: ngOnInit: fieldGroupStructure received', this.fieldGroupStructure]);
 	}
-
 }

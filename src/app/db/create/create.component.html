@@ -1,0 +1,8 @@
+<app-db-table-record
+	[tableNumber]="collectionNumber"
+	[tableRecordValues]="createResponse"
+	[doesTableUpdated]="updatedInDb"
+	(tableRecordiIsUpdated)="updatedRecord($event)"
+	crudAction="create"
+	(userAction)="takeAction($event)"
+></app-db-table-record>

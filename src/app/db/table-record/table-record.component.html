@@ -1,26 +1,38 @@
-<app-loading [isLoading]="!dataArrived" [title]="crudAction + ' record'"></app-loading>
-<app-alert *ngIf="errorArrived" [title]="'Error'" [code]="response.code"></app-alert>
+<app-loading 
+	[isLoading]="!loadingRecordStructure" 
+	[title]="'record structure for ' + crudAction"
+></app-loading>
+<app-alert 
+	*ngIf="errorWhileloadingRecordStructure" 
+	[title]="'Error'" 
+	[code]="tableRecordStructure.code"
+></app-alert>
 
-<md-card *ngIf="dataArrived">
+<md-card *ngIf="loadingRecordStructure">
 	<md-card-header>
 		<md-card-title>
 			<h2>
 				<span *ngIf="crudAction == 'create'">Adding New </span>
 				<span *ngIf="crudAction == 'update'">Updating </span>
 				<span *ngIf="crudAction == 'remove'">Removing </span>
-				{{response['a3']}} Record
+				{{tableRecordValues['3']}} Record
 			</h2>
 		</md-card-title>
-		<md-card-subtitle>{{response['a4']}}</md-card-subtitle>
+		<md-card-subtitle>{{tableRecordValues['4']}}</md-card-subtitle>
 	</md-card-header>
 
 	<md-card-content>
 		<app-db-group-field 
-			*ngIf="dataArrived"
 			[fieldGroupValues]="tableRecordValues"
 			[fieldGroupStructure]="tableRecordStructure"
-			(emitingRecordValue)="updateRecordValues('record', $event)"
+			(groupFieldValueIsUpdated)="updateRecordValues($event)"
+			(groupFieldStructureIsUpdated)="updateRecordStructure($event)"
 		></app-db-group-field>
+
+		<hr />
+		<button md-button [routerLink]="['/db/tsl']">List</button>
+		<button md-button (click)="sendUserAction('save')">Save</button>
+		<span *ngIf="doesTableUpdated"><i>Database Just Updated</i></span>
 	</md-card-content>
 
 </md-card>

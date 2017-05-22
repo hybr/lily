@@ -9,8 +9,13 @@ import { ActivatedRoute, Params } from '@angular/router';
 	styleUrls: ['./update.component.css']
 })
 export class UpdateComponent extends AppDbCommon implements OnInit {
-
 	public searchPattern: string = '';
+	private updatedInDb: boolean = false;
+
+	private updateDataArrived = false;
+	private updateErrorArrived = false;
+	private updateQueryComplete = false;
+	private updateResponse = {};
 
 	@Input() collectionNumber: string;
 	@Input() recordKey: string;
@@ -22,27 +27,47 @@ export class UpdateComponent extends AppDbCommon implements OnInit {
 		super();
 	}
 
-	searchCollections(): void {
-		this.dataArrived = false;
-		this.errorArrived = false;
-		this.queryComplete = false;
-		this.response = {};
+	updatedRecord(updatedRecord) {
+		this.logIt([
+			'UpdateComponent: updatedRecord: ',
+			' record to be saved = ', updatedRecord
+		]);
+		this.updateResponse = updatedRecord;
+		this.updatedInDb = false;
+	}
 
+	takeAction(action) {
+		if (action == 'save') {
+			this.logIt([
+				'UpdateComponent: takeAction: ',
+				'saved = ', this.updateResponse, ' key ', this.recordKey
+			]);
+			const queryObservable = this._afd.object(
+				'/' + this.collectionNumber + '/' + this.recordKey
+			);
+			queryObservable.update(this.updateResponse);
+			this.updatedInDb = true;
+		}
+	}
+
+	searchCollections(): void {
 		const queryObservable = this._afd.object(
 			'/' + this.collectionNumber + '/' + this.recordKey
 		);
 
 		queryObservable.subscribe(
 			dataResponse => { 
-				this.dataArrived = true; 
-				this.response = dataResponse;
+				this.updateDataArrived = true; 
+				this.updateResponse = dataResponse;
+				delete this.updateResponse['rs'];
+				this.logIt(['UpdateComponent: searchCollections: recordValue ', this.updateResponse]);
 			},
 			errorResponse => {
-				this.errorArrived = true;
-				this.response = errorResponse;
+				this.updateErrorArrived = true;
+				this.updateResponse = errorResponse;
 			},
 			() => {
-				this.queryComplete = true;
+				this.updateQueryComplete = true;
 			}
 		);
 	} /* searchCollections */
@@ -50,10 +75,11 @@ export class UpdateComponent extends AppDbCommon implements OnInit {
 	ngOnInit() {
 		this.collectionNumber = this.getParam(this._route, 'cNum', this.collectionNumber);
 		this.recordKey = this.getParam(this._route, 'docId', this.recordKey);
+		this.updatedInDb = false;
 		if (!this.errorArrived) { 
 			this.searchCollections();
+		} else {
+			this.logIt(['UpdateComponent: ngOnInit: errorArrived ', this.errorArrived]);
 		}
 	} /* ngOnInit */
-
-
 }

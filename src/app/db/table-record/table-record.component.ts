@@ -10,23 +10,49 @@ import { Subject } from 'rxjs/Subject';
 	styleUrls: ['./table-record.component.css']
 })
 export class TableRecordComponent extends AppDbCommon implements OnInit {
-	public tableRecordStructure: Object = {};
+	private loadingRecordStructure: boolean = false;
+	private errorWhileloadingRecordStructure: boolean = false;
+
+	public tableRecordStructure: any[] = [];
 	public searchPattern: string = '';
-
-	@Input() tableRecordValues: Object = {};
-	@Input() tableNumber: string = 'c2'; /* c1 is table of record structures of all other tables */
+	@Input() doesTableUpdated: boolean = false;
+	@Input() recordKey: string = ''; // key of tableRecordValues
+	@Input() tableRecordValues: Object = {}; // comming from update
+	@Input() tableNumber: string = '1'; // comming from update
 	@Input() crudAction: string = 'create';
-	@Input() recordKey: string = '';
-	@Output() tableRecordUpdated: EventEmitter<any> = new EventEmitter<any>();
+	@Output() tableRecordiIsUpdated: EventEmitter<any> = new EventEmitter<any>();
+	@Output() userAction: EventEmitter<any> = new EventEmitter<any>();
 
-	updateRecordValues(fieldName, value) {
-		this.logIt([
-			'TableRecordComponent: updateRecordValues: ',
-			' fieldName = ', fieldName, 
-			' value = ', value
-		]);
+	updateRecordValues(value) {
+		this.tableRecordValues = value
+		this.announceIt(
+			value, 
+			this.tableRecordiIsUpdated, 
+			'TableRecordComponent: updateRecordValues:'
+		);
+	}
+
+	updateRecordStructure(value) {
+		this.tableRecordStructure = value;
+		// no need to emit/announce this, save it in table 1
+
 	}
 	
+	sendUserAction(action) {
+		if (action == 'save' && this.tableNumber == this.tableOfTables) {
+			this.tableRecordValues['rs'] = this.tableRecordStructure;
+			this.announceIt(
+				this.tableRecordValues,
+				this.tableRecordiIsUpdated, 
+				'TableRecordComponent: updateRecordValues:'
+			);
+		}
+		this.announceIt(
+			action, 
+			this.userAction, 
+			'TableRecordComponent: sendUserAction:'
+		);
+	}
 	constructor(
 		private _afd: AngularFireDatabase,
 		private _route: ActivatedRoute
@@ -34,139 +60,83 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 		super();
 	}
 
+	getTableStructure() {
+
+	}
+
 	ngOnInit() {
-		/* Collection Structure of tableNumber */
-		const subject = new Subject();
+		this.logIt(['TableRecordComponent: ngOnInit: this.tableNumber ', this.tableNumber]);
+		// if (this.tableNumber == this.tableOfTables) {
+		// 	this.logIt([
+		// 		'TableRecordComponent: ngOnInit: this.tableRecordValues ', 
+		// 		this.tableRecordValues
+		// 	]);
+		// 	if (this.tableRecordValues['rs'] != undefined) {
+		// 		this.tableRecordStructure = this.tableRecordValues['rs'];
+		// 		delete this.tableRecordValues['rs'];
+		// 	} else {
+		// 		this.tableRecordStructure = {};
+		// 	}
+		// 	if(!this.isVariableObject(this.tableRecordStructure)) {
+		// 		this.tableRecordStructure = {};
+		// 	}
+		// 	this.logIt([
+		// 		'TableRecordComponent: ngOnInit: this.tableRecordStructure ', 
+		// 		this.tableRecordStructure
+		// 	]);
+		// 	this.loadingRecordStructure = true;
+		// } else {
+			/* Collection Structure of tableNumber */
+			const subject = new Subject();
 
-		/* c1 table contains the structures of all other tables */
-		const queryObservable = this._afd.list('/c1', {
-			query: {
-				orderByChild: 'a2', /* a2 is field name for collection number */
-				equalTo: subject /* collection number to be updated */
-			}
-		});
-		//console.log('TableRecordComponent: queryObservable = ', queryObservable);
-
-		// subscribe to changes
-		queryObservable.subscribe(
-			recordReceived => {
-				/* the result is list of records, so take the first one */
-				this.dataArrived = true;
-				this.response = recordReceived[0]['a5'];
-/*				let r = {
-					a1: true,
-					a2: 'c1',
-					a3: 'Tables',
-					a4: 'list of tables',
-					a5: {
-
-						a1: { 
-							n: 'a1',
-							t: 'Is Table Active?',
-							y: 'boolean',
-							d: true,
-							s: 1,
-							f: true,
-							a: '',
-							b: '',
-							m: 0
-						},
-						a2: { 
-							n: 'a2',
-							t: 'Table Name',
-							y: 'string',
-							d: '',
-							s: 3,
-							f: true,
-							a: '',
-							b: '',
-							m: 0
-						},
-						a3: { 
-							n: 'a3',
-							t: 'Table Number',
-							y: 'string',
-							d: true,
-							s: 2,
-							f: true,
-							a: '',
-							b: '',
-							m: 0
-						},
-						a4: { 
-							n: 'a4',
-							t: 'Detail',
-							y: 'string',
-							d: '',
-							s: 4,
-							f: true,
-							a: '',
-							b: '',
-							m: 0
-						},
-						a5: { 
-							n: 'a5',
-							t: 'Record Structure',
-							y: 'string',
-							d: '',
-							s: 5,
-							f: false,
-							a: '',
-							b: '',
-							m: 1,
-							0: {
-								n: 'n',
-								t: 'Name',
-								y: 'string',
-								d: '',
-								s: 1,
-								f: true,
-								a: '',
-								b: '',
-								m: 0
-							},
-							1: {
-								n: 't',
-								t: 'Type',
-								y: 'string',
-								d: '',
-								s: 2,
-								f: true,
-								a: '',
-								b: '',
-								m: 0
-							},
-							2: {
-								n: 'y',
-								t: 'Value Type',
-								y: 'string',
-								d: '',
-								s: 3,
-								f: true,
-								a: '',
-								b: '',
-								m: 0
-							},
-
-						},
-					}
+			/* c1 table contains the structures of all other tables */
+			const queryObservable = this._afd.list('/' + this.tableOfTables, {
+				query: {
+					orderByChild: '1', /* a2 is field name for collection number */
+					equalTo: subject /* collection number to be updated */
 				}
-				;*/
+			});
+			//console.log('TableRecordComponent: queryObservable = ', queryObservable);
 
-				this.tableRecordStructure = this.response = {};
-				this.tableRecordValues = {};
-			},
-			err => {
-				this.errorArrived = true;
-				this.response = err;
-			},
-			() => {
-				this.queryComplete = true;
-			}
+			// subscribe to changes
+			queryObservable.subscribe(
+				recordReceived => {
+					this.logIt(['TableRecordComponent: ngOnInit: recordReceived ', recordReceived]);
+					/* the result is list of records, so take the first one */
+					this.loadingRecordStructure = true;
+
+					if (this.lengthOfVariable(recordReceived) > 0) {
+						this.tableRecordStructure = recordReceived[0]['rs'];
+						delete recordReceived[0]['rs'];
+					} else {
+						this.tableRecordStructure = [];
+					}
+					this.logIt([
+						'TableRecordComponent: ngOnInit: this.tableRecordStructure ', 
+						this.tableRecordStructure
+					]);
+
+					if (this.crudAction == 'create') {
+						/* add default values */
+						for (var fieldStructure of this.tableRecordStructure) {
+							if (fieldStructure != undefined) {
+								this.tableRecordValues[fieldStructure['_n']] = fieldStructure['_d'];
+							}
+						}
+					}
+				},
+				err => {
+					this.errorWhileloadingRecordStructure = true;
+					this.tableRecordStructure = err;
+				},
+				() => {
+					this.queryComplete = true;
+				}
 			);
 
-		// trigger the query
-		subject.next(this.tableNumber);
+			// trigger the query
+			subject.next(this.tableNumber);
+		// }
 	}
 
 }

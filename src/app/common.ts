@@ -25,22 +25,29 @@ export class AppCommon {
 	} /* keysOfObject */
 
 	isObjectEmpty(obj) {
+		if (obj == undefined) return true;
 		return Object.keys(obj).length === 0 && obj.constructor === Object;
 	}
 
-	lengthOfObject(obj) {
+	lengthOfVariable(obj) {
 		if (obj.constructor === Object) return Object.keys(obj).length;
+		if (obj.constructor === Array) return obj.length;
 		return 0;
 	}
 	isVariableObject(v) {
 		return (v !== null && typeof v === 'object');
 	} /* isVariableObject */
 
-	doesKeyExistsInObject(key, obj) {
-		return obj.hasOwnProperty(key);
+
+	doesKeyExists(key, obj) {
+		if (obj.constructor === Object) return (key in obj);
+		if (obj.constructor === Array) return (this.lengthOfVariable(obj) >= key);
+		// if (obj.constructor === Object) return obj.hasOwnProperty(key);
+		return false;
 	}
 	
+
 	logIt(messages) {
-		this.debug && console.log(messages);
+		this.debug && console.log('===== LogIt', JSON.stringify(messages));
 	} /* debug */
 }

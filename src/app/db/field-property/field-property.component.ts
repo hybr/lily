@@ -8,16 +8,16 @@ import { AppDbCommon } from '../common';
 })
 export class FieldPropertyComponent extends AppDbCommon implements OnInit {
 
-	@Input() field: Object = {};
-	@Output() emitingPropertyValue: EventEmitter<any> = new EventEmitter<any>();
+	@Input() fieldProperties: Object = {};
+	@Output() fieldPropertiesIsUpdated: EventEmitter<any> = new EventEmitter<any>();
 
 	changedNgModel(key, value) {
-		this.logIt([
-			'FieldPropertyComponent: changedNgModel: emitting ', 
-			JSON.stringify(this.field)
-		]);
-		this.field[key] = value;
-		this.emitingPropertyValue.emit(this.field);
+		this.fieldProperties[key] = value;		
+		this.announceIt(
+			this.fieldProperties,
+			this.fieldPropertiesIsUpdated,
+			'FieldPropertyComponent: changedNgModel'
+		);
 	}
 
 	constructor() { 

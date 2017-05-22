@@ -9,11 +9,16 @@ import { ActivatedRoute, Params } from '@angular/router';
 	templateUrl: './common'
 })
 export class AppDbCommon extends AppCommon {
+	public tableOfTables: string = 't1';
 	
 	constructor() {
 		super();
 	}
 
+	announceIt(value, emitter, code) {
+		this.logIt(['announceIt' , code, value]);
+		emitter.emit(value);		
+	}
 
 	getParam(r, param, paramValue) {
 		this.dataArrived = false;
@@ -23,29 +28,28 @@ export class AppDbCommon extends AppCommon {
 
 		if (param == undefined) {
 			this.errorArrived = true;
-			paramValue = 'DB_CO-ERROR-PARAMETER_IS_UNDEFINED';
+			return 'DB_CO-ERROR-PARAMETER_IS_UNDEFINED';
 		}
-		this.debug && console.log([
+		this.logIt([
 			'AppDbCommon before gettin '+param+' from url ', 
 			paramValue
 		]);
 		if (paramValue == undefined && r  ) {
-			this.debug && console.log([
-				'AppDbCommon snapsht is ok',
-				r
+			this.logIt([
+				'AppDbCommon snapshot is ok'
 			]);
 			paramValue = r.snapshot.paramMap.get(param);
 			this.dataArrived = true;
 		}
-		this.debug && console.log([
+		this.logIt([
 			'AppDbCommon after gettin ' + param + ' from url ',
 			paramValue
 		]);
 		if (paramValue == undefined) {
 			this.errorArrived = true;
-			paramValue = 'DB_CO-ERROR-GETTING_PARAM_VALUE-' + param;	
+			return 'DB_CO-ERROR-GETTING_PARAM_VALUE-' + param;	
 		}
-		this.debug && console.log([
+		this.logIt([
 			'AppDbCommon final ' + param + ' from url ', 
 			paramValue
 		]);

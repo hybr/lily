@@ -1,7 +1,13 @@
+
+<!--
 <md-tab-group>
 	<md-tab label="{{ fieldProperties['_t'] }}">
+-->
 		<md-slide-toggle *ngIf="(fieldProperties['_y'] == 'boolean')" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" id="{{ fieldProperties['_n'] }}">{{ fieldProperties['_t'] }}
 		</md-slide-toggle>
+		<md-input-container *ngIf="(fieldProperties['_y'] == 'number')">
+			<input mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="number" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" />
+		</md-input-container>
 		<md-input-container *ngIf="(fieldProperties['_y'] == 'string')">
 			<input mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="text" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" />
 		</md-input-container>
@@ -28,8 +34,11 @@
 				<md-option *ngFor=" let option of foreignKeyList; " [value]="option.value">{{option.title}}</md-option>
 			</md-select>
 		</div>
+<!--
 	</md-tab>
 	<md-tab label="Properties">
-		<app-db-field-property [field]="fieldProperties" (emitingPropertyValue)=updateFieldProperties($event)></app-db-field-property>
+		<app-db-field-property [fieldProperties]="fieldProperties" (fieldPropertiesIsUpdated)=updateFieldProperties($event)></app-db-field-property>
 	</md-tab>
 </md-tab-group>
+-->
+<hr />

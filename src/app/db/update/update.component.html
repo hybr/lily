@@ -1,9 +1,19 @@
-<app-loading [isLoading]="!dataArrived" [title]="'update record'"></app-loading>
-<app-alert *ngIf="errorArrived" [title]="'Error'" [code]="response.code"></app-alert>
+<app-loading 
+	[isLoading]="updateDataArrived == false" 
+	[title]="'record for updating'"
+></app-loading>
+<app-alert 
+	*ngIf="updateErrorArrived" 
+	[title]="'Error'" 
+	[code]="updateResponse.code"
+></app-alert>
 <app-db-table-record
-	*ngIf="dataArrived"
+	*ngIf="updateDataArrived"
 	[recordKey]="recordKey"
 	[tableNumber]="collectionNumber"
-	[tableRecordValues]="response"
+	[tableRecordValues]="updateResponse"
+	[doesTableUpdated]="updatedInDb"
+	(tableRecordiIsUpdated)="updatedRecord($event)"
 	crudAction="update"
+	(userAction)="takeAction($event)"
 ></app-db-table-record>
