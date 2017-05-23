@@ -24,28 +24,46 @@ export class AppCommon {
 		return Object.keys(obj);
 	} /* keysOfObject */
 
-	isObjectEmpty(obj) {
-		if (obj == undefined) return true;
-		return Object.keys(obj).length === 0 && obj.constructor === Object;
-	}
-
-	lengthOfVariable(obj) {
-		if (obj.constructor === Object) return Object.keys(obj).length;
-		if (obj.constructor === Array) return obj.length;
-		return 0;
-	}
 	isVariableObject(v) {
 		return (v !== null && typeof v === 'object');
+		// (v.constructor === Object)
 	} /* isVariableObject */
 
+	isVariableArray(v) {
+		return (Object.prototype.toString.call(v) === '[object Array]');
+		// (a.constructor === Array)
+	}
 
-	doesKeyExists(key, obj) {
-		if (obj.constructor === Object) return (key in obj);
-		if (obj.constructor === Array) return (this.lengthOfVariable(obj) >= key);
-		// if (obj.constructor === Object) return obj.hasOwnProperty(key);
+	lengthOfVariable(list) {
+		if (this.isVariableObject(list)) return Object.keys(list).length;
+		if (this.isVariableArray(list)) return list.length;
+		return 0;
+	}
+
+	isVariableEmpty(list) {
+		return (this.lengthOfVariable(list) == 0);
+	}
+
+	doesKeyExists(key, list) {
+		if (this.isVariableObject(list)) return (key in list);
+		if (this.isVariableArray(list)) return (this.lengthOfVariable(list) >= key);
+		// if (this.isVariableObject(obj)) return obj.hasOwnProperty(key);
 		return false;
 	}
 	
+	valuesOfList(list) {
+		if (this.isVariableObject(list)) {
+			let rs = [];
+			for(let key of this.keysOfObject(list)) {
+				rs.push(list[key]);
+			}
+			return rs;
+		}
+		if (this.isVariableArray(list)) {
+		 	return list;
+		}
+		return [];
+	} /* valuesOfList */
 
 	logIt(messages) {
 		this.debug && console.log('===== LogIt', JSON.stringify(messages));

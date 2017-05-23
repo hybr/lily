@@ -12,10 +12,12 @@ import { Subject } from 'rxjs/Subject';
 export class TableRecordComponent extends AppDbCommon implements OnInit {
 	private loadingRecordStructure: boolean = false;
 	private errorWhileloadingRecordStructure: boolean = false;
+	private updateInDbStarted: boolean = false;
+	private t1Record: Object = {}; /* record from t1 table for the current table */
 
 	public tableRecordStructure: any[] = [];
 	public searchPattern: string = '';
-	@Input() doesTableUpdated: boolean = false;
+	@Input() tableIsUpdated: boolean = false;
 	@Input() recordKey: string = ''; // key of tableRecordValues
 	@Input() tableRecordValues: Object = {}; // comming from update
 	@Input() tableNumber: string = '1'; // comming from update
@@ -30,16 +32,20 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 			this.tableRecordiIsUpdated, 
 			'TableRecordComponent: updateRecordValues:'
 		);
+		this.updateInDbStarted = false;
 	}
 
 	updateRecordStructure(value) {
 		this.tableRecordStructure = value;
+		this.updateInDbStarted = false;
 		// no need to emit/announce this, save it in table 1
 
 	}
 	
 	sendUserAction(action) {
 		if (action == 'save' && this.tableNumber == this.tableOfTables) {
+			/* for t1 table we also save record structure */
+			this.updateInDbStarted = true;
 			this.tableRecordValues['rs'] = this.tableRecordStructure;
 			this.announceIt(
 				this.tableRecordValues,
@@ -47,6 +53,7 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 				'TableRecordComponent: updateRecordValues:'
 			);
 		}
+		console.log('this.tableRecordValues = ', this.tableRecordValues);
 		this.announceIt(
 			action, 
 			this.userAction, 
@@ -60,32 +67,8 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 		super();
 	}
 
-	getTableStructure() {
-
-	}
-
 	ngOnInit() {
 		this.logIt(['TableRecordComponent: ngOnInit: this.tableNumber ', this.tableNumber]);
-		// if (this.tableNumber == this.tableOfTables) {
-		// 	this.logIt([
-		// 		'TableRecordComponent: ngOnInit: this.tableRecordValues ', 
-		// 		this.tableRecordValues
-		// 	]);
-		// 	if (this.tableRecordValues['rs'] != undefined) {
-		// 		this.tableRecordStructure = this.tableRecordValues['rs'];
-		// 		delete this.tableRecordValues['rs'];
-		// 	} else {
-		// 		this.tableRecordStructure = {};
-		// 	}
-		// 	if(!this.isVariableObject(this.tableRecordStructure)) {
-		// 		this.tableRecordStructure = {};
-		// 	}
-		// 	this.logIt([
-		// 		'TableRecordComponent: ngOnInit: this.tableRecordStructure ', 
-		// 		this.tableRecordStructure
-		// 	]);
-		// 	this.loadingRecordStructure = true;
-		// } else {
 			/* Collection Structure of tableNumber */
 			const subject = new Subject();
 
@@ -106,11 +89,22 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 					this.loadingRecordStructure = true;
 
 					if (this.lengthOfVariable(recordReceived) > 0) {
-						this.tableRecordStructure = recordReceived[0]['rs'];
-						delete recordReceived[0]['rs'];
+						if (this.tableNumber == this.tableOfTables) {
+							this.tableRecordStructure = recordReceived[0]['rs'];
+							delete recordReceived[0]['rs'];
+						} else {
+							this.tableRecordStructure = recordReceived[0]['rs'][4];
+							delete recordReceived[0][4];
+						}
+						this.t1Record = recordReceived[0];
 					} else {
 						this.tableRecordStructure = [];
+						this.t1Record = {'2': '', '3': ''};
 					}
+					this.logIt([
+						'TableRecordComponent: ngOnInit: this.tableRecordStructure ', 
+						this.tableRecordStructure
+					]);
 					this.logIt([
 						'TableRecordComponent: ngOnInit: this.tableRecordStructure ', 
 						this.tableRecordStructure
@@ -118,8 +112,8 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 
 					if (this.crudAction == 'create') {
 						/* add default values */
-						for (var fieldStructure of this.tableRecordStructure) {
-							if (fieldStructure != undefined) {
+						for (var fieldStructure of this.valuesOfList(this.tableRecordStructure)) {
+							if (fieldStructure != undefined && fieldStructure['_n'] != undefined && fieldStructure['_d'] != undefined) {
 								this.tableRecordValues[fieldStructure['_n']] = fieldStructure['_d'];
 							}
 						}
@@ -136,7 +130,6 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 
 			// trigger the query
 			subject.next(this.tableNumber);
-		// }
 	}
 
 }

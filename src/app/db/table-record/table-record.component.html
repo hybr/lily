@@ -1,3 +1,7 @@
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
 <app-loading 
 	[isLoading]="!loadingRecordStructure" 
 	[title]="'record structure for ' + crudAction"
@@ -15,31 +19,38 @@
 				<span *ngIf="crudAction == 'create'">Adding New </span>
 				<span *ngIf="crudAction == 'update'">Updating </span>
 				<span *ngIf="crudAction == 'remove'">Removing </span>
-				{{tableRecordValues['3']}} Record
+				{{t1Record['2']}} Record
 			</h2>
 		</md-card-title>
-		<md-card-subtitle>{{tableRecordValues['4']}}</md-card-subtitle>
+		<md-card-subtitle>{{t1Record['3']}}</md-card-subtitle>
 	</md-card-header>
 
 	<md-card-content>
+		<hr />
 		<app-db-group-field 
+			[tableNumber]="tableNumber"
 			[fieldGroupValues]="tableRecordValues"
 			[fieldGroupStructure]="tableRecordStructure"
 			(groupFieldValueIsUpdated)="updateRecordValues($event)"
 			(groupFieldStructureIsUpdated)="updateRecordStructure($event)"
 		></app-db-group-field>
 
-		<hr />
-		<button md-button [routerLink]="['/db/tsl']">List</button>
-		<button md-button (click)="sendUserAction('save')">Save</button>
-		<span *ngIf="doesTableUpdated"><i>Database Just Updated</i></span>
+		<hr *ngIf="(tableNumber == tableOfTables)" />
+		<button md-button [routerLink]="['/db/tsl']">All Tables</button>
+		<button md-button (click)="sendUserAction('save')">
+			<span *ngIf="crudAction == 'create'">Add New Record</span>
+			<span *ngIf="crudAction == 'update'">Update Record</span>
+			<span *ngIf="crudAction == 'remove'">Remove Record</span>
+		</button>
+		<span *ngIf="tableIsUpdated"><i>Information is updated now</i></span>
 	</md-card-content>
 
 </md-card>
-
+<!--
 <div *ngIf="debug">TableRecordComponent tableRecordStructure = 
 	<pre>{{ tableRecordStructure | json}}</pre>
 </div>
 <div *ngIf="debug">TableRecordComponent tableRecordValues = 
 	<pre>{{ tableRecordValues | json}}</pre>
 </div>
+-->

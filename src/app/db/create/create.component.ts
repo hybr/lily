@@ -37,6 +37,7 @@ export class CreateComponent extends AppDbCommon implements OnInit {
 				'CreateComponent: takeAction: ',
 				'saved = ', this.createResponse
 			]);
+			console.log('this.createResponse = ', this.createResponse);
 			const queryObservable = this._afd.list('/' + this.collectionNumber);
 			queryObservable.push(this.createResponse);
 			this.updatedInDb = true;

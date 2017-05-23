@@ -1,3 +1,7 @@
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
 <app-loading 
 	[isLoading]="updateDataArrived == false" 
 	[title]="'record for updating'"
@@ -12,7 +16,7 @@
 	[recordKey]="recordKey"
 	[tableNumber]="collectionNumber"
 	[tableRecordValues]="updateResponse"
-	[doesTableUpdated]="updatedInDb"
+	[tableIsUpdated]="updatedInDb"
 	(tableRecordiIsUpdated)="updatedRecord($event)"
 	crudAction="update"
 	(userAction)="takeAction($event)"

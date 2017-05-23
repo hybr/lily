@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Compiler } from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import "rxjs/add/operator/filter";
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AppDbCommon } from '../common';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-db-list',
@@ -10,6 +11,8 @@ import { AppDbCommon } from '../common';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent extends AppDbCommon implements OnInit {
+	private collectionNumber: string;
+	private title: string = 'List of Tables or Collections in Database';
 	public dataArrived : boolean = false;
 	public errorArrived : boolean = false;
 	public queryComplete : boolean = false;
@@ -17,12 +20,24 @@ export class ListComponent extends AppDbCommon implements OnInit {
 	public searchPattern: string = '';
 
 	constructor(
-		private _afd: AngularFireDatabase
+		private _afd: AngularFireDatabase,
+		private _route: ActivatedRoute,
+		private _compiler: Compiler
 	) { 
 		super();
+		this._compiler.clearCache();
 	}
 
 	ngOnInit() {
+		this.collectionNumber = this.getParam(this._route, 'cNum', this.collectionNumber);
+		this.logIt(['ListComponent: ngOnInit: collectionNumber 1 ', this.collectionNumber]);
+		if (this.collectionNumber == undefined || this.collectionNumber == '' || this.collectionNumber == null || this.collectionNumber == 'DB_CO-ERROR-GETTING_PARAM_VALUE-cNum') {
+			this.collectionNumber = this.tableOfTables;
+		}
+		this.logIt(['ListComponent: ngOnInit: collectionNumber 2 ', this.collectionNumber]);
+		if (this.collectionNumber != this.tableOfTables) {
+			this.title = 'Table ' + this.collectionNumber;
+		}
 		this.searchCollections();
 	}
 
@@ -32,7 +47,7 @@ export class ListComponent extends AppDbCommon implements OnInit {
 		this.queryComplete = false;
 		this.response = {};
 
-		const queryObservable = this._afd.list('/' + this.tableOfTables);
+		const queryObservable = this._afd.list('/' + this.collectionNumber);
 
 		queryObservable.subscribe(
 			tableRecords => { 
@@ -42,9 +57,9 @@ export class ListComponent extends AppDbCommon implements OnInit {
 						// delete document['rs'];
 						let rE = new RegExp(this.searchPattern, 'gi');
 						return (
-							rE.test(document['2']) 
-							|| rE.test(document['3']) 
-							|| rE.test(document['4'])
+							rE.test(document['1']) 
+							|| rE.test(document['2']) 
+							|| rE.test(document['3'])
 						);
 					}				
 				);

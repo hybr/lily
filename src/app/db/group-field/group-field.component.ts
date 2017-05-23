@@ -7,7 +7,6 @@ import { AppDbCommon } from '../common';
 	styleUrls: ['./group-field.component.css']
 })
 export class GroupFieldComponent extends AppDbCommon implements OnInit {
-	public keysOfFieldProperties: string[] = [];
 	public showProperty: boolean = false;
 
 	//@Input() fieldGroupProperties: Object;
@@ -15,6 +14,7 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 	
 	@Input() fieldGroupValues: Object = {};
 	@Input() fieldGroupStructure: any[] = [];
+	@Input() tableNumber: string = '';
 
 	@Output() fieldEmiting: EventEmitter<any> = new EventEmitter<any>();
 
@@ -118,10 +118,11 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 	}
 
 	addNewFieldValues(values, key) {
-		if (!this.isVariableObject(values)) {
+		if (values == undefined || !this.isVariableObject(values)) {
 			values = {};
 		}
 		var newKey = this.getNewKey(values, key);
+
 		if (values[newKey] == undefined) {
 			values[newKey] = '';
 		}
@@ -156,33 +157,15 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 			'GroupFieldComponent: addNewField: groupFieldStructureIsUpdated ' + newKey
 		);		
 	}
-
-	getKeysOfRecordStructures() {
-		if (this.isVariableObject(this.fieldGroupStructure)) {
-			let rs = [];
-			for(let key of this.keysOfObject(this.fieldGroupStructure)) {
-				rs.push(this.fieldGroupStructure[key]);
-			}
-			return rs;
-		}
-		return this.fieldGroupStructure;
-	}
 	
 	constructor() { 
 		super();
-		this.keysOfFieldProperties = ['_n', '_t', '_y', '_s', '_f', '_v', '_d', '_m'];
 	}
 
 	ngOnInit() {
 		if (this.fieldGroupValues == undefined || !this.isVariableObject(this.fieldGroupValues)) {
 			this.fieldGroupValues = {};
 		}
-		// if (this.fieldGroupStructure == undefined) {
-		// 	this.fieldGroupStructure = [];
-		// } 
-		// if (this.isVariableObject(this.fieldGroupStructure)) {
-		// 	this.fieldGroupStructure = [this.fieldGroupStructure];
-		// }
 		this.logIt(['GroupFieldComponent: ngOnInit: fieldGroupValues received', this.fieldGroupValues]);
 		this.logIt(['GroupFieldComponent: ngOnInit: fieldGroupStructure received', this.fieldGroupStructure]);
 	}
