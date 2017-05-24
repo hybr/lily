@@ -35,7 +35,7 @@
 		<table>
 			<tr
 				*ngFor="let recordCount of keysOfObject(response);"
-				[class.disabled]="!response[recordCount]['1']"
+				[class.disabled]="!response[recordCount]['f1']"
 			><td><hr />
 				<button 
 					md-mini-fab
@@ -45,7 +45,15 @@
 				>
 					<md-icon>mode_edit</md-icon> 
 				</button>
-				
+				<button 
+					md-mini-fab
+					[routerLink]="['/db/rtr/' + collectionNumber + '/' + response[recordCount].$key]"
+					title="Remove"
+					[class.disabled]="!response[recordCount]['f1']"
+				>
+					<md-icon>close</md-icon> 
+				</button>
+
 				<button 
 					md-mini-fab 
 					[routerLink]="'/db/tl/' + response[recordCount]['f2']"
@@ -54,9 +62,14 @@
 				>
 					<md-icon>menu</md-icon>
 				</button>
-
+				
 				&nbsp;
-				{{response[recordCount][response[recordCount]['f6']]}}. <b>{{response[recordCount]['f3']}}</b>: {{response[recordCount]['f4']}}
+				<span *ngFor="let fieldName of keysOfObject(response[recordCount])">
+					<span *ngIf="typeOfVariable(response[recordCount][fieldName])  == 'string'">
+						| {{ response[recordCount][fieldName] }}
+					</span>
+				</span> |
+				
 			</td></tr>
 		</table>
 

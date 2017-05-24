@@ -57,9 +57,9 @@ export class ListComponent extends AppDbCommon implements OnInit {
 						// delete document['rs'];
 						let rE = new RegExp(this.searchPattern, 'gi');
 						return (
-							rE.test(document['1']) 
-							|| rE.test(document['2']) 
-							|| rE.test(document['3'])
+							rE.test(document['f2']) 
+							|| rE.test(document['f3']) 
+							|| rE.test(document['f4'])
 						);
 					}				
 				);

@@ -27,6 +27,8 @@
 
 	<md-card-content>
 		<hr />
+		<form #dbForm="ngForm" accept-charset="utf-8">
+		
 		<app-db-group-field 
 			[tableNumber]="tableNumber"
 			[fieldGroupValues]="tableRecordValues"
@@ -43,7 +45,11 @@
 			<span *ngIf="crudAction == 'update'">Update Record</span>
 			<span *ngIf="crudAction == 'remove'">Remove Record</span>
 		</button>
+		
+		Valid Form: {{dbForm.form.valid}}
 		<span *ngIf="tableIsUpdated"><i>Information is updated now</i></span>
+		</form>
+
 	</md-card-content>
 
 </md-card>

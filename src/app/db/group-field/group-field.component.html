@@ -4,16 +4,26 @@
 
 <div>
 
-	<div *ngFor="let fieldStructure of valuesOfList(fieldGroupStructure)">
+	<div *ngFor="let fieldStructure of sortedFieldsOfRecord(fieldGroupStructure)">
 		
 		<span *ngIf="isVariableObject(fieldStructure)"> 
 
-			<button md-button (click)="removeValue(fieldStructure['_n'])">
-				Remove {{fieldStructure['_n']}}
+			<button 
+				md-mini-fab
+				(click)="removeValue(fieldStructure['_n'])"
+				title="Remove"
+			>
+				<md-icon>close</md-icon> 
 			</button>
 
-
-			<button *ngIf="(tableNumber == tableOfTables)" md-button (click)="showProperty=!showProperty">Properties</button>
+			<button 
+				md-mini-fab
+				*ngIf="(tableNumber == tableOfTables)"
+				(click)="showProperty=!showProperty"
+				title="Properties"
+			>
+				<md-icon>menu</md-icon> 
+			</button>
 
 			<fieldset *ngIf="!fieldStructure['_f']">
 

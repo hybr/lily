@@ -4,11 +4,11 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
-	selector: 'app-db-update',
-	templateUrl: './update.component.html',
-	styleUrls: ['./update.component.css']
+  selector: 'app-db-remove',
+  templateUrl: './remove.component.html',
+  styleUrls: ['./remove.component.css']
 })
-export class UpdateComponent extends AppDbCommon implements OnInit {
+export class RemoveComponent extends AppDbCommon implements OnInit {
 	public searchPattern: string = '';
 	private updatedInDb: boolean = false;
 	private tableStructure: Object = {};
@@ -34,7 +34,7 @@ export class UpdateComponent extends AppDbCommon implements OnInit {
 
 	updatedRecord(updatedRecord) {
 		this.logIt([
-			'UpdateComponent: updatedRecord: ',
+			'RemoveComponent: updatedRecord: ',
 			' record to be saved = ', updatedRecord
 		]);
 		this.updateResponse = updatedRecord;
@@ -44,13 +44,12 @@ export class UpdateComponent extends AppDbCommon implements OnInit {
 	takeAction(action) {
 		if (action == 'save') {
 			this.logIt([
-				'UpdateComponent: takeAction: ',
-				'saved = ', this.updateResponse, ' key ', this.recordKey
+				'RemoveComponent: takeAction: ',
+				'removed = ', this.updateResponse, ' key ', this.recordKey
 			]);
-			const queryObservable = this._afd.object(
-				'/' + this.collectionNumber + '/' + this.recordKey
-			);
-			queryObservable.update(this.updateResponse);
+			const list = this._afd.list('/' + this.collectionNumber);
+			// to get a key, check the Example app below
+			list.remove(this.recordKey);
 			this.updatedInDb = true;
 		}
 	}
@@ -64,7 +63,7 @@ export class UpdateComponent extends AppDbCommon implements OnInit {
 			dataResponse => { 
 				this.updateDataArrived = true; 
 				this.updateResponse = dataResponse;
-				this.logIt(['UpdateComponent: searchCollections: recordValue ', this.updateResponse]);
+				this.logIt(['RemoveComponent: searchCollections: recordValue ', this.updateResponse]);
 				delete this.updateResponse['rs'];
 			},
 			errorResponse => {
@@ -84,7 +83,7 @@ export class UpdateComponent extends AppDbCommon implements OnInit {
 		if (!this.errorArrived) { 
 			this.searchCollections();
 		} else {
-			this.logIt(['UpdateComponent: ngOnInit: errorArrived ', this.errorArrived]);
+			this.logIt(['RemoveComponent: ngOnInit: errorArrived ', this.errorArrived]);
 		}
 	} /* ngOnInit */
 }

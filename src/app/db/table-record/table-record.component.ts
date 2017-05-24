@@ -24,8 +24,10 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 	@Input() crudAction: string = 'create';
 	@Output() tableRecordiIsUpdated: EventEmitter<any> = new EventEmitter<any>();
 	@Output() userAction: EventEmitter<any> = new EventEmitter<any>();
+	@Output() tableStructure: EventEmitter<any> = new EventEmitter<any>();
 
 	updateRecordValues(value) {
+
 		this.tableRecordValues = value
 		this.announceIt(
 			value, 
@@ -118,6 +120,14 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 							}
 						}
 					}
+
+					/* announce the field structure to calles (update/create/list) for their use */
+					this.announceIt(
+						this.tableRecordStructure, 
+						this.tableStructure, 
+						'TableRecordComponent: ngOnInit: tableStructure'
+					);
+					
 				},
 				err => {
 					this.errorWhileloadingRecordStructure = true;

@@ -11,6 +11,7 @@
 	[title]="'Error'" 
 	[code]="updateResponse.code"
 ></app-alert>
+
 <app-db-table-record
 	*ngIf="updateDataArrived"
 	[recordKey]="recordKey"
@@ -20,4 +21,5 @@
 	(tableRecordiIsUpdated)="updatedRecord($event)"
 	crudAction="update"
 	(userAction)="takeAction($event)"
+	(tableStructure)="updateTableStructure($event)"
 ></app-db-table-record>

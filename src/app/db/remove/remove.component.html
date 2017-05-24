@@ -2,12 +2,25 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 
+<app-loading 
+	[isLoading]="updateDataArrived == false" 
+	[title]="'record for updating'"
+></app-loading>
+
+<app-alert 
+	*ngIf="updateErrorArrived" 
+	[title]="'Error'" 
+	[code]="updateResponse.code"
+></app-alert>
+
 <app-db-table-record
+	*ngIf="updateDataArrived"
+	[recordKey]="recordKey"
 	[tableNumber]="collectionNumber"
-	[tableRecordValues]="createResponse"
+	[tableRecordValues]="updateResponse"
 	[tableIsUpdated]="updatedInDb"
 	(tableRecordiIsUpdated)="updatedRecord($event)"
-	crudAction="create"
+	crudAction="remove"
 	(userAction)="takeAction($event)"
 	(tableStructure)="updateTableStructure($event)"
 ></app-db-table-record>

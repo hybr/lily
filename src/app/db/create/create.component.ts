@@ -12,6 +12,7 @@ export class CreateComponent extends AppDbCommon implements OnInit {
 
 	private createResponse: Object = {};
 	private updatedInDb: boolean = false;
+	private tableStructure: Object = {};
 
 	@Input() collectionNumber: string;
 
@@ -22,6 +23,10 @@ export class CreateComponent extends AppDbCommon implements OnInit {
 		super();
 	}
 
+	updateTableStructure(ts) {
+		this.tableStructure = ts;
+	}
+	
 	updatedRecord(updatedRecord) {
 		this.logIt([
 			'CreateComponent: updatedRecord: ',
@@ -37,7 +42,7 @@ export class CreateComponent extends AppDbCommon implements OnInit {
 				'CreateComponent: takeAction: ',
 				'saved = ', this.createResponse
 			]);
-			console.log('this.createResponse = ', this.createResponse);
+			//console.log('this.createResponse = ', this.createResponse);
 			const queryObservable = this._afd.list('/' + this.collectionNumber);
 			queryObservable.push(this.createResponse);
 			this.updatedInDb = true;

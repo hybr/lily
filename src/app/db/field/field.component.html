@@ -5,20 +5,20 @@
 <!--
 <md-tab-group>
 	<md-tab label="{{ fieldProperties['_t'] }}">
--->
-		<md-slide-toggle *ngIf="(fieldProperties['_y'] == 'boolean')" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" id="{{ fieldProperties['_n'] }}">{{ fieldProperties['_t'] }}
+-->		<label>{{ fieldProperties['_t'] }}&nbsp;
+		<md-slide-toggle *ngIf="(fieldProperties['_y'] == 'boolean')" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" id="{{ fieldProperties['_n'] }}">
 		</md-slide-toggle>
 		<md-input-container *ngIf="(fieldProperties['_y'] == 'number')">
 			<input mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="number" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" />
 		</md-input-container>
-		<md-input-container *ngIf="(fieldProperties['_y'] == 'string')">
+		<md-input-container *ngIf="(fieldProperties['_y'] == 'string')" md-block>
 			<input mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="text" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" />
 		</md-input-container>
 		<md-input-container *ngIf="(fieldProperties['_y'] == 'email')">
 			<input mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="email" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" />
 		</md-input-container>
 		<md-input-container *ngIf="(fieldProperties['_y'] == 'password')">
-			<input mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="password" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" />
+			<input mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="password" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" required />
 		</md-input-container>
 		<div *ngIf="(fieldProperties['_y'] == 'auto_foreign_key')">
 			<md-input-container>
@@ -37,6 +37,7 @@
 				<md-option *ngFor=" let option of foreignKeyList; " [value]="option.value">{{option.title}}</md-option>
 			</md-select>
 		</div>
+		</label>
 <!--
 	</md-tab>
 	<md-tab label="Properties">

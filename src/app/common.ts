@@ -66,6 +66,10 @@ export class AppCommon {
 		return [];
 	} /* valuesOfList */
 
+	typeOfVariable(v) {
+		return typeof v;
+	}
+	
 	logIt(messages) {
 		this.debug && console.log('===== LogIt', JSON.stringify(messages));
 	} /* debug */

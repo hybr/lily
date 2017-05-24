@@ -61,4 +61,26 @@ export class AppDbCommon extends AppCommon {
 		return paramValue;
 	} /* getParam */
 
+	
+
+	sortedFieldsOfRecord(recordStructure) {
+		let rs = [];
+		if (this.isVariableObject(recordStructure)) {
+			for(let key of this.keysOfObject(recordStructure)) {
+				// this.logIt(['found in list', key, list[key] ]);
+				rs.push(recordStructure[key]);
+			}
+		}
+		if (this.isVariableArray(recordStructure)) {
+		 	rs = recordStructure;
+		}
+		rs.sort(function(a, b) { 
+			if (a._s < b._s) return -1;
+			if (a._s > b._s) return 1;
+			return 0;
+		});
+
+		return rs;
+	} /* valuesOfList */
+
 }
