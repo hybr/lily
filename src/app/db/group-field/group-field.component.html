@@ -2,14 +2,13 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 
-<div>
-
 	<div *ngFor="let fieldStructure of sortedFieldsOfRecord(fieldGroupStructure)">
 		
 		<span *ngIf="isVariableObject(fieldStructure)"> 
 
 			<button 
 				md-mini-fab
+				*ngIf="(tableNumber == tableOfTables)"
 				(click)="removeValue(fieldStructure['_n'])"
 				title="Remove"
 			>
@@ -31,17 +30,20 @@
 
 				<div *ngIf="fieldStructure['_m'] != undefined && fieldStructure['_m'] > 0">
 
-					<div class="lns_sub_fields_border" >
+					<app-db-group-field	
+						[tableNumber]="tableNumber"
+						[fieldGroupValues]="applyFieldValue(fieldGroupValues, fieldStructure['_n'])"
+						[fieldGroupStructure]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])"
+						(groupFieldValueIsUpdated)="updateFieldGroupValue(fieldStructure['_n'], $event, 'GFC1')"
+						(groupFieldStructureIsUpdated)="updateFieldGroupStructure(fieldStructure['_n'], $event, 'GFC2')"
+					></app-db-group-field>
 
-						<app-db-group-field	
-							[tableNumber]="tableNumber"
-							[fieldGroupValues]="applyFieldValue(fieldGroupValues, fieldStructure['_n'])"
-							[fieldGroupStructure]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])"
-							(groupFieldValueIsUpdated)="updateFieldGroupValue(fieldStructure['_n'], $event, 'GFC1')"
-							(groupFieldStructureIsUpdated)="updateFieldGroupStructure(fieldStructure['_n'], $event, 'GFC2')"
-						></app-db-group-field>
-
-					</div>
+					<button 
+						md-button 
+						(click)="addNewField(fieldGroupValues, fieldGroupStructure)"
+					>
+						Add {{fieldStructure['_t']}}
+					</button>
 
 				</div>
 
@@ -76,6 +78,13 @@
 						[foreignKeyTitleFields]="fieldStructure['_i']"
 					></app-db-field>
 
+					<button 
+						md-button 
+						(click)="addNewField(fieldGroupValues, fieldGroupStructure)"
+					>
+						Add {{fieldStructure['_t']}}
+					</button>
+
 				</div>
 
 				<div *ngIf="fieldStructure['_m'] == undefined || fieldStructure['_m'] == 0">
@@ -102,13 +111,3 @@
 		</span>
 
 	</div>
-
-</div>
-
-<span *ngIf="isVariableEmpty(fieldGroupStructure) && (tableNumber == tableOfTables)">
-	<button md-button (click)="addNewField(fieldGroupValues, fieldGroupStructure)">Add First Field</button>
-</span>
-
-<span *ngIf="(!isVariableEmpty(fieldGroupStructure)) && (tableNumber == tableOfTables)">
-	<button md-button (click)="addNewField(fieldGroupValues, fieldGroupStructure)">Add Next Field</button>
-</span>
