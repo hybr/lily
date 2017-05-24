@@ -19,10 +19,10 @@
 				<span *ngIf="crudAction == 'create'">Adding New </span>
 				<span *ngIf="crudAction == 'update'">Updating </span>
 				<span *ngIf="crudAction == 'remove'">Removing </span>
-				{{t1Record['2']}} Record
+				{{t1Record['f3']}} Record
 			</h2>
 		</md-card-title>
-		<md-card-subtitle>{{t1Record['3']}}</md-card-subtitle>
+		<md-card-subtitle>{{t1Record['f4']}}</md-card-subtitle>
 	</md-card-header>
 
 	<md-card-content>
@@ -37,6 +37,7 @@
 
 		<hr *ngIf="(tableNumber == tableOfTables)" />
 		<button md-button [routerLink]="['/db/tsl']">All Tables</button>
+		<button md-button [routerLink]="['/db/tl/' + tableNumber]">{{t1Record['f3']}} Table</button>
 		<button md-button (click)="sendUserAction('save')">
 			<span *ngIf="crudAction == 'create'">Add New Record</span>
 			<span *ngIf="crudAction == 'update'">Update Record</span>
@@ -46,6 +47,7 @@
 	</md-card-content>
 
 </md-card>
+
 <!--
 <div *ngIf="debug">TableRecordComponent tableRecordStructure = 
 	<pre>{{ tableRecordStructure | json}}</pre>

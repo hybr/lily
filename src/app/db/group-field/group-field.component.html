@@ -62,6 +62,8 @@
 						[fieldProperties]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])"
 						(fieldIsUpdated)="updateFieldValue(fieldStructure['_n'], $event, 'GHC5')"
 						(fieldPropertiesIsUpdated)="updateFieldProperties(fieldStructure['_n'], $event, 'GFC6')"
+						[foreignKeyCollectionName]="fieldStructure['_o']"
+						[foreignKeyTitleFields]="fieldStructure['_i']"
 					></app-db-field>
 
 				</div>
@@ -73,6 +75,8 @@
 						[fieldProperties]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])" 
 						(fieldIsUpdated)="updateFieldValue(fieldStructure['_n'], $event, 'GFC7')"
 						(fieldPropertiesIsUpdated)="updateFieldProperties(fieldStructure['_n'], $event, 'GFC8')"
+						[foreignKeyCollectionName]="fieldStructure['_o']"
+						[foreignKeyTitleFields]="fieldStructure['_i']"						
 					></app-db-field>
 
 				</div>
@@ -92,9 +96,9 @@
 </div>
 
 <span *ngIf="isVariableEmpty(fieldGroupStructure) && (tableNumber == tableOfTables)">
-	<button md-button (click)="addNewField(fieldGroupValues, fieldGroupStructure, 1)">Add First Field</button>
+	<button md-button (click)="addNewField(fieldGroupValues, fieldGroupStructure)">Add First Field</button>
 </span>
 
 <span *ngIf="(!isVariableEmpty(fieldGroupStructure)) && (tableNumber == tableOfTables)">
-	<button md-button (click)="addNewField(fieldGroupValues, fieldGroupStructure, 0)">Add Next Field</button>
+	<button md-button (click)="addNewField(fieldGroupValues, fieldGroupStructure)">Add Next Field</button>
 </span>

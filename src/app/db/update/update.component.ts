@@ -59,8 +59,8 @@ export class UpdateComponent extends AppDbCommon implements OnInit {
 			dataResponse => { 
 				this.updateDataArrived = true; 
 				this.updateResponse = dataResponse;
-				delete this.updateResponse['rs'];
 				this.logIt(['UpdateComponent: searchCollections: recordValue ', this.updateResponse]);
+				delete this.updateResponse['rs'];
 			},
 			errorResponse => {
 				this.updateErrorArrived = true;

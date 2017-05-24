@@ -41,14 +41,14 @@
 					md-mini-fab
 					[routerLink]="['/db/utr/' + collectionNumber + '/' + response[recordCount].$key]"
 					title="Update"
-					[class.disabled]="!response[recordCount]['0']"
+					[class.disabled]="!response[recordCount]['f1']"
 				>
 					<md-icon>mode_edit</md-icon> 
 				</button>
 				
 				<button 
 					md-mini-fab 
-					[routerLink]="'/db/tl/' + response[recordCount]['1']"
+					[routerLink]="'/db/tl/' + response[recordCount]['f2']"
 					title="List"
 					*ngIf="(collectionNumber == tableOfTables)"
 				>
@@ -56,7 +56,7 @@
 				</button>
 
 				&nbsp;
-				{{response[recordCount]['1']}}. <b>{{response[recordCount]['2']}}</b>: {{response[recordCount]['3']}}
+				{{response[recordCount][response[recordCount]['f6']]}}. <b>{{response[recordCount]['f3']}}</b>: {{response[recordCount]['f4']}}
 			</td></tr>
 		</table>
 

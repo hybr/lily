@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AppDbCommon } from '../common';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Component({
 	selector: 'app-db-field',
@@ -7,8 +8,13 @@ import { AppDbCommon } from '../common';
 	styleUrls: ['./field.component.css']
 })
 export class FieldComponent extends AppDbCommon implements OnInit {
+	public foreignKeyList: any[] = [];
+
 	@Input() fieldProperties: Object = {};
 	@Input() fieldValue: Object = {};
+	@Input() foreignKeyCollectionName : string = '';
+	@Input() foreignKeyTitleFields : string = '';
+
 	@Output() fieldIsUpdated: EventEmitter<any> = new EventEmitter<any>();
 	@Output() fieldPropertiesIsUpdated: EventEmitter<any> = new EventEmitter<any>();
 
@@ -37,6 +43,16 @@ export class FieldComponent extends AppDbCommon implements OnInit {
 			this.fieldIsUpdated,
 			'FieldComponent: changedNgModel'
 		);
+	}
+
+	getforeignKeyListTitle(v) {
+		var a = this.foreignKeyList.filter(
+			function( obj ) {  
+				return (obj.value == v) 
+			}
+		);
+		var o = a? a[0] : null;
+		return o? o['title'] : null;
 	}
 
 	updateFieldProperties(updatedProperties) {
@@ -68,11 +84,26 @@ export class FieldComponent extends AppDbCommon implements OnInit {
 		);
 	}
 	
-	constructor() { 
+	constructor(
+		private _afd: AngularFireDatabase
+	) { 
 		super();
 	}
 
 	ngOnInit() {
+		let self = this;
+		if (self.fieldProperties['_y'] == 'foreign_key') {		
+			self._afd.list('/' + self.foreignKeyCollectionName).subscribe(record => {
+				for (var r of record ) {
+					let t = '';
+					for (var tf of self.foreignKeyTitleFields.split(',')) {
+						t = r[tf]? t + ' - ' + r[tf] : t + ' unknown field name ' + tf; 
+					}
+					self.foreignKeyList.push({value: r.$key, title: t});
+				} /* for */
+				self.logIt(['FieldComponent: ngOnInit: self.foreignKeyList', self.foreignKeyList]);
+			});
+		} /* self.fieldProperties['f5'] == 'foreign_key' */		
 	}
 
 }

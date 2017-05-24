@@ -10,6 +10,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 })
 export class AppDbCommon extends AppCommon {
 	public tableOfTables: string = 't1';
+	public tableNumberRecordName: string = 'f2';
+
 	public keysOfFieldProperties: string[] = [];
 
 	constructor() {

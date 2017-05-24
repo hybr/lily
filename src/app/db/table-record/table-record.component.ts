@@ -75,7 +75,7 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 			/* c1 table contains the structures of all other tables */
 			const queryObservable = this._afd.list('/' + this.tableOfTables, {
 				query: {
-					orderByChild: '1', /* a2 is field name for collection number */
+					orderByChild: 'f2', /* f1 is field name for collection number */
 					equalTo: subject /* collection number to be updated */
 				}
 			});
@@ -84,7 +84,7 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 			// subscribe to changes
 			queryObservable.subscribe(
 				recordReceived => {
-					this.logIt(['TableRecordComponent: ngOnInit: recordReceived ', recordReceived]);
+					this.logIt(['TableRecordComponent: ngOnInit: recordReceived ', this.tableNumberRecordName, recordReceived]);
 					/* the result is list of records, so take the first one */
 					this.loadingRecordStructure = true;
 
@@ -93,13 +93,13 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 							this.tableRecordStructure = recordReceived[0]['rs'];
 							delete recordReceived[0]['rs'];
 						} else {
-							this.tableRecordStructure = recordReceived[0]['rs'][4];
-							delete recordReceived[0][4];
+							this.tableRecordStructure = recordReceived[0]['rs']['f5'];
+							delete recordReceived[0]['f5'];
 						}
 						this.t1Record = recordReceived[0];
 					} else {
 						this.tableRecordStructure = [];
-						this.t1Record = {'2': '', '3': ''};
+						this.t1Record = {'f2': '', 'f3': ''};
 					}
 					this.logIt([
 						'TableRecordComponent: ngOnInit: this.tableRecordStructure ', 
@@ -129,7 +129,11 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 			);
 
 			// trigger the query
-			subject.next(this.tableNumber);
+			if (this.tableNumber == this.tableOfTables) {
+				subject.next(this.tableRecordValues['f2']);
+			} else {
+				subject.next(this.tableNumber);
+			}
 	}
 
 }

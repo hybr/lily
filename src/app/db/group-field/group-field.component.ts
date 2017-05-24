@@ -8,7 +8,7 @@ import { AppDbCommon } from '../common';
 })
 export class GroupFieldComponent extends AppDbCommon implements OnInit {
 	public showProperty: boolean = false;
-
+	private nextKey: string = '';
 	//@Input() fieldGroupProperties: Object;
 	@Input() fieldGroupValueKey: string = 'uk';
 	
@@ -85,76 +85,72 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 		}
 	}
 
-	getNewKey(values, key) {
-		if (key == undefined) key = 1;
-		if (key == 0) {
-			for (var i = 0; i <= this.lengthOfVariable(values); i++) {
-				if (!this.doesKeyExists(i, values)) {
-					if (this.keysOfFieldProperties.indexOf(key) != -1) continue;
-					key = i;
-				}
-			}
-		}
-		return key;
+	getNewKey(values) {
+		this.nextKey =  'f' + (this.lengthOfVariable(values) + 1);
+		// if (key == undefined) key = 1;
+		// if (key == 0) {
+		// 	for (var i = 0; i <= this.lengthOfVariable(values); i++) {
+		// 		if (!this.doesKeyExists(i, values)) {
+		// 			if (this.keysOfFieldProperties.indexOf(key) != -1) continue;
+		// 			key = i;
+		// 		}
+		// 	}
+		// }
+		// return key;
 	}
 
-	addNewFieldStructure(structure, key) {
+	addNewFieldStructure(structure) {
 		var defaultField = {
-			_n: key, // name
+			_n: this.nextKey, // name
 			_t: 'Field Title', // title
 			_y: 'string', // type
-			_s: key, // sequence
+			_s: this.lengthOfVariable(structure)+1, // sequence
 			_f: true, // field type is field
 			_d: '', // default value
-			_m: 0 // multiple values
+			_m: 0, // multiple values
+			_r: false, // required
+			_o: '', // foreign collection name
+			_i: '', // foreign title fields, comma seperated
 		};	
 		if (!this.isVariableObject(structure)) {
 			structure = {};
 		}
-		if (structure[key] == undefined) {
-			structure[key] = defaultField;
+		if (structure[this.nextKey] == undefined) {
+			structure[this.nextKey] = defaultField;
 		}
+		structure[this.nextKey] = defaultField;
 		return structure;
 	}
 
-	addNewFieldValues(values, key) {
-		if (values == undefined || !this.isVariableObject(values)) {
+	addNewFieldValues(values) {
+		if (values == undefined 
+			|| (!this.isVariableObject(values)) 
+			|| this.isVariableArray(values) 
+			|| this.isVariableEmpty(values)
+		) {
 			values = {};
 		}
-		var newKey = this.getNewKey(values, key);
 
-		if (values[newKey] == undefined) {
-			values[newKey] = '';
+		if (values[this.nextKey] == undefined) {
+			values[this.nextKey] = '';
 		}
-		return [values, newKey];
+		values[this.nextKey] = '';
+		return values;
 	}
 
 
-	addNewField(values, structure, key) {
-		let newKey = key;
-
-		let a = this.addNewFieldValues(
-			values,
-			newKey
-		);
-		values = a[0];
-		newKey = a[1];
-
-		structure = this.addNewFieldStructure(
-			structure,
-			newKey
-		);
-
-
+	addNewField(values, structure) {
+		this.getNewKey(values);
 		this.announceIt(
-			values,
+			this.addNewFieldValues(values),
 			this.groupFieldValueIsUpdated,
-			'GroupFieldComponent: addNewField: groupFieldValueIsUpdated ' + newKey
+			'GroupFieldComponent: addNewField: groupFieldValueIsUpdated '
 		);
 		this.announceIt(
-			structure,
+			this.addNewFieldStructure(structure),
+		
 			this.groupFieldStructureIsUpdated,
-			'GroupFieldComponent: addNewField: groupFieldStructureIsUpdated ' + newKey
+			'GroupFieldComponent: addNewField: groupFieldStructureIsUpdated '
 		);		
 	}
 	

@@ -55,6 +55,7 @@ export class AppCommon {
 		if (this.isVariableObject(list)) {
 			let rs = [];
 			for(let key of this.keysOfObject(list)) {
+				// this.logIt(['found in list', key, list[key] ]);
 				rs.push(list[key]);
 			}
 			return rs;

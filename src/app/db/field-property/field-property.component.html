@@ -59,4 +59,22 @@
 			<md-slider [(ngModel)]="fieldProperties['_m']" (ngModelChange)="changedNgModel('_m', $event)" [max]=50 [min]=0 [step]=1 [thumb-label]=true></md-slider>
 		</td>
 	</tr>
+	<tr>
+		<td class="lns_sub_fields_border">
+			Help: For fields of foreign_key type
+			<br />
+			<md-input-container>
+				<input mdInput placeholder="Name of Foreign Table" type="text" [(ngModel)]="fieldProperties['_o']" (ngModelChange)="changedNgModel('_o', $event)" />
+			</md-input-container>
+		</td>
+	</tr>
+	<tr>
+		<td class="lns_sub_fields_border">
+			Help: For fields of foreign_key type. Comma seperated field names.
+			<br />
+			<md-input-container>
+				<input mdInput placeholder="Title Fields of Foreign Table" type="text" [(ngModel)]="fieldProperties['_i']" (ngModelChange)="changedNgModel('_i', $event)" />
+			</md-input-container>
+		</td>
+	</tr>
 </table>
