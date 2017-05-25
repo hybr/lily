@@ -28,9 +28,37 @@
 				<md-radio-button value="email">email</md-radio-button>
 				<md-radio-button value="password">password</md-radio-button>
 				<md-radio-button value="foreign_key">foreign key</md-radio-button>
+				<md-radio-button value="static_list">list</md-radio-button>
 			</md-radio-group>
 		</td>
 	</tr>
+	<tr *ngIf="fieldProperties['_y'] == 'foreign_key'">
+		<td class="lns_sub_fields_border">
+			Help: For fields of foreign_key type
+			<br />
+			<md-input-container>
+				<input mdInput placeholder="Name of Foreign Table" type="text" [(ngModel)]="fieldProperties['_o']" (ngModelChange)="changedNgModel('_o', $event)" />
+			</md-input-container>
+		</td>
+	</tr>
+	<tr *ngIf="fieldProperties['_y'] == 'foreign_key'">
+		<td class="lns_sub_fields_border">
+			Help: For fields of foreign_key type. Comma seperated field names.
+			<br />
+			<md-input-container>
+				<input mdInput placeholder="Title Fields of Foreign Table" type="text" [(ngModel)]="fieldProperties['_i']" (ngModelChange)="changedNgModel('_i', $event)" />
+			</md-input-container>
+		</td>
+	</tr>
+	<tr *ngIf="fieldProperties['_y'] == 'static_list'">
+		<td class="lns_sub_fields_border">
+			Help: For fields of type list, provide static list name 
+			<br />
+			<md-input-container>
+				<input mdInput placeholder="List Name" type="text" [(ngModel)]="fieldProperties['_l']" (ngModelChange)="changedNgModel('_l', $event)" />
+			</md-input-container>
+		</td>
+	</tr>	
 	<tr>
 		<td class="lns_sub_fields_border">
 		<md-slide-toggle [(ngModel)]="fieldProperties['_f']" (ngModelChange)="changedNgModel('_f', $event)" >
@@ -58,23 +86,5 @@
 			<br />{{fieldProperties['_m']}}
 			<md-slider [(ngModel)]="fieldProperties['_m']" (ngModelChange)="changedNgModel('_m', $event)" [max]=50 [min]=0 [step]=1 [thumb-label]=true></md-slider>
 		</td>
-	</tr>
-	<tr>
-		<td class="lns_sub_fields_border">
-			Help: For fields of foreign_key type
-			<br />
-			<md-input-container>
-				<input mdInput placeholder="Name of Foreign Table" type="text" [(ngModel)]="fieldProperties['_o']" (ngModelChange)="changedNgModel('_o', $event)" />
-			</md-input-container>
-		</td>
-	</tr>
-	<tr>
-		<td class="lns_sub_fields_border">
-			Help: For fields of foreign_key type. Comma seperated field names.
-			<br />
-			<md-input-container>
-				<input mdInput placeholder="Title Fields of Foreign Table" type="text" [(ngModel)]="fieldProperties['_i']" (ngModelChange)="changedNgModel('_i', $event)" />
-			</md-input-container>
-		</td>
-	</tr>
+	</tr>	
 </table>

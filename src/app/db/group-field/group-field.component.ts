@@ -9,6 +9,7 @@ import { AppDbCommon } from '../common';
 export class GroupFieldComponent extends AppDbCommon implements OnInit {
 	public showProperty: boolean = false;
 	private nextKey: string = '';
+
 	//@Input() fieldGroupProperties: Object;
 	@Input() fieldGroupValueKey: string = 'uk';
 	
@@ -111,18 +112,16 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 			_r: false, // required
 			_o: '', // foreign collection name
 			_i: '', // foreign title fields, comma seperated
+			_l: '', // name of static list
 		};	
 		if (!this.isVariableObject(structure)) {
 			structure = {};
-		}
-		if (structure[this.nextKey] == undefined) {
-			structure[this.nextKey] = defaultField;
 		}
 		structure[this.nextKey] = defaultField;
 		return structure;
 	}
 
-	addNewFieldValues(values) {
+	addNewFieldValues(values, structure, multiple) {
 		if (values == undefined 
 			|| (!this.isVariableObject(values)) 
 			|| this.isVariableArray(values) 
@@ -131,27 +130,41 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 			values = {};
 		}
 
-		if (values[this.nextKey] == undefined) {
+		if(multiple) {
+			if (structure[this.nextKey]['_m'] > 0) {
+				values[this.nextKey] = this.addNewFieldValues({},  structure[this.nextKey], multiple);
+			} else {
+				values[this.nextKey] = {};
+			}
+		} else {
 			values[this.nextKey] = '';
 		}
-		values[this.nextKey] = '';
 		return values;
 	}
 
 
 	addNewField(values, structure) {
 		this.getNewKey(values);
+		let s = this.addNewFieldStructure(structure);
 		this.announceIt(
-			this.addNewFieldValues(values),
+			s,
+			this.groupFieldStructureIsUpdated,
+			'GroupFieldComponent: addNewField: groupFieldStructureIsUpdated '
+		);			
+		this.announceIt(
+			this.addNewFieldValues(values, s, false),
+			this.groupFieldValueIsUpdated,
+			'GroupFieldComponent: addNewField: groupFieldValueIsUpdated '
+		);	
+	}
+	
+	addSameField(key, values, structure) {
+		this.nextKey = key;
+		this.announceIt(
+			this.addNewFieldValues(values, structure, true),
 			this.groupFieldValueIsUpdated,
 			'GroupFieldComponent: addNewField: groupFieldValueIsUpdated '
 		);
-		this.announceIt(
-			this.addNewFieldStructure(structure),
-		
-			this.groupFieldStructureIsUpdated,
-			'GroupFieldComponent: addNewField: groupFieldStructureIsUpdated '
-		);		
 	}
 	
 	constructor() { 

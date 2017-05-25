@@ -21,7 +21,11 @@ export class AppCommon {
 	} /* sleep */
 	
 	keysOfObject(obj) {
-		return Object.keys(obj);
+		if (obj == undefined) {
+			return [];
+		} else {
+			return Object.keys(obj);	
+		}
 	} /* keysOfObject */
 
 	isVariableObject(v) {

@@ -61,8 +61,6 @@ export class AppDbCommon extends AppCommon {
 		return paramValue;
 	} /* getParam */
 
-	
-
 	sortedFieldsOfRecord(recordStructure) {
 		let rs = [];
 		if (this.isVariableObject(recordStructure)) {
@@ -81,6 +79,6 @@ export class AppDbCommon extends AppCommon {
 		});
 
 		return rs;
-	} /* valuesOfList */
+	} /* sortedFieldsOfRecord */
 
 }

@@ -2,47 +2,43 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 
-<!--
-<md-tab-group>
-	<md-tab label="{{ fieldProperties['_t'] }}">
--->		<label>{{ fieldProperties['_t'] }}&nbsp;
-		<md-slide-toggle *ngIf="(fieldProperties['_y'] == 'boolean')" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" id="{{ fieldProperties['_n'] }}">
-		</md-slide-toggle>
-		<md-input-container *ngIf="(fieldProperties['_y'] == 'number')">
-			<input mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="number" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" />
+<label>{{ fieldProperties['_t'] }}&nbsp;
+	<md-slide-toggle *ngIf="(fieldProperties['_y'] == 'boolean')" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" id="{{ fieldProperties['_n'] }}">
+	</md-slide-toggle>
+	<md-input-container *ngIf="(fieldProperties['_y'] == 'number')">
+		<input mdInput id="{{ fieldProperties['_n'] }}" type="number" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" />
+	</md-input-container>
+	<md-input-container *ngIf="(fieldProperties['_y'] == 'string')" md-block>
+		<input mdInput id="{{ fieldProperties['_n'] }}" type="text" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" />
+	</md-input-container>
+	<md-input-container *ngIf="(fieldProperties['_y'] == 'email')">
+		<input mdInput id="{{ fieldProperties['_n'] }}" type="email" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" />
+	</md-input-container>
+	<md-input-container *ngIf="(fieldProperties['_y'] == 'password')">
+		<input mdInput id="{{ fieldProperties['_n'] }}" type="password" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" required />
+	</md-input-container>
+	<div *ngIf="(fieldProperties['_y'] == 'auto_foreign_key')">
+		<md-input-container>
+			<input mdInput id="{{ fieldProperties['_n'] }}" type="text" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" [mdAutocomplete]="auto" />
 		</md-input-container>
-		<md-input-container *ngIf="(fieldProperties['_y'] == 'string')" md-block>
-			<input mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="text" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" />
-		</md-input-container>
-		<md-input-container *ngIf="(fieldProperties['_y'] == 'email')">
-			<input mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="email" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" />
-		</md-input-container>
-		<md-input-container *ngIf="(fieldProperties['_y'] == 'password')">
-			<input mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="password" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" required />
-		</md-input-container>
-		<div *ngIf="(fieldProperties['_y'] == 'auto_foreign_key')">
-			<md-input-container>
-				<input mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="text" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" [mdAutocomplete]="auto" />
-			</md-input-container>
-			<br />{{ getOptionListTitle(fieldValue) }}
-			<md-autocomplete #auto="mdAutocomplete">
-				<md-option *ngFor="let option of foreignKeyList" [value]="option.value">
-					{{ option.title }}
-				</md-option>
-			</md-autocomplete>
-		</div>
-		<div *ngIf="(fieldProperties['_y'] == 'foreign_key')">
-			<br />
-			<md-select mdInput id="{{ fieldProperties['_n'] }}" placeholder="{{ fieldProperties['_t'] }}" type="text" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)">
-				<md-option *ngFor=" let option of foreignKeyList; " [value]="option.value">{{option.title}}</md-option>
-			</md-select>
-		</div>
-		</label>
-<!--
-	</md-tab>
-	<md-tab label="Properties">
-		<app-db-field-property [fieldProperties]="fieldProperties" (fieldPropertiesIsUpdated)=updateFieldProperties($event)></app-db-field-property>
-	</md-tab>
-</md-tab-group>
--->
+		<br />{{ getOptionListTitle(fieldValue) }}
+		<md-autocomplete #auto="mdAutocomplete">
+			<md-option *ngFor="let option of foreignKeyList" [value]="option.value">
+				{{ option.title }}
+			</md-option>
+		</md-autocomplete>
+	</div>
+	<div *ngIf="(fieldProperties['_y'] == 'foreign_key')">
+		<br />
+		<md-select mdInput id="{{ fieldProperties['_n'] }}" type="text" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)">
+			<md-option *ngFor=" let option of foreignKeyList; " [value]="option.value">{{option.title}}</md-option>
+		</md-select>
+	</div>
+	<div *ngIf="(fieldProperties['_y'] == 'static_list')">
+		<br />
+		<md-select mdInput id="{{ fieldProperties['_n'] }}" type="text" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)">
+			<md-option *ngFor=" let key of keysOfObject( lists[ fieldProperties['_l'] ] )" [value]="key">{{lists[fieldProperties['_l']][key]}}</md-option>
+		</md-select>
+	</div>	
+</label>
 <hr />

@@ -9,6 +9,8 @@ import { AngularFireDatabase } from 'angularfire2/database';
 })
 export class FieldComponent extends AppDbCommon implements OnInit {
 	public foreignKeyList: any[] = [];
+	/* TODO: Change most of the public to private */
+	private lists: Object = {};
 
 	@Input() fieldProperties: Object = {};
 	@Input() fieldValue: Object = {};
@@ -103,7 +105,14 @@ export class FieldComponent extends AppDbCommon implements OnInit {
 				} /* for */
 				self.logIt(['FieldComponent: ngOnInit: self.foreignKeyList', self.foreignKeyList]);
 			});
-		} /* self.fieldProperties['f5'] == 'foreign_key' */		
+		} /* self.fieldProperties['f5'] == 'foreign_key' */	
+		this.lists = {
+			'gender' : {
+				'male': 'Male',
+				'female': 'Female',
+				'other': 'Other'
+			}
+		};
 	}
 
 }

@@ -8,7 +8,7 @@
 
 			<button 
 				md-mini-fab
-				*ngIf="tableNumber == tableOfTables"
+				*ngIf="(tableNumber == tableOfTables)"
 				(click)="removeValue(fieldStructure['_n'])"
 				title="Remove"
 			>
@@ -30,32 +30,17 @@
 
 				<div *ngIf="fieldStructure['_m'] != undefined && fieldStructure['_m'] > 0">
 
-					<div *ngFor="let value of valuesOfList(applyFieldValue(fieldGroupValues, fieldStructure['_n']))">
-
-value 1 = {{fieldStructure['_n']}} : {{ value | json }}
-
 					<app-db-group-field	
-						*ngIf="!isVariableEmpty(value)"
 						[tableNumber]="tableNumber"
 						[fieldGroupValues]="applyFieldValue(fieldGroupValues, fieldStructure['_n'])"
 						[fieldGroupStructure]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])"
 						(groupFieldValueIsUpdated)="updateFieldGroupValue(fieldStructure['_n'], $event, 'GFC1')"
 						(groupFieldStructureIsUpdated)="updateFieldGroupStructure(fieldStructure['_n'], $event, 'GFC2')"
 					></app-db-group-field>
-					</div>
 
 					<button 
-						*ngIf="(tableNumber == tableOfTables)"
 						md-button 
 						(click)="addNewField(fieldGroupValues, fieldGroupStructure)"
-					>
-						Add Field
-					</button>
-
-					<button 
-						*ngIf="(tableNumber != tableOfTables)"
-						md-button 
-						(click)="addSameField(fieldStructure['_n'], fieldGroupValues, fieldGroupStructure)"
 					>
 						Add {{fieldStructure['_t']}}
 					</button>
@@ -84,10 +69,7 @@ value 1 = {{fieldStructure['_n']}} : {{ value | json }}
 
 				<div *ngIf="fieldStructure['_m'] != undefined && fieldStructure['_m'] > 0">
 
-				<div *ngFor="let value of valuesOfList(applyFieldValue(fieldGroupValues, fieldStructure['_n']))">		
-value 2 = {{fieldStructure['_n']}} : {{ value | json }}
 					<app-db-field
-						*ngIf="!isVariableEmpty(value)"
 						[fieldValue]="applyFieldValue(fieldGroupValues, fieldStructure['_n'])"
 						[fieldProperties]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])"
 						(fieldIsUpdated)="updateFieldValue(fieldStructure['_n'], $event, 'GHC5')"
@@ -95,20 +77,10 @@ value 2 = {{fieldStructure['_n']}} : {{ value | json }}
 						[foreignKeyCollectionName]="fieldStructure['_o']"
 						[foreignKeyTitleFields]="fieldStructure['_i']"
 					></app-db-field>
-			</div>
 
 					<button 
-						*ngIf="(tableNumber == tableOfTables)"
 						md-button 
 						(click)="addNewField(fieldGroupValues, fieldGroupStructure)"
-					>
-						Add Field
-					</button>
-
-					<button 
-						*ngIf="(tableNumber != tableOfTables)"
-						md-button 
-						(click)="addSameField(fieldStructure['_n'], fieldGroupValues, fieldGroupStructure)"
 					>
 						Add {{fieldStructure['_t']}}
 					</button>
