@@ -1,23 +1,21 @@
 
 @import '~@angular/material/prebuilt-themes/purple-green.css';
 
-
-
 /* lns = Lily Name Space */
 body: {
 	margin: 0;
 }
 .lns_center_it{
-  text-align: center;
-  margin: 0 auto;
+	text-align: center;
+	margin: 0 auto;
 }
 
 .ng-valid[required], .ng-valid.required  {
-  border-left: 5px solid #42A948; /* green */
+	border-left: 5px solid #42A948; /* green */
 }
 
 .ng-invalid:not(form)  {
-  border-left: 5px solid #a94442; /* red */
+	border-left: 5px solid #a94442; /* red */
 }
 
 .lns_loading {
@@ -35,14 +33,15 @@ body: {
 .lns_sub_fields_border {
 	padding: 1%;
 	border: 1px solid;
+	margin-bottom: 4px;
 }
 
 .spacer {
-    -webkit-box-flex: 1;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
+	-webkit-box-flex: 1;
+	-ms-flex: 1 1 auto;
+	flex: 1 1 auto;
 }
 
 .lns_background_warn {
-  background-color: warn;
+	background-color: warn;
 }

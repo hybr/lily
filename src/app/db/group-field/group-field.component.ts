@@ -121,7 +121,7 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 		return structure;
 	}
 
-	addNewFieldValues(key, values, structure) {
+	addNewFieldValues(values) {
 		if (values == undefined 
 			|| (!this.isVariableObject(values)) 
 			|| this.isVariableArray(values) 
@@ -129,50 +129,24 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 		) {
 			values = {};
 		}
-
-
-		if (structure[key]['_m'] > 0) {
-			// field contains multiple values
-			if (!this.isVariableArray(values[key])) {
-				values[key] = [];
-			}			
-		} else if (!structure[key]['_f']) {
-			// field contains more than one field
-			if (!this.isVariableObject(values[key])) {
-				values[key] = {};
-			}			
-		} else {
-			// field has simple value
-			if (this.typeOfVariable(values[key]) != 'string') {
-				values[key] = '';
-			}		
-		}
+		values[this.nextKey] = '';
 		return values;
 	}
 
 
 	addNewField(key, values, structure) {
 		/* this is used during the structure bulding of t1 table */
-		this.getNewKey(values);
+		this.getNewKey(values[key]);
 
-		if (values == undefined 
-			|| (!this.isVariableObject(values)) 
-			|| this.isVariableArray(values) 
-			|| this.isVariableEmpty(values)
-		) {
-			values = {};
-		}
-		
-		values[this.nextKey] = '';
-
+		this.fieldGroupValues[key] = this.addNewFieldValues(values[key]);
 		this.announceIt(
-			values,
+			this.fieldGroupValues,
 			this.groupFieldValueIsUpdated,
 			'GroupFieldComponent: addNewField: groupFieldValueIsUpdated '
 		);
-
+		this.fieldGroupStructure[key] = this.addNewFieldStructure(structure[key]);
 		this.announceIt(
-			this.addNewFieldStructure(structure[key]),
+			this.fieldGroupStructure,
 			this.groupFieldStructureIsUpdated,
 			'GroupFieldComponent: addNewField: groupFieldStructureIsUpdated '
 		);		
@@ -196,7 +170,7 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 			}
 			for (let subKey of this.keysOfObject(structure[key])) {
 				if (this.isVariableObject(structure[key][subKey])) {
-					values[key].push(this.addNewFieldValues(subKey,  values[key], structure[key]));
+					values[key].push(this.addSameFieldValues(subKey,  values[key], structure[key]));
 				}
 			}			
 		} else if (!structure[key]['_f']) {
@@ -206,7 +180,7 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 			}
 			for (let subKey of this.keysOfObject(structure[key])) {
 				if (this.isVariableObject(structure[key][subKey])) {
-					values[key] = this.addNewFieldValues(subKey,  values[key], structure[key]);
+					values[key] = this.addSameFieldValues(subKey,  values[key], structure[key]);
 				}
 			}				
 		} else {
@@ -216,7 +190,7 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 			}
 			for (let subKey of this.keysOfObject(structure[key])) {
 				if (this.isVariableObject(structure[key][subKey])) {
-					values[key] = this.addNewFieldValues(subKey,  values[key], structure[key]);
+					values[key] = this.addSameFieldValues(subKey,  values[key], structure[key]);
 				}
 			}			
 		}

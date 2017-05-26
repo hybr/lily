@@ -1,7 +1,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-
+fieldValue = {{fieldValue | json}}
 <label>{{ fieldProperties['_t'] }}&nbsp;
 	<md-slide-toggle *ngIf="(fieldProperties['_y'] == 'boolean')" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)" id="{{ fieldProperties['_n'] }}">
 	</md-slide-toggle>
@@ -29,16 +29,13 @@
 		</md-autocomplete>
 	</div>
 	<div *ngIf="(fieldProperties['_y'] == 'foreign_key')">
-		<br />
 		<md-select mdInput id="{{ fieldProperties['_n'] }}" type="text" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)">
 			<md-option *ngFor=" let option of foreignKeyList; " [value]="option.value">{{option.title}}</md-option>
 		</md-select>
 	</div>
 	<div *ngIf="(fieldProperties['_y'] == 'static_list')">
-		<br />
 		<md-select mdInput id="{{ fieldProperties['_n'] }}" type="text" name="{{ fieldProperties['_n'] }}" [(ngModel)]="fieldValue" (ngModelChange)="changedNgModel($event)">
 			<md-option *ngFor=" let key of keysOfObject( lists[ fieldProperties['_l'] ] )" [value]="key">{{lists[fieldProperties['_l']][key]}}</md-option>
 		</md-select>
 	</div>	
 </label>
-<hr />

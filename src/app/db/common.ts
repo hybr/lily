@@ -66,7 +66,9 @@ export class AppDbCommon extends AppCommon {
 		if (this.isVariableObject(recordStructure)) {
 			for(let key of this.keysOfObject(recordStructure)) {
 				// this.logIt(['found in list', key, list[key] ]);
-				rs.push(recordStructure[key]);
+				if (this.isVariableObject(recordStructure[key])) {
+					rs.push(recordStructure[key]);
+				}
 			}
 		}
 		if (this.isVariableArray(recordStructure)) {

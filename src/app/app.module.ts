@@ -37,50 +37,60 @@ import { FieldComponent } from './db/field/field.component';
 import { FieldPropertyComponent } from './db/field-property/field-property.component';
 import { CreateComponent } from './db/create/create.component';
 import { RemoveComponent } from './db/remove/remove.component';
+import { TableComponent } from './data/table/table.component';
+import { RecordComponent } from './data/record/record.component';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
-  authDomain: 'ia2f-5d2b6.firebaseapp.com',
-  databaseURL: 'https://ia2f-5d2b6.firebaseio.com',
-  storageBucket: 'ia2f-5d2b6.appspot.com',
-  messagingSenderId: '288539084670'
+	apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
+	authDomain: 'ia2f-5d2b6.firebaseapp.com',
+	databaseURL: 'https://ia2f-5d2b6.firebaseio.com',
+	storageBucket: 'ia2f-5d2b6.appspot.com',
+	messagingSenderId: '288539084670'
 };
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    WebPageComponent,
-    PageNotFoundComponent,
-    TableRecordComponent,
-    ListComponent,
-    AlertComponent,
-    LoadingComponent,
-    UpdateComponent,
-    DebugComponent,
-    GroupFieldComponent,
-    FieldComponent,
-    FieldPropertyComponent,
-    CreateComponent,
-    RemoveComponent
-  ],
+	declarations: [
+		AppComponent,
+		WebPageComponent,
+		PageNotFoundComponent,
+		TableRecordComponent,
+		ListComponent,
+		AlertComponent,
+		LoadingComponent,
+		UpdateComponent,
+		DebugComponent,
+		GroupFieldComponent,
+		FieldComponent,
+		FieldPropertyComponent,
+		CreateComponent,
+		RemoveComponent,
+		TableComponent,
+		RecordComponent
+	],
 
-  imports: [
-    BrowserModule,
-    FormsModule,
-    MaterialModule.forRoot(),
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    HttpModule, JsonpModule,
-    AngularFireModule.initializeApp (firebaseConfig),
-    AngularFireAuthModule,
-    AngularFireDatabaseModule,
-    LocalStorageModule.withConfig({
-      prefix: 'app-root',
-      storageType: 'localStorage'
-    }),
-    routing
-  ],
-  
-  bootstrap: [ AppComponent ]
+	imports: [
+		BrowserModule,
+		FormsModule,
+		ReactiveFormsModule ,
+
+		MaterialModule.forRoot(),
+		BrowserAnimationsModule,
+
+		HttpModule, JsonpModule,
+
+		AngularFireModule.initializeApp (firebaseConfig),
+		AngularFireAuthModule,
+		AngularFireDatabaseModule,
+
+		LocalStorageModule.withConfig({
+			prefix: 'app-root',
+			storageType: 'localStorage'
+		}),
+		routing
+	],
+	
+	bootstrap: [
+		AppComponent
+	]
 })
 export class AppModule { }

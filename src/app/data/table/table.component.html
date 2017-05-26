@@ -1,0 +1,7 @@
+<div class="container">
+    <h4>Add table</h4>
+    <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
+        <!-- we will place our fields here -->
+        <button type="submit" [disabled]="!myForm.valid">Submit</button>
+    </form>
+</div>
