@@ -121,7 +121,7 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 		return structure;
 	}
 
-	addNewFieldValues(values, structure, multiple) {
+	addNewFieldValues(key, values, structure) {
 		if (values == undefined 
 			|| (!this.isVariableObject(values)) 
 			|| this.isVariableArray(values) 
@@ -130,38 +130,103 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 			values = {};
 		}
 
-		if(multiple) {
-			if (structure[this.nextKey]['_m'] > 0) {
-				values[this.nextKey] = this.addNewFieldValues({},  structure[this.nextKey], multiple);
-			} else {
-				values[this.nextKey] = {};
-			}
+
+		if (structure[key]['_m'] > 0) {
+			// field contains multiple values
+			if (!this.isVariableArray(values[key])) {
+				values[key] = [];
+			}			
+		} else if (!structure[key]['_f']) {
+			// field contains more than one field
+			if (!this.isVariableObject(values[key])) {
+				values[key] = {};
+			}			
 		} else {
-			values[this.nextKey] = '';
+			// field has simple value
+			if (this.typeOfVariable(values[key]) != 'string') {
+				values[key] = '';
+			}		
 		}
 		return values;
 	}
 
 
-	addNewField(values, structure) {
+	addNewField(key, values, structure) {
+		/* this is used during the structure bulding of t1 table */
 		this.getNewKey(values);
-		let s = this.addNewFieldStructure(structure);
+
+		if (values == undefined 
+			|| (!this.isVariableObject(values)) 
+			|| this.isVariableArray(values) 
+			|| this.isVariableEmpty(values)
+		) {
+			values = {};
+		}
+		
+		values[this.nextKey] = '';
+
 		this.announceIt(
-			s,
-			this.groupFieldStructureIsUpdated,
-			'GroupFieldComponent: addNewField: groupFieldStructureIsUpdated '
-		);			
-		this.announceIt(
-			this.addNewFieldValues(values, s, false),
+			values,
 			this.groupFieldValueIsUpdated,
 			'GroupFieldComponent: addNewField: groupFieldValueIsUpdated '
-		);	
+		);
+
+		this.announceIt(
+			this.addNewFieldStructure(structure[key]),
+			this.groupFieldStructureIsUpdated,
+			'GroupFieldComponent: addNewField: groupFieldStructureIsUpdated '
+		);		
 	}
 	
+
+	addSameFieldValues(key, values, structure) {
+		if (values == undefined 
+			|| (!this.isVariableObject(values)) 
+			|| this.isVariableArray(values) 
+			|| this.isVariableEmpty(values)
+		) {
+			values = {};
+		}
+
+
+		if (structure[key]['_m'] > 0) {
+			// field contains multiple values
+			if (!this.isVariableArray(values[key])) {
+				values[key] = [];
+			}
+			for (let subKey of this.keysOfObject(structure[key])) {
+				if (this.isVariableObject(structure[key][subKey])) {
+					values[key].push(this.addNewFieldValues(subKey,  values[key], structure[key]));
+				}
+			}			
+		} else if (!structure[key]['_f']) {
+			// field contains more than one field
+			if (!this.isVariableObject(values[key])) {
+				values[key] = {};
+			}
+			for (let subKey of this.keysOfObject(structure[key])) {
+				if (this.isVariableObject(structure[key][subKey])) {
+					values[key] = this.addNewFieldValues(subKey,  values[key], structure[key]);
+				}
+			}				
+		} else {
+			// field has simple value
+			if (this.typeOfVariable(values[key]) != 'string') {
+				values[key] = '';
+			}
+			for (let subKey of this.keysOfObject(structure[key])) {
+				if (this.isVariableObject(structure[key][subKey])) {
+					values[key] = this.addNewFieldValues(subKey,  values[key], structure[key]);
+				}
+			}			
+		}
+		return values;
+	}
+
 	addSameField(key, values, structure) {
-		this.nextKey = key;
+		/* this is used in other tables to add data for multiple fields */
 		this.announceIt(
-			this.addNewFieldValues(values, structure, true),
+			this.addSameFieldValues(key, values, structure),
 			this.groupFieldValueIsUpdated,
 			'GroupFieldComponent: addNewField: groupFieldValueIsUpdated '
 		);
