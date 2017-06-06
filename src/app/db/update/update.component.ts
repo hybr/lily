@@ -37,7 +37,6 @@ export class UpdateComponent extends AppDbCommon implements OnInit {
 			'UpdateComponent: updatedRecord: ',
 			' record to be saved = ', updatedRecord
 		]);
-		this.updateResponse = updatedRecord;
 		this.updatedInDb = false;
 	}
 

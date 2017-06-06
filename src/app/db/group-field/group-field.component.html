@@ -1,8 +1,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
+
 <div *ngFor="let fieldStructure of sortedFieldsOfRecord(fieldGroupStructure)" class="lns_sub_fields_border">
-		fieldStructure = {{ fieldStructure | json}}
+
+		<!-- fieldStructure = {{ fieldStructure | json}} -->
 		<button 
 			md-mini-fab
 			*ngIf="tableNumber == tableOfTables"
@@ -21,21 +23,24 @@
 			<md-icon>menu</md-icon> 
 		</button>
 
-		<fieldset *ngIf="!fieldStructure['_f']">
+		<fieldset *ngIf="!fieldStructure['_f']"><!-- field_type is field_group -->
 
 			<legend>{{fieldStructure['_t']}}</legend>
 
 			<div *ngIf="fieldStructure['_m'] != undefined && fieldStructure['_m'] > 0">
 
-				<div *ngFor="let value of valuesOfList(applyFieldValue(fieldGroupValues, fieldStructure['_n'])); let gi = index;">
-				value = {{value | json}}
+				<!-- there are multiple values of the group -->
 
-					G1<app-db-group-field	
+				<div *ngFor=" let value of valuesOfList(applyFieldValue(fieldGroupValues, fieldStructure['_n'])); let gi = index; ">
+				
+					value = {{value | json}}
+
+					<app-db-group-field	
 					*ngIf="!isVariableEmpty(value)"
 					[tableNumber]="tableNumber"
 					[fieldGroupValues]="applyFieldValue(fieldGroupValues, fieldStructure['_n'])"
 					[fieldGroupStructure]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])"
-					(groupFieldValueIsUpdated)="updateFieldGroupValue(fieldStructure['_n'], $event, 'GFC1')"
+					(groupFieldValueIsUpdated)="updateFieldGroupValue(fieldStructure, $event, gi, 'GFC1')"
 					(groupFieldStructureIsUpdated)="updateFieldGroupStructure(fieldStructure['_n'], $event, 'GFC2')"
 					></app-db-group-field>
 
@@ -46,7 +51,7 @@
 					md-button 
 					(click)="addNewField(fieldStructure['_n'], fieldGroupValues, fieldGroupStructure)"
 					>
-					Add Field
+					Add N Field
 				</button>
 
 				<button 
@@ -54,42 +59,59 @@
 					md-button 
 					(click)="addSameField(fieldStructure['_n'], fieldGroupValues, fieldGroupStructure)"
 					>
-					Add {{fieldStructure['_t']}}
+					Add S {{fieldStructure['_t']}}
 				</button>
 
 			</div>
 
 			<div *ngIf="fieldStructure['_m'] == undefined || fieldStructure['_m'] == 0">
 
-				G2<app-db-group-field	
+				<!-- value = {{applyFieldValue(fieldGroupValues, fieldStructure['_n']) | json}} -->
+
+				<app-db-group-field	
 				[tableNumber]="tableNumber"
 				[fieldGroupValues]="applyFieldValue(fieldGroupValues, fieldStructure['_n'])"
 				[fieldGroupStructure]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])"
-				(groupFieldValueIsUpdated)="updateFieldGroupValue(fieldStructure['_n'], $event, 'GFC3')"
+				(groupFieldValueIsUpdated)="updateFieldGroupValue(fieldStructure, $event, -1, 'GFC3')"
 				(groupFieldStructureIsUpdated)="updateFieldGroupStructure(fieldStructure['_n'], $event, 'GFC4')"
 				></app-db-group-field>
 
 			</div>
 
-		</fieldset>
+		</fieldset> <!-- field_type is field_group -->
 
-		<div *ngIf="fieldStructure['_f']">
+		<div *ngIf="fieldStructure['_f']"> <!-- field_type is field -->
 			<div *ngIf="fieldStructure['_m'] != undefined && fieldStructure['_m'] > 0">
-				<div *ngFor="let value of valuesOfList(applyFieldValue(fieldGroupValues, fieldStructure['_n']))">
-					value = {{value | json}}
-					F1<app-db-field *ngIf="!isVariableEmpty(value)" [fieldValue]="applyFieldValue(fieldGroupValues, fieldStructure['_n'])" [fieldProperties]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])" (fieldIsUpdated)="updateFieldValue(fieldStructure['_n'], $event, 'GHC5')" (fieldPropertiesIsUpdated)="updateFieldProperties(fieldStructure['_n'], $event, 'GFC6')" [foreignKeyCollectionName]="fieldStructure['_o']" [foreignKeyTitleFields]="fieldStructure['_i']"></app-db-field>
+				<div *ngFor="let value of valuesOfList(applyFieldValue(fieldGroupValues, fieldStructure['_n'])); let fi = index; ">
+
+					value = {{value | json}} 
+
+					<app-db-field 
+						*ngIf="!isVariableEmpty(value)" 
+						[fieldValue]="applyFieldValue(fieldGroupValues, fieldStructure['_n'])"
+						[fieldProperties]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])"
+						(fieldIsUpdated)="updateFieldValue(fieldStructure['_n'], $event, fi, 'GHC5')"
+						(fieldPropertiesIsUpdated)="updateFieldProperties(fieldStructure['_n'], $event, 'GFC6')"
+						[foreignKeyCollectionName]="fieldStructure['_o']"
+						[foreignKeyTitleFields]="fieldStructure['_i']"
+					></app-db-field>
 				</div>
 				<button *ngIf="(tableNumber == tableOfTables)" md-button (click)="addNewField(fieldStructure['_n'], fieldGroupValues, fieldGroupStructure)">
-					Add Field
+					Add N Field
 				</button>
 				<button *ngIf="(tableNumber != tableOfTables)" md-button (click)="addSameField(fieldStructure['_n'], fieldGroupValues, fieldGroupStructure)">
-					Add {{fieldStructure['_t']}}
+					Add S {{fieldStructure['_t']}}
 				</button>
 			</div>
 			<div *ngIf="fieldStructure['_m'] == undefined || fieldStructure['_m'] == 0">
-				F2<app-db-field [fieldValue]="applyFieldValue(fieldGroupValues, fieldStructure['_n'])" [fieldProperties]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])" (fieldIsUpdated)="updateFieldValue(fieldStructure['_n'], $event, 'GFC7')" (fieldPropertiesIsUpdated)="updateFieldProperties(fieldStructure['_n'], $event, 'GFC8')" [foreignKeyCollectionName]="fieldStructure['_o']" [foreignKeyTitleFields]="fieldStructure['_i']"></app-db-field>
+				value = {{applyFieldValue(fieldGroupValues, fieldStructure['_n']) | json}}
+
+				<app-db-field 
+					[fieldValue]="applyFieldValue(fieldGroupValues, fieldStructure['_n'])"
+					[fieldProperties]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])"
+					(fieldIsUpdated)="updateFieldValue(fieldStructure['_n'], $event, -1, 'GFC7')" (fieldPropertiesIsUpdated)="updateFieldProperties(fieldStructure['_n'], $event, 'GFC8')" [foreignKeyCollectionName]="fieldStructure['_o']" [foreignKeyTitleFields]="fieldStructure['_i']"></app-db-field>
 			</div>
-		</div>
+		</div> <!-- field_type is field -->
 
 		<app-db-field-property *ngIf="showProperty" [fieldProperties]="applyFieldValue(fieldGroupStructure, fieldStructure['_n'])" (fieldPropertiesIsUpdated)="updateFieldProperties(fieldStructure['_n'], $event, 'GFC9')"></app-db-field-property>
 

@@ -31,13 +31,14 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 		}
 	}
 
-	updateFieldValue(fieldName, value, code) {
-		this.fieldGroupValues[fieldName] = value;
+	updateFieldValue(fieldName, value, index, code) {
+		// this.fieldGroupValues = this.mergeObjects(this.fieldGroupValues, value);
 		this.announceIt(
-			this.fieldGroupValues,
+			value,
 			this.groupFieldValueIsUpdated,
 			'GroupFieldComponent: updateFieldValue: groupFieldValueIsUpdated ' + code
 		);
+		
 	}
 
 	updateFieldProperties(fieldName, updatedProperties, code) {
@@ -49,12 +50,23 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 		);	
 	}
 
+	updateFieldGroupValue(structure, value, index, code) {
+		// this.fieldGroupValues = this.mergeObjects(this.fieldGroupValues, value);
+		let obj = {};
+		if (this.fieldGroupValues[structure['_n']] != undefined) {
+			obj = this.fieldGroupValues[structure['_n']]
+		}
+		if (structure['_m'] != undefined && structure['_m'] > 0) {
+			if (!this.isVariableArray(obj[structure['_n']])) {
+				obj[structure['_n']] = [];	
+			} 
+			obj[structure['_n']][index] = this.mergeObjects(obj[structure['_n']][index], value);
+		} else {
+			obj[structure['_n']] = this.mergeObjects(obj[structure['_n']][index], value);
+		} 
 
-
-	updateFieldGroupValue(fieldName, value, code) {
-		this.fieldGroupValues[fieldName] = value;
 		this.announceIt(
-			this.fieldGroupValues,
+			obj,
 			this.groupFieldValueIsUpdated,
 			'GroupFieldComponent: updateFieldGroupValue: groupFieldValueIsUpdated ' + code
 		);
@@ -153,10 +165,10 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 	}
 	
 
-	addSameFieldValues(key, values, structure) {
+	addSameFieldValues(key, values, structure, value) {
 		if (values == undefined 
 			|| (!this.isVariableObject(values)) 
-			|| this.isVariableArray(values) 
+			|| this.isVariableArray(values)  
 			|| this.isVariableEmpty(values)
 		) {
 			values = {};
@@ -170,7 +182,7 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 			}
 			for (let subKey of this.keysOfObject(structure[key])) {
 				if (this.isVariableObject(structure[key][subKey])) {
-					values[key].push(this.addSameFieldValues(subKey,  values[key], structure[key]));
+					values[key].push(this.addSameFieldValues(subKey,  values[key], structure[key], value));
 				}
 			}			
 		} else if (!structure[key]['_f']) {
@@ -180,17 +192,17 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 			}
 			for (let subKey of this.keysOfObject(structure[key])) {
 				if (this.isVariableObject(structure[key][subKey])) {
-					values[key] = this.addSameFieldValues(subKey,  values[key], structure[key]);
+					values[key] = this.addSameFieldValues(subKey,  values[key], structure[key], value);
 				}
 			}				
 		} else {
 			// field has simple value
 			if (this.typeOfVariable(values[key]) != 'string') {
-				values[key] = '';
+				values[key] = value;
 			}
 			for (let subKey of this.keysOfObject(structure[key])) {
 				if (this.isVariableObject(structure[key][subKey])) {
-					values[key] = this.addSameFieldValues(subKey,  values[key], structure[key]);
+					values[key] = this.addSameFieldValues(subKey,  values[key], structure[key], value);
 				}
 			}			
 		}
@@ -200,7 +212,7 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 	addSameField(key, values, structure) {
 		/* this is used in other tables to add data for multiple fields */
 		this.announceIt(
-			this.addSameFieldValues(key, values, structure),
+			this.addSameFieldValues(key, values, structure, ''),
 			this.groupFieldValueIsUpdated,
 			'GroupFieldComponent: addNewField: groupFieldValueIsUpdated '
 		);

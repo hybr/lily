@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Field } from './field.model';
 
@@ -10,20 +10,17 @@ import { Field } from './field.model';
 })
 export class FieldComponent implements OnInit {
 
-	public myForm: FormGroup; // our form model
+
+	@Input()  myForm: FormGroup; // our form model
 
 	// we will use form builder to simplify our syntax
 	constructor(private _fb: FormBuilder) { }
 
-	ngOnInit() {
-		this.myForm = this._fb.group({
-			name: ['', [Validators.required, Validators.minLength(5)]],
-		});
-	}
+	ngOnInit() {}
 
 	initField() {
 		return this._fb.group({
-			name: ['', Validators.required],
+			field: ['', Validators.required],
 			value_type: ['']
 		});
 	}

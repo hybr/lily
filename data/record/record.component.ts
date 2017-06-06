@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
-import { Field } from '../field/field.model';
+//import { Field } from '../field/field.model';
 
 @Component({
   selector: 'app-data-record',

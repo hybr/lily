@@ -12,6 +12,7 @@ export class FieldComponent extends AppDbCommon implements OnInit {
 	/* TODO: Change most of the public to private */
 	private lists: Object = {};
 
+	@Input() fieldParentName: string = '';
 	@Input() fieldProperties: Object = {};
 	@Input() fieldValue: Object = {};
 	@Input() foreignKeyCollectionName : string = '';
@@ -21,27 +22,27 @@ export class FieldComponent extends AppDbCommon implements OnInit {
 	@Output() fieldPropertiesIsUpdated: EventEmitter<any> = new EventEmitter<any>();
 
 	changedNgModel(value) {
-		if (value != undefined) {
-			this.fieldValue = value;
-		} else {
+		if (value == undefined) {
 			if (this.fieldProperties['_d'] != undefined) {
-				this.fieldValue = this.fieldProperties['_d'];
+				value = this.fieldProperties['_d'];
 			} else {
 				if (this.fieldProperties['_y'].toLowerCase() == 'boolean') {
-					this.fieldValue = true;
+					value = true;
 				} else if (this.fieldProperties['_y'].toLowerCase() == 'number') {
-					this.fieldValue = 0;
+					value = 0;
 				} else if (this.fieldProperties['_y'].toLowerCase() == 'field_type') {
-					this.fieldValue = true;
+					value = true;
 				} else if (this.fieldProperties['_y'].toLowerCase() == 'field_sequence') {
-					this.fieldValue = 1;
+					value= 1;
 				} else {
-					this.fieldValue = '';	
+					value = '';	
 				}
 			}
-		}		
+		}
+		this.fieldValue = value;
+
 		this.announceIt(
-			this.fieldValue,
+			value,
 			this.fieldIsUpdated,
 			'FieldComponent: changedNgModel'
 		);

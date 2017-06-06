@@ -37,8 +37,8 @@ import { FieldComponent } from './db/field/field.component';
 import { FieldPropertyComponent } from './db/field-property/field-property.component';
 import { CreateComponent } from './db/create/create.component';
 import { RemoveComponent } from './db/remove/remove.component';
-import { TableComponent } from './data/table/table.component';
-import { RecordComponent } from './data/record/record.component';
+//import { TableComponent } from './data/table/table.component';
+//import { RecordComponent } from './data/record/record.component';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -63,9 +63,9 @@ const firebaseConfig = {
 		FieldComponent,
 		FieldPropertyComponent,
 		CreateComponent,
-		RemoveComponent,
-		TableComponent,
-		RecordComponent
+		RemoveComponent
+		//TableComponent,
+		//RecordComponent
 	],
 
 	imports: [
