@@ -33,8 +33,10 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 
 	updateFieldValue(fieldName, value, index, code) {
 		// this.fieldGroupValues = this.mergeObjects(this.fieldGroupValues, value);
+		let obj = {};
+		obj[fieldName] = value;
 		this.announceIt(
-			value,
+			obj,
 			this.groupFieldValueIsUpdated,
 			'GroupFieldComponent: updateFieldValue: groupFieldValueIsUpdated ' + code
 		);
@@ -54,7 +56,7 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 		// this.fieldGroupValues = this.mergeObjects(this.fieldGroupValues, value);
 		let obj = {};
 		if (this.fieldGroupValues[structure['_n']] != undefined) {
-			obj = this.fieldGroupValues[structure['_n']]
+			obj[structure['_n']] = this.fieldGroupValues[structure['_n']];
 		}
 		if (structure['_m'] != undefined && structure['_m'] > 0) {
 			if (!this.isVariableArray(obj[structure['_n']])) {
@@ -62,7 +64,7 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 			} 
 			obj[structure['_n']][index] = this.mergeObjects(obj[structure['_n']][index], value);
 		} else {
-			obj[structure['_n']] = this.mergeObjects(obj[structure['_n']][index], value);
+			obj[structure['_n']] = this.mergeObjects(obj[structure['_n']], value);
 		} 
 
 		this.announceIt(

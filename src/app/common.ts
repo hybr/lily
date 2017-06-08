@@ -77,4 +77,61 @@ export class AppCommon {
 	logIt(messages) {
 		this.debug && console.log('===== LogIt', JSON.stringify(messages));
 	} /* debug */
+
+	mergeObjects(obj1, obj2) {
+		let obj3;
+
+		if (obj1 == undefined) {
+			if (obj2 == undefined) {
+				return {};
+			} else { 
+				return obj2;
+			}
+		}
+
+		if (obj2 == undefined) {
+			return obj1;
+		}
+
+		if (this.isVariableArray(obj1)) {
+			obj3 = [];
+			for (let e1 of obj1) {
+				obj3.push(e1);
+			}
+			if (this.isVariableArray(obj2)) {
+				for(let e2 of obj2) { 
+					obj3.push(e2);
+				}
+			} else if (this.isVariableObject(obj2)) {
+				for(let e2 of Object.keys(obj2)) { 
+					obj3.push(obj2[e2]);
+				}
+			} else {
+				obj3.push(obj2);
+			}
+		}
+
+		if (this.isVariableObject(obj1)) {
+			obj3 = {};
+			for (let e1 of Object.keys(obj1)) {
+				obj3[e1] = obj1[e1];
+			}
+			if (this.isVariableArray(obj2)) {
+				let i2 = 0;
+				for(let e2 of obj2) { 
+					obj3[i2] = e2;
+					i2++;
+				}
+			} else if (this.isVariableObject(obj2)) {
+				for(let e2 of Object.keys(obj2)) { 
+					obj3[e2] = obj2[e2];
+				}
+			} else {
+				obj3[0] = obj2;
+			}
+		}
+
+		// Object.assign(obj3, obj1, obj2);
+		return obj3;
+	}
 }

@@ -39,7 +39,8 @@ export class FieldComponent extends AppDbCommon implements OnInit {
 				}
 			}
 		}
-		this.fieldValue = value;
+		
+		//this.fieldValue = value;
 
 		this.announceIt(
 			value,
