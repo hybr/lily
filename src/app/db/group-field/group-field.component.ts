@@ -40,7 +40,6 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 			this.groupFieldValueIsUpdated,
 			'GroupFieldComponent: updateFieldValue: groupFieldValueIsUpdated ' + code
 		);
-		
 	}
 
 	updateFieldProperties(fieldName, updatedProperties, code) {
@@ -67,10 +66,12 @@ export class GroupFieldComponent extends AppDbCommon implements OnInit {
 			obj[structure['_n']] = this.mergeObjects(obj[structure['_n']], value);
 		} 
 
+		// this.fieldGroupValues[structure['_n']] = obj[structure['_n']];
+
 		this.announceIt(
 			obj,
 			this.groupFieldValueIsUpdated,
-			'GroupFieldComponent: updateFieldGroupValue: groupFieldValueIsUpdated ' + code
+			'GroupFieldComponent[]: updateFieldGroupValue: groupFieldValueIsUpdated ' + code
 		);
 	}
 
