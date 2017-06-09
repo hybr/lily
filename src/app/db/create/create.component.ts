@@ -32,7 +32,7 @@ export class CreateComponent extends AppDbCommon implements OnInit {
 			'CreateComponent: updatedRecord: ',
 			' record to be saved = ', updatedRecord
 		]);
-		this.createResponse = updatedRecord;
+		this.createResponse = this.mergeObjects(this.createResponse, updatedRecord);
 		this.updatedInDb = false;
 	}
 

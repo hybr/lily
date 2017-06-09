@@ -119,12 +119,16 @@ export class AppCommon {
 			if (this.isVariableArray(obj2)) {
 				let i2 = 0;
 				for(let e2 of obj2) { 
-					obj3[i2] = e2;
+					obj3.push(e2);
 					i2++;
 				}
 			} else if (this.isVariableObject(obj2)) {
 				for(let e2 of Object.keys(obj2)) { 
-					obj3[e2] = obj2[e2];
+					if (this.isVariableArray(obj2[e2]) || this.isVariableObject(obj2[e2])) {
+						obj3[e2] = this.mergeObjects(obj3[e2], obj2[e2]);
+					} else {
+						obj3[e2] = obj3[e2] + <string>obj2[e2];	
+					}
 				}
 			} else {
 				obj3[0] = obj2;

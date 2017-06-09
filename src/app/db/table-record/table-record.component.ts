@@ -27,10 +27,12 @@ export class TableRecordComponent extends AppDbCommon implements OnInit {
 	@Output() tableStructure: EventEmitter<any> = new EventEmitter<any>();
 
 	updateRecordValues(value) {
+		let obj = this.tableRecordValues;
 		//this.tableRecordValues = this.mergeObjects(this.tableRecordValues, value);
-		this.tableRecordValues = value;
+		//this.tableRecordValues = value;
+		obj = this.mergeObjects(obj, value);
 		this.announceIt(
-			this.tableRecordValues, 
+			obj, 
 			this.tableRecordiIsUpdated, 
 			'TableRecordComponent: updateRecordValues:'
 		);
