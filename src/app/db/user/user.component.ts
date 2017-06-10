@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { AppDbCommon } from '../common';
 
-export interface UserCredential {
-    email_address: string;
-    passwords: Password[];
+export class UserCredential {
+    email_address: string = '';
+    passwords: Password[] = [];
 }
 
-export interface Password {
-    street: string;
-    postcode: string;
+export class Password {
+    password: string = '';
 }
 
 @Component({
@@ -16,24 +16,30 @@ export interface Password {
 	templateUrl: './user.component.html', 
 	styleUrls: ['./user.component.css']
 })
-export class DbUserComponent implements OnInit {
+export class DbUserComponent extends AppDbCommon implements OnInit {
+    private formTitle = 'User Credentials';
+    private formSummary = 'User credentials to login';
+    private submitted = false;
+
     public recordForm: FormGroup;
 
-    constructor(private _fb: FormBuilder) { }
+    constructor(private _fb: FormBuilder) {
+        super();
+    }
 
     ngOnInit() {
         this.recordForm = this._fb.group({
-            email_address: ['', [Validators.required, Validators.minLength(5)]],
+            email_address: ['', [Validators.required, Validators.email]],
             passwords: this._fb.array([
                 this.initPassword(),
             ])
         });
+        //this.logIt([this.recordForm]);
     }
 
     initPassword() {
         return this._fb.group({
-            street: ['', Validators.required],
-            postcode: ['']
+            password: ['', [Validators.required, Validators.minLength(8)]]
         });
     }
 
@@ -48,6 +54,7 @@ export class DbUserComponent implements OnInit {
     }
 
     save(model: UserCredential) {
+        this.submitted = true;
         // call API to save
         // ...
         console.log(model);

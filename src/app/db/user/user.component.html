@@ -1,73 +1,79 @@
 
 <md-card>
 	<md-card-header>
-		<md-card-title>
-			<h2>User Credentials</h2>
-		</md-card-title>
-		<md-card-subtitle>User credentials to login</md-card-subtitle>
+		<md-card-title><h2>{{formTitle}}</h2></md-card-title>
+		<md-card-subtitle>{{formSummary}}</md-card-subtitle>
 	</md-card-header>
 
 	<md-card-content>
 
 		<form [formGroup]="recordForm" novalidate (ngSubmit)="save(recordForm)">
+			
+			<table><tr><td>
 
-			  <table><tr><td>
-
-			  	<md-input-container>
-				  	<input mdInput placeholder="Email Address" formControlName="email_address">
+				<md-input-container>
+					<input mdInput placeholder="Email Address" formControlName="email_address">
 				</md-input-container>
-				<br />
-				<small *ngIf="!recordForm.controls.email_address.valid" class="text-danger">
-					email_address is required (minimum 5 characters).
-				</small>
-			  
-			  </td></tr><tr><td>
 
-			  	<div formArrayName="passwords">
-					<div *ngFor="let address of recordForm.controls.passwords.controls; let i=index" class="panel panel-default">
-						<div class="panel-heading">
+				<div *ngIf="recordForm.controls.email_address.errors && recordForm.controls.email_address.errors.required" color="warn">
+					Email Address is required
+				</div>
+
+				<div *ngIf="recordForm.controls.email_address.errors && recordForm.controls.email_address.errors.email" color="warn">
+					Email Address format is not right
+				</div>
+
+
+				<hr /></td></tr><tr><td>
+
+				<div formArrayName="passwords">
+					<md-card *ngFor="let password of recordForm.controls.passwords.controls; let i=index; ">
+						
+						<md-card-header>
 							<span>Password {{i + 1}}</span>
-							<span class="glyphicon glyphicon-remove pull-right" *ngIf="recordForm.controls.passwords.controls.length > 1" (click)="removePassword(i)"></span>
-						</div>
-						<div class="panel-body" [formGroupName]="i">
-							<div class="form-group col-xs-6">
-								<label>street</label>
-								<input type="text" class="form-control" formControlName="street">
-								<small [hidden]="recordForm.controls.passwords.controls[i].controls.street.valid" class="text-danger">
-									Street is required
-								</small>
-							</div>
-							<div class="form-group col-xs-6">
-								<label>postcode</label>
-								<input type="text" class="form-control" formControlName="postcode">
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="margin-20">
-					<a (click)="addPassword()" style="cursor: default">
-						Add another address +
-					</a>
-				</div>
-			  
-			  </td></tr><tr><td>
+							<md-icon 
+							*ngIf="recordForm.controls.passwords.controls.length > 1"
+							(click)="removePassword(i)"
+							>close</md-icon>
+						</md-card-header>
 
-			  	<div class="margin-20">
-					<button type="submit" class="btn btn-primary pull-right" [disabled]="!recordForm.valid">Submit</button>
+						<md-card-content [formGroupName]="i">
+							
+							<md-input-container>
+								<input mdInput placeholder="Pasword" formControlName="password">
+							</md-input-container>
+
+							<div *ngIf="recordForm.controls.passwords.controls[i].controls.password.errors && recordForm.controls.passwords.controls[i].controls.password.errors.required" color="warn">
+								Password is required
+							</div>							
+
+							<div *ngIf="recordForm.controls.passwords.controls[i].controls.password.errors && recordForm.controls.passwords.controls[i].controls.password.errors.minlength" color="warn">
+								At least 8 charecters are required
+							</div>							
+
+						</md-card-content>
+
+					</md-card>
 				</div>
 
-			  </td></tr></table>
+				<button md-button (click)="addPassword()">Add Password</button>
 
-		</form>
+				<hr /></td></tr><tr><td>
 
-	</md-card-content>
+				<button md-button type="submit" [disabled]="!recordForm.valid">Save</button>
 
-</md-card>
+				<hr /></td></tr></table>
+
+			</form>
+
+		</md-card-content>
+
+	</md-card>
 
 
 
-			<div class="margin-20">
-				<div>recordForm details:-</div>
-				<pre>Is recordForm valid?: <br>{{recordForm.valid | json}}</pre>
-				<pre>form value: <br>{{recordForm.value | json}}</pre>
-			</div>
+	<div class="margin-20">
+		<div>recordForm details:-</div>
+		<pre>Is recordForm valid?: <br>{{recordForm.valid | json}}</pre>
+		<pre>form value: <br>{{recordForm.value | json}}</pre>
+	</div>
