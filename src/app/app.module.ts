@@ -71,7 +71,7 @@ const firebaseConfig = {
 		//RecordComponent
 	],
 	providers: [
-		DbTableRecordsService
+		
 	],
 	imports: [
 		BrowserModule,

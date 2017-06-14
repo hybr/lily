@@ -28,6 +28,7 @@
     "angular-2-local-storage": "*",
     "angularfire2": "*",
     "core-js": "*",
+    "cors": "^2.8.3",
     "firebase": "*",
     "hammerjs": "*",
     "rxjs": "*",

@@ -1,5 +1,5 @@
 import { Injectable }              from '@angular/core';
-import { Http, Response, Headers, RequestOptions, Jsonp, URLSearchParams } from '@angular/http';
+import { Http, Jsonp, Response, Headers, RequestOptions } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -7,27 +7,32 @@ import 'rxjs/add/operator/map';
  
 @Injectable()
 export class DbTableRecordsService {
-	private recordsUrl = 'hybr.in:8081/users';  // URL to web API
+	private recordsUrl = 'hybr.in:8081/users?callback=JSONP_CALLBACK';  // URL to web API
 
 	constructor (private http: Http, private jsonp: Jsonp) {}
 	 
 	getRecords(): Observable<any[]> {
-		let params = new URLSearchParams();
-		params.set('format', 'json');
-		params.set('callback', 'JSONP_CALLBACK');
+		//let headers = new Headers();
+		// headers.append('Content-Type', 'application/json');
 
-		return this.jsonp.get(this.recordsUrl, params)
-		.map(this.extractData)
-		.catch(this.handleError);
+		// let options = new RequestOptions({ headers: headers, callback: JSONP_CALLBACK });
+		
+
+		return this.jsonp.get(this.recordsUrl)
+			.map(this.extractData)
+			.catch(this.handleError)
+		;
 	}
 
 	pushRecord(record: Object = {}): Observable<any> {
-		let headers = new Headers({ 'Content-Type': 'application/json' });
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
 		let options = new RequestOptions({ headers: headers });
 
-		return this.jsonp.post(this.recordsUrl, { record }, options)
+		return this.http.post(this.recordsUrl, { record }, options)
 			.map(this.extractData)
-			.catch(this.handleError);
+			.catch(this.handleError)
+		;
 	}
 
 	private extractData(res: Response) {
