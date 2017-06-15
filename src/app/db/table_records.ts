@@ -27,15 +27,17 @@ export class TableRecordsComponent extends AppDbCommon implements OnInit {
 	ngOnInit() { 
 		this.tableName = this.getParam(this.route, 'tableName', this.tableName);
 		console.log('tableName = ', this.tableName);
-		this.getRecordValues(); 
+		this.getRecordValues();
+		this.getRecordStructure();
 	}
 	
 	getRecordValues() {
 		// console.log('1 searchPattern = ', this.searchPattern);
 		this.dataService.updateTableRecords(this.tableName, this.searchPattern).subscribe(
 			response => {
-				this.tableValues = response;
-				// console.log('this.tables = ', this.tables);
+				console.log('1 response = ', JSON.parse(response.toString()));
+				this.tableValues =  JSON.parse(response.toString())['_items'];
+				console.log('this.tableValues = ', this.tableValues);
 				this.dataLoaded = true;
 			},
 			error =>  {
@@ -47,9 +49,9 @@ export class TableRecordsComponent extends AppDbCommon implements OnInit {
 
 	getRecordStructure() {
 		// console.log('1 searchPattern = ', this.searchPattern);
-		this.dataService.updateTableStructure(this.searchPattern).subscribe(
+		this.dataService.updateTableStructure(this.tableName).subscribe(
 			response => {
-				this.tableStructure = response;
+				this.tableStructure = JSON.parse(response.toString());
 				// console.log('this.tables = ', this.tables);
 				this.dataLoaded = true;
 			},

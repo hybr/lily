@@ -45,7 +45,9 @@ export class DbTableRecordsService {
 	}
 
 	private extractTableStructure(res: Response, tableName) {
-		return <string[]> res.json()['definitions'][tableName];
+		console.log('extractTableStructure res = ', res.json()['definitions']);
+		let ts = res.json()['definitions'];
+		return <string[]> ts[tableName];
 	}
 
 	updateTableStructure(tableName): Observable<any[]> {
@@ -57,18 +59,18 @@ export class DbTableRecordsService {
 	}
 
 	private extractTableRecords(res: Response, searchPattern) {
-		console.log('res = ', res['_body']['_items']);
-		return ((res.json())['_body'])['_items'];
+		console.log('res = ', res.json()['_body']);
+		return res.json()['_body'];
 	}
 
-	updateTableRecords(tableName, searchPattern): Observable<any[]> {
+	public updateTableRecords(tableName, searchPattern): Observable<any[]> {
 		let url = 'http://localhost:8080/' + tableName.toLowerCase();
 		this.searchPattern = searchPattern;
 		console.log('updateTableRecords searchPattern = ', this.searchPattern);
 		console.log('updateTableRecords url = ', url);
 
 		return this.http.get(url)
-			.map(response => this.extractTableRecords(response, this.searchPattern))
+			.map(this.extractTableRecords)
 			.catch(this.handleError)
 		;
 	}

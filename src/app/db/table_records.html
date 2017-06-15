@@ -6,6 +6,7 @@
 <app-alert *ngIf="errorArrived" [title]="'Error'" [code]="response.code"></app-alert>
 
 {{tableValues | json}}
+
 <md-card *ngIf="dataLoaded">
 
 	<md-card-header>
@@ -25,9 +26,11 @@
 
 		<table>
 			<tr
-				*ngFor="let tableName of keysOfObject(tableValues);"
+				*ngFor="let recordCount of keysOfObject(tableValues);"
 			><td><hr />
-				{{tableName}}
+
+				value = {{tableValues[recordCount] | json}}
+				structure = {{tableStructure | json}}
 			</td></tr>
 		</table>
 

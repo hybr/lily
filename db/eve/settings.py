@@ -18,6 +18,7 @@ ITEM_METHODS = ['GET', 'PATCH', 'DELETE']
 
 # We enable standard client cache directives for all resources exposed by the
 # API. We can always override these global settings later.
+
 CACHE_CONTROL = 'max-age=10,must-revalidate',
 CACHE_EXPIRES = 10
 
@@ -39,7 +40,8 @@ users = {
 		},
 		'email_address': {
 			'type': 'string',
-			'required': True
+			'required': True,
+			'default': '|_sil_'
 		},
 		'password': {
 			'type': 'string',
@@ -62,6 +64,7 @@ people = {
 		},	
 		'names' : {
 			'type' : 'list',
+			'default' : '|_sil_',
 			'schema' : {
 				'type' : 'dict',
 				'schema' : {
@@ -73,6 +76,11 @@ people = {
 					}
 				}
 			}
+		},
+		'gender' : {
+			'type' : 'string',
+			'allowed' : ['female', 'male', 'other'],
+			'default' : 'female|_sil_'
 		}
 	}
 }
@@ -82,3 +90,5 @@ DOMAIN = {
 	'users' : users,
 	'people' : people
 }
+
+# cd git\lily\db\eve
