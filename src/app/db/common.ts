@@ -29,6 +29,7 @@ export class AppDbCommon extends AppCommon {
 		this.errorArrived = false;
 		this.queryComplete = false;
 		this.response = {};
+console.log('r =', r);
 
 		if (param == undefined) {
 			this.errorArrived = true;
@@ -42,6 +43,7 @@ export class AppDbCommon extends AppCommon {
 			this.logIt([
 				'AppDbCommon snapshot is ok'
 			]);
+
 			paramValue = r.snapshot.paramMap.get(param);
 			this.dataArrived = true;
 		}

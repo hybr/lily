@@ -138,4 +138,15 @@ export class AppCommon {
 		// Object.assign(obj3, obj1, obj2);
 		return obj3;
 	}
+
+	toTitleCase(str)
+	{
+    	return str.replace(
+    		/\w\S*/g, 
+    		function(txt){
+    			return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    		}
+    	);
+	}
+
 }

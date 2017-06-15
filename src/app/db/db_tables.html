@@ -1,0 +1,51 @@
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<app-loading [isLoading]="!dataLoaded" [title]="'table list'"></app-loading>
+<app-alert *ngIf="errorArrived" [title]="'Error'" [code]="response.code"></app-alert>
+
+<md-card *ngIf="dataLoaded">
+
+	<md-card-header>
+		<md-card-title><h2>Tables of Database</h2></md-card-title>
+	</md-card-header>
+
+	<md-card-content>
+		<md-input-container>
+			<input 
+				mdInput 
+				id="collectionListSearchId" 
+				placeholder="Search Tables" 
+				[(ngModel)]="searchPattern"
+				(ngModelChange) = "getRecordStructure()"
+			/>
+		</md-input-container>
+
+		<table>
+			<tr
+				*ngFor="let tableName of keysOfObject(tables);"
+			><td><hr />
+				
+				<button 
+					md-mini-fab
+					[routerLink]="[ '/db/tl/' + (tables[tableName].split('\/'))[1] ]"
+					title="Update"
+				>
+					<md-icon>mode_edit</md-icon> 
+				</button>
+
+				&nbsp;
+				{{tableName}}
+			</td></tr>
+		</table>
+
+		<br />
+		<div>
+			Total <strong>{{lengthOfVariable(tables)}}</strong>
+			{{(lengthOfVariable(tables) <= 1)?'table':'tables'}} in list
+		</div>
+
+	</md-card-content>
+
+</md-card>

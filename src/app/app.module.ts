@@ -38,9 +38,11 @@ import { FieldPropertyComponent } from './db/field-property/field-property.compo
 import { CreateComponent } from './db/create/create.component';
 import { RemoveComponent } from './db/remove/remove.component';
 import { DbUserComponent } from './db/user/user.component';
-import { DbUsersListComponent } from './db/users/list';
-import { DbTableRecordsService } from './db/users/service';
-//import { RecordComponent } from './data/record/record.component';
+
+
+import { DbTableRecordsService } from './db/service';
+import { DbTablesComponent } from './db/db_tables';
+import { TableRecordsComponent } from './db/table_records';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -67,11 +69,12 @@ const firebaseConfig = {
 		CreateComponent,
 		RemoveComponent,
 		DbUserComponent,
-		DbUsersListComponent,
-		//RecordComponent
+		
+		DbTablesComponent,
+		TableRecordsComponent
 	],
 	providers: [
-		
+		DbTableRecordsService
 	],
 	imports: [
 		BrowserModule,
