@@ -3,6 +3,7 @@ import { DbTableRecordsService } from './service';
 import { AppDbCommon } from './common';
 import { ActivatedRoute, Params } from '@angular/router';
 
+
 @Component({
 	selector: 'db-table-records',
 	templateUrl: './table_records.html'
@@ -29,20 +30,21 @@ export class TableRecordsComponent extends AppDbCommon implements OnInit {
 		this.tableName = this.getParam(this.route, 'tableName', this.tableName);
 		this.tableTitle = this.getParam(this.route, 'tableTitle', this.tableTitle);
 		console.log('ngOnInit tableName = ', this.tableName);
-		this.getRecordStructure();
-		this.getRecordValues();	
+		this.getTableRecordStructure();
+		this.getTableRecordsValue();	
 	}
 	
-	getRecordValues() {
-		console.log('getRecordValues tableName = ', this.tableName);
-		console.log('getRecordValues searchPattern = ', this.searchPattern);
+	getTableRecordsValue() {
+		console.log('getTableRecordsValue tableName = ', this.tableName);
+		console.log('getTableRecordsValue searchPattern = ', this.searchPattern);
 		this.dataService.updateTableRecords(this.tableName, this.searchPattern).subscribe(
 			response => {
 				if (response != undefined && response) { 
-					console.log('getRecordValues response = ', JSON.parse(response.toString()));
-					this.tableValues =  JSON.parse(response.toString())['_items'];
+					// console.log('getTableRecordsValue response = ', JSON.parse(response.toString()));
+					// this.tableValues =  JSON.parse(response.toString())['_items'];
+					this.tableValues = response;
 				}
-				console.log('getRecordValues this.tableValues = ', this.tableValues);
+				console.log('getTableRecordsValue this.tableValues = ', this.tableValues);
 				this.dataLoaded = true;
 			},
 			error =>  {
@@ -52,14 +54,14 @@ export class TableRecordsComponent extends AppDbCommon implements OnInit {
 		);
 	}
 
-	getRecordStructure() {
-		console.log('getRecordStructure tableName = ', this.tableName);
-		console.log('getRecordStructure tableTitle = ', this.tableTitle);
-		this.dataService.updateTableStructure(this.tableTitle).subscribe(
+	getTableRecordStructure() {
+		console.log('getTableRecordStructure tableName = ', this.tableName);
+		console.log('getTableRecordStructure tableTitle = ', this.tableTitle);
+		this.dataService.updateTableRecordStructure(this.tableTitle).subscribe(
 			response => {
 				if (response != undefined && response) { 
 					this.tableStructure = response;
-					console.log('getRecordStructure this.tableStructure = ', this.tableStructure);
+					console.log('getTableRecordStructure this.tableStructure = ', this.tableStructure);
 
 					let sil = /_sil/;
 					for ( let fieldName of this.keysOfObject(this.tableStructure['properties']) ) {
@@ -68,7 +70,7 @@ export class TableRecordsComponent extends AppDbCommon implements OnInit {
 							this.silFields.push(fieldName);
 						}
 					}
-					console.log('getRecordStructure this.silFields = ', this.silFields);
+					console.log('getTableRecordStructure this.silFields = ', this.silFields);
 				}
 				this.dataLoaded = true;
 			},

@@ -46,12 +46,10 @@ users = {
 		'passwords': {
 			'type': 'list',
 			'schema' : {
-				'password' : {
-					'type' : 'string'
-				}
+				'type' : 'string',
+				'minlength': 8
 			},
-			'required': True,
-			'minlength': 8
+			'required': True			
 		}
 	}
 }
@@ -73,10 +71,12 @@ people = {
 				'type' : 'dict',
 				'schema' : {
 					'first_name' : {
-						'type' : 'string'
+						'type' : 'string',
+						'default' : '|_sil_'
 					},
 					'last_name' : {
-						'type' : 'string'
+						'type' : 'string',
+						'default' : '|_sil_'
 					}
 				}
 			}

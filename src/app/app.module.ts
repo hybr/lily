@@ -37,7 +37,10 @@ import { FieldComponent } from './db/field/field.component';
 import { FieldPropertyComponent } from './db/field-property/field-property.component';
 import { CreateComponent } from './db/create/create.component';
 import { RemoveComponent } from './db/remove/remove.component';
+
+
 import { DbUserComponent } from './db/user/edit';
+import { DbUserListComponent } from './db/user/list';
 
 
 import { DbTableRecordsService } from './db/service';
@@ -68,8 +71,10 @@ const firebaseConfig = {
 		FieldPropertyComponent,
 		CreateComponent,
 		RemoveComponent,
-		DbUserComponent,
 		
+		DbUserComponent,
+		DbUserListComponent,
+
 		DbTablesComponent,
 		TableRecordsComponent
 	],

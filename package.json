@@ -31,6 +31,7 @@
     "cors": "^2.8.3",
     "firebase": "*",
     "hammerjs": "*",
+    "primeng": "^4.1.0-rc.1",
     "rxjs": "*",
     "ts-md5": "*",
     "typescript": "*",

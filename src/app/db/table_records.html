@@ -5,8 +5,6 @@
 <app-loading [isLoading]="!dataLoaded" [title]="'table list'"></app-loading>
 <app-alert *ngIf="errorArrived" [title]="'Error'" [code]="response.code"></app-alert>
 
-{{tableValues | json}}
-
 <md-card *ngIf="dataLoaded">
 
 	<md-card-header>

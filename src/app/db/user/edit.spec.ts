@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DbUserComponent } from './user.component';
+import { DbUserComponent } from './edit';
 
 describe('DbUserComponent', () => {
   let component: DbUserComponent;

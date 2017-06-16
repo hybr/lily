@@ -17,11 +17,11 @@ export class DbTablesComponent extends AppDbCommon implements OnInit {
 		super();
 	}
 	 
-	ngOnInit() { this.getRecordStructure(); }
+	ngOnInit() { this.getDatabaseTablesList(); }
 	 
-	getRecordStructure() {
+	getDatabaseTablesList() {
 		// console.log('1 searchPattern = ', this.searchPattern);
-		this.dataService.updateDatabaseStructure(this.searchPattern).subscribe(
+		this.dataService.updateDatabaseTablesList(this.searchPattern).subscribe(
 			response => {
 				this.tables = response;
 				// console.log('this.tables = ', this.tables);

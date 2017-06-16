@@ -1,24 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { AppDbCommon } from '../common';
-
-export class UserCredential {
-    email_address: string = '';
-    passwords: Password[] = [];
-}
-
-export class Password {
-    password: string = '';
-}
+import { dbTableName, Record, Password, formTitle, formSummary } from './record';
 
 @Component({
 	selector: 'app-db-user',
-	templateUrl: './user.component.html', 
-	styleUrls: ['./user.component.css']
+	templateUrl: './edit.html'
 })
 export class DbUserComponent extends AppDbCommon implements OnInit {
-    private formTitle = 'User Credentials';
-    private formSummary = 'User credentials to login';
+
     private submitted = false;
 
     public recordForm: FormGroup;
@@ -41,7 +31,7 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
         return this._fb.group({
             password: ['', [Validators.required, Validators.minLength(8)]]
         });
-    }
+    } 
 
     addPassword() {
         const control = <FormArray>this.recordForm.controls['passwords'];
@@ -53,7 +43,7 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
         control.removeAt(i);
     }
 
-    save(model: UserCredential) {
+    save(model: Record) {
         this.submitted = true;
         // call API to save
         // ...
