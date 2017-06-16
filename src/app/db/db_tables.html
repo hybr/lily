@@ -29,7 +29,7 @@
 				
 				<button 
 					md-mini-fab
-					[routerLink]="[ '/db/tl/' + (tables[tableName].split('\/'))[1] ]"
+					[routerLink]="[ '/db/tl/' + (tables[tableName].split('\/'))[1] + '/' + tableName ]"
 					title="Update"
 				>
 					<md-icon>mode_edit</md-icon> 

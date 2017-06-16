@@ -28,9 +28,11 @@
 			<tr
 				*ngFor="let recordCount of keysOfObject(tableValues);"
 			><td><hr />
-
-				value = {{tableValues[recordCount] | json}}
-				structure = {{tableStructure | json}}
+				<div *ngFor="let fieldName of keysOfObject(tableStructure['properties'])">
+					<span *ngIf="silFields.includes(fieldName)">
+						{{fieldName}} = {{ tableValues[recordCount][fieldName] }} |
+					</span>
+				</div>
 			</td></tr>
 		</table>
 

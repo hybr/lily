@@ -10,7 +10,7 @@ import { RemoveComponent } from './remove/remove.component';
 export const DbRoutes: Routes = [
 	/* tsl = TableS  List */
 	{ path: 'db/tsl', component: DbTablesComponent }, 
-	{ path: 'db/tl/:tableName', component: TableRecordsComponent },
+	{ path: 'db/tl/:tableName/:tableTitle', component: TableRecordsComponent },
 
 /*	{ path: 'db/tl/:cNum', component: ListComponent }, */
 	/* utr = Update Table (with number = cNum) Record (with id = docId) */

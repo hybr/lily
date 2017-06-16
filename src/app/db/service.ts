@@ -44,23 +44,27 @@ export class DbTableRecordsService {
 		;
 	}
 
-	private extractTableStructure(res: Response, tableName) {
-		console.log('extractTableStructure res = ', res.json()['definitions']);
-		let ts = res.json()['definitions'];
-		return <string[]> ts[tableName];
+	private extractTableStructure(res: Response, tableTitle) {
+		console.log('extractTableStructure res = ', res);
+		// let body = JSON.parse( (res['_body']).toString() );
+		let body = res.json()['definitions'];
+		
+		console.log('extractTableStructure body = ', tableTitle, body);
+		return body[tableTitle];
 	}
 
-	updateTableStructure(tableName): Observable<any[]> {
+	updateTableStructure(tableTitle): Observable<any[]> {
 		let url = 'http://localhost:8081/api-docs';
+		console.log('updateTableStructure url = ', url);
 		return this.http.get(url)
-			.map(response => this.extractTableStructure(response, tableName))
+			.map(response => this.extractTableStructure(response, tableTitle))
 			.catch(this.handleError)
 		;
 	}
 
 	private extractTableRecords(res: Response, searchPattern) {
-		console.log('res = ', res.json()['_body']);
-		return res.json()['_body'];
+		console.log('extractTableRecords res = ', res);
+		return res['_body'];
 	}
 
 	public updateTableRecords(tableName, searchPattern): Observable<any[]> {
@@ -70,7 +74,7 @@ export class DbTableRecordsService {
 		console.log('updateTableRecords url = ', url);
 
 		return this.http.get(url)
-			.map(this.extractTableRecords)
+			.map(response => this.extractTableRecords(response, searchPattern))
 			.catch(this.handleError)
 		;
 	}

@@ -37,7 +37,7 @@ import { FieldComponent } from './db/field/field.component';
 import { FieldPropertyComponent } from './db/field-property/field-property.component';
 import { CreateComponent } from './db/create/create.component';
 import { RemoveComponent } from './db/remove/remove.component';
-import { DbUserComponent } from './db/user/user.component';
+import { DbUserComponent } from './db/user/edit';
 
 
 import { DbTableRecordsService } from './db/service';

@@ -43,8 +43,13 @@ users = {
 			'required': True,
 			'default': '|_sil_'
 		},
-		'password': {
-			'type': 'string',
+		'passwords': {
+			'type': 'list',
+			'schema' : {
+				'password' : {
+					'type' : 'string'
+				}
+			},
 			'required': True,
 			'minlength': 8
 		}
@@ -64,7 +69,6 @@ people = {
 		},	
 		'names' : {
 			'type' : 'list',
-			'default' : '|_sil_',
 			'schema' : {
 				'type' : 'dict',
 				'schema' : {
