@@ -42,11 +42,15 @@ export class DbTableRecordsService {
 			searchPattern = '.*'; /* all tables */
 		}
 		let rE = new RegExp(searchPattern, 'gi');
-		let filtered: Object = {};		
+		let id = new RegExp('Id}', 'g');
+		let filtered = [];		
 		for(let key of Object.keys(paths)) {
 			let tag = paths[key]['get']['tags'][0];
-			if ( rE.test(tag)) {
-				filtered[tag] = key;
+			if ( rE.test(tag) && (!id.test(key)) ) {
+				let obj = {};
+				obj['title'] = tag;
+				obj['path'] = key;
+				filtered.push(obj);
 				// console.log('key = ', key);
 			}
 		}
@@ -54,7 +58,7 @@ export class DbTableRecordsService {
 		return filtered;
 	}
 
-	updateDatabaseTablesList(searchPattern): Observable<any[]> {
+	readDatabaseTablesList(searchPattern): Observable<any[]> {
 		return this.http.get(this.apiDocsUrl())
 			.map(response => this.extractStructure(response, searchPattern))
 			.catch(this.handleError)
@@ -73,7 +77,7 @@ export class DbTableRecordsService {
 		return definitions[tableTitle];
 	}
 
-	updateTableRecordStructure(tableTitle): Observable<any[]> {
+	readTableRecordStructure(tableTitle): Observable<any[]> {
 		return this.http.get(this.apiDocsUrl())
 			.map(response => this.extractTableStructure(response, tableTitle))
 			.catch(this.handleError)
@@ -84,12 +88,13 @@ export class DbTableRecordsService {
 
 	private extractTableRecords(res: Response, searchPattern) {
 		console.log('extractTableRecords searchPattern = ', searchPattern);
+		//TODO implement search patteren
 		let items = <string[]> res.json()['_items'];
 		console.log('extractTableRecords items = ', items);
 		return items;
 	}
 
-	public updateTableRecords(tableName, searchPattern): Observable<any[]> {
+	public readTableRecordValues(tableName, searchPattern): Observable<any[]> {
 		return this.http.get(this.recordValueUrl(tableName))
 			.map(response => this.extractTableRecords(response, searchPattern))
 			.catch(this.handleError)
@@ -98,22 +103,64 @@ export class DbTableRecordsService {
 
 	/* push record in the table */
 
-	private extractData(res: Response) {
-		let body = <string[]> res.json()[1];
-		return body || { };
+	private extractsaveRecordData(res: Response) {
+		let status = <string[]> res.json()['_status'];
+		return status || { };
 	}
 
-	pushRecord(record: Object = {}, tableName): Observable<any> {
+	saveRecord(record: Object = {}, tableName): Observable<any> {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		let options = new RequestOptions({ headers: headers });
-
-		return this.http.post(this.recordValueUrl(tableName), { record }, options)
-			.map(this.extractData)
+		console.log('saveRecord record = ', record);
+		return this.http.post(this.recordValueUrl(tableName), record, options)
+			.map(this.extractsaveRecordData)
 			.catch(this.handleError)
 		;
 	}
 
+	/* update record in the table */
+
+	private extractupdateRecordData(res: Response) {
+		let status = <string[]> res.json()['_status'];
+		return status || { };
+	}
+
+	updateRecord(record: Object = {}, tableName): Observable<any> {
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('If-Match', record['_etag']);
+		delete record['_etag'];
+		let id = record['_id'];
+		delete record['_id'];
+
+		let options = new RequestOptions({ headers: headers });
+
+		console.log('updateRecord record = ', record);
+		return this.http.patch(this.recordValueUrl(tableName) + "/" + id, record, options)
+			.map(this.extractupdateRecordData)
+			.catch(this.handleError)
+		;
+	}
+
+	/* delete record */
+
+    private extractdeleteRecordData(res: Response) {
+        let body = res.json();
+        return body || {};
+    }
 
 
+	deleteRecord(key: string,  value: string, tableName): Observable<any> {
+		console.log('deleteRecord key = ', key);
+		console.log('deleteRecord value = ', value);
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+
+		let options = new RequestOptions({ headers: headers });		
+		return this.http.delete(this.recordValueUrl(tableName) + "/" + value, options)
+			.map(this.extractdeleteRecordData)
+			.catch(this.handleError);
+		;
+	}
 }

@@ -14,7 +14,7 @@ RESOURCE_METHODS = ['GET', 'POST', 'DELETE']
 
 # Enable reads (GET), edits (PATCH) and deletes of individual items
 # (defaults to read-only item access).
-ITEM_METHODS = ['GET', 'PATCH', 'DELETE']
+ITEM_METHODS = ['GET', 'PATCH', 'PUT', 'DELETE']
 
 # We enable standard client cache directives for all resources exposed by the
 # API. We can always override these global settings later.
@@ -45,11 +45,13 @@ users = {
 		},
 		'passwords': {
 			'type': 'list',
+			'minlength': 1,
 			'schema' : {
 				'type' : 'string',
-				'minlength': 8
+				'minlength': 8,
+				'required': True
 			},
-			'required': True			
+				
 		}
 	}
 }
@@ -67,24 +69,23 @@ people = {
 		},	
 		'names' : {
 			'type' : 'list',
+			'minlength': 1,
 			'schema' : {
 				'type' : 'dict',
 				'schema' : {
 					'first_name' : {
 						'type' : 'string',
-						'default' : '|_sil_'
+						'required' : True
 					},
 					'last_name' : {
-						'type' : 'string',
-						'default' : '|_sil_'
+						'type' : 'string'
 					}
 				}
 			}
 		},
 		'gender' : {
 			'type' : 'string',
-			'allowed' : ['female', 'male', 'other'],
-			'default' : 'female|_sil_'
+			'allowed' : ['female', 'male', 'other']
 		}
 	}
 }

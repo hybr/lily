@@ -1,10 +1,12 @@
 
+import { CommonModule } from '@angular/common';  
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { NgModule } from '@angular/core';
 import { HttpModule, JsonpModule } from '@angular/http';
 
-import { MaterialModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+//import { MaterialModule } from '@angular/material';
 import 'hammerjs';
 
 /* forms */
@@ -29,18 +31,14 @@ import { AlertComponent } from './views/alert/alert.component';
 import { LoadingComponent } from './views/loading/loading.component';
 import { DebugComponent } from './views/debug/debug.component';
 
-import { ListComponent } from './db/list/list.component';
-import { UpdateComponent } from './db/update/update.component';
-import { TableRecordComponent } from './db/table-record/table-record.component';
-import { GroupFieldComponent } from './db/group-field/group-field.component';
-import { FieldComponent } from './db/field/field.component';
-import { FieldPropertyComponent } from './db/field-property/field-property.component';
-import { CreateComponent } from './db/create/create.component';
-import { RemoveComponent } from './db/remove/remove.component';
+/* Prime Ng modules */
+import { ToolbarModule, DialogModule, DataListModule } from 'primeng/primeng';
+import { ButtonModule, SplitButtonModule } from 'primeng/primeng';
+import { DataTableModule, SharedModule } from 'primeng/primeng';
+import { TooltipModule, PanelModule } from 'primeng/primeng';
 
+import { DbUserComponent } from './db/user';
 
-import { DbUserComponent } from './db/user/edit';
-import { DbUserListComponent } from './db/user/list';
 
 
 import { DbTableRecordsService } from './db/service';
@@ -60,20 +58,12 @@ const firebaseConfig = {
 		AppComponent,
 		WebPageComponent,
 		PageNotFoundComponent,
-		TableRecordComponent,
-		ListComponent,
+
 		AlertComponent,
 		LoadingComponent,
-		UpdateComponent,
 		DebugComponent,
-		GroupFieldComponent,
-		FieldComponent,
-		FieldPropertyComponent,
-		CreateComponent,
-		RemoveComponent,
 		
 		DbUserComponent,
-		DbUserListComponent,
 
 		DbTablesComponent,
 		TableRecordsComponent
@@ -82,15 +72,21 @@ const firebaseConfig = {
 		DbTableRecordsService
 	],
 	imports: [
+		CommonModule,
 		BrowserModule,
+		BrowserAnimationsModule, 
+
 		FormsModule,
 		ReactiveFormsModule ,
 
-		MaterialModule.forRoot(),
-		BrowserAnimationsModule,
+		//MaterialModule.forRoot(),
 
 		HttpModule, JsonpModule,
 
+		ToolbarModule, DialogModule, ButtonModule, DataListModule,
+		SplitButtonModule, DataTableModule,	SharedModule,
+		TooltipModule, PanelModule,
+		
 		AngularFireModule.initializeApp (firebaseConfig),
 		AngularFireAuthModule,
 		AngularFireDatabaseModule,

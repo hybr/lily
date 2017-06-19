@@ -37,7 +37,7 @@ export class TableRecordsComponent extends AppDbCommon implements OnInit {
 	getTableRecordsValue() {
 		console.log('getTableRecordsValue tableName = ', this.tableName);
 		console.log('getTableRecordsValue searchPattern = ', this.searchPattern);
-		this.dataService.updateTableRecords(this.tableName, this.searchPattern).subscribe(
+		this.dataService.readTableRecordValues(this.tableName, this.searchPattern).subscribe(
 			response => {
 				if (response != undefined && response) { 
 					// console.log('getTableRecordsValue response = ', JSON.parse(response.toString()));
@@ -57,7 +57,7 @@ export class TableRecordsComponent extends AppDbCommon implements OnInit {
 	getTableRecordStructure() {
 		console.log('getTableRecordStructure tableName = ', this.tableName);
 		console.log('getTableRecordStructure tableTitle = ', this.tableTitle);
-		this.dataService.updateTableRecordStructure(this.tableTitle).subscribe(
+		this.dataService.readTableRecordStructure(this.tableTitle).subscribe(
 			response => {
 				if (response != undefined && response) { 
 					this.tableStructure = response;

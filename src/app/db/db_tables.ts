@@ -21,7 +21,7 @@ export class DbTablesComponent extends AppDbCommon implements OnInit {
 	 
 	getDatabaseTablesList() {
 		// console.log('1 searchPattern = ', this.searchPattern);
-		this.dataService.updateDatabaseTablesList(this.searchPattern).subscribe(
+		this.dataService.readDatabaseTablesList(this.searchPattern).subscribe(
 			response => {
 				this.tables = response;
 				// console.log('this.tables = ', this.tables);

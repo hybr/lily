@@ -4,6 +4,27 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 
+
+
+/*import { ListComponent } from './db/list/list.component';
+import { UpdateComponent } from './db/update/update.component';
+import { TableRecordComponent } from './db/table-record/table-record.component';
+import { GroupFieldComponent } from './db/group-field/group-field.component';
+import { FieldComponent } from './db/field/field.component';
+import { FieldPropertyComponent } from './db/field-property/field-property.component';
+import { CreateComponent } from './db/create/create.component';
+import { RemoveComponent } from './db/remove/remove.component';*/
+
+
+/*		TableRecordComponent,
+		ListComponent,
+		UpdateComponent,
+		GroupFieldComponent,
+		FieldComponent,
+		FieldPropertyComponent,
+		CreateComponent,
+		RemoveComponent,
+*/
 @Component({
 	selector: 'app-db-table-record',
 	templateUrl: './table-record.component.html',

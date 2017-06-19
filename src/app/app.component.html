@@ -1,43 +1,34 @@
-
-<md-toolbar color="primary">
-    <span>Demo</span>
-    <button md-button [routerLink]="['/']">Home</button>
-    <button md-button [routerLink]="[ '/web-page/about' ]">About</button>
-
-    <span class="spacer"></span>
-
-    {{ (user|async)?.email }}
-
-    <button md-icon-button [mdMenuTriggerFor]="menu">
-      <md-icon>more_vert</md-icon>
-    </button>
-    
-    <md-menu #menu="mdMenu">
-      <button md-menu-item *ngIf="!(user | async)" (click)="login()">
-        <md-icon>fingerprint</md-icon>
-        <span>Login</span>
-      </button>
-      
-      <button md-menu-item *ngIf="(user | async)" (click)="logout()">
-        <md-icon>exit_to_app</md-icon>
-        <span>Logout</span>
-      </button>
-
-      <button md-menu-item [routerLink]="['/db/tsl']">
-        <md-icon>info</md-icon>
-        <span>Database</span>
-      </button>
-
-      <button md-menu-item [routerLink]="['/activities']">
-        <md-icon>format_list_numbered</md-icon>
-        <span>Activities</span>
-      </button>
-    </md-menu>
-
-</md-toolbar>
-
-<router-outlet></router-outlet>
-
-<app-db-user-list></app-db-user-list>
-<hr />
-Demo &copy; Copyright
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-2">
+          <button pButton type="button" icon="fa-database" [routerLink]="['/db/tsl']"></button>
+  </div>
+  <div class="ui-g-12 ui-md-10 ui-g-nopad">
+    <div class="ui-g-12">
+      <p-toolbar>
+        <div class="ui-toolbar-group-left">
+          <span>Demo</span>
+          <button pButton type="button" label="Home" icon="fa-home" [routerLink]="['/']"></button>
+          <button pButton type="button" label="About" icon="fa-info" [routerLink]="[ '/web-page/about' ]"></button>
+        </div>
+        <div class="ui-toolbar-group-right">
+          <span *ngIf="!(user|async)">
+            <button pButton type="button" icon="fa-sign-in" tooltipPosition="left" pTooltip="User Login" (click)="login()"></button>
+          </span>
+          <span *ngIf="(user|async)">
+            <button pButton type="button" icon="fa-sign-out" tooltipPosition="left" pTooltip="Logout {{ (user|async)?.email }}" (click)="logout()"></button>
+          </span>
+        </div>
+      </p-toolbar>
+    </div>
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g">
+      <hr /> Demo &copy; Copyright
+    </div>
+  </div>
+</div>
