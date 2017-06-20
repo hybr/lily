@@ -8,7 +8,17 @@ import "rxjs/add/operator/filter";
  
 @Injectable()
 export class DbTableRecordsService {
-	constructor (private http: Http) {}
+	private headers: Headers;
+	private requestOptions: RequestOptions;
+
+	constructor (private http: Http) {
+		this.headers = new Headers();
+		this.headers.append('Content-Type', 'application/json');
+
+		this.requestOptions = new RequestOptions({ 
+			'headers': this.headers 
+		});
+	}
 	
 	/* URL to be used */
 
@@ -16,9 +26,17 @@ export class DbTableRecordsService {
 		return 'http://localhost:8081/api-docs';
 	}
 
-	private recordValueUrl(tableName) {
-		console.log('recordValueUrl url = ', 'http://localhost:8080/' + tableName.toLowerCase());
-		return 'http://localhost:8080/' + tableName.toLowerCase();
+	private recordValueUrl(tableName = '', id = '') {
+		let url = '';
+		url = 'http://localhost:8080';
+		if (tableName && tableName != '') {
+			url = url + '/' + tableName.toLowerCase();
+		}
+		if (id && id != '') {
+			url = url + '/' + id.toLowerCase();
+		}		
+		console.log('recordValueUrl url = ', url);
+		return url;
 	}
 
 	private handleError (error: Response | any) {
@@ -58,8 +76,8 @@ export class DbTableRecordsService {
 		return filtered;
 	}
 
-	readDatabaseTablesList(searchPattern): Observable<any[]> {
-		return this.http.get(this.apiDocsUrl())
+	public readDatabaseTablesList(searchPattern): Observable<any[]> {
+		return this.http.get(this.apiDocsUrl(), this.requestOptions)
 			.map(response => this.extractStructure(response, searchPattern))
 			.catch(this.handleError)
 		;
@@ -78,7 +96,7 @@ export class DbTableRecordsService {
 	}
 
 	readTableRecordStructure(tableTitle): Observable<any[]> {
-		return this.http.get(this.apiDocsUrl())
+		return this.http.get(this.apiDocsUrl(), this.requestOptions)
 			.map(response => this.extractTableStructure(response, tableTitle))
 			.catch(this.handleError)
 		;
@@ -95,7 +113,7 @@ export class DbTableRecordsService {
 	}
 
 	public readTableRecordValues(tableName, searchPattern): Observable<any[]> {
-		return this.http.get(this.recordValueUrl(tableName))
+		return this.http.get(this.recordValueUrl(tableName), this.requestOptions)
 			.map(response => this.extractTableRecords(response, searchPattern))
 			.catch(this.handleError)
 		;
@@ -108,12 +126,12 @@ export class DbTableRecordsService {
 		return status || { };
 	}
 
-	saveRecord(record: Object = {}, tableName): Observable<any> {
-		let headers = new Headers();
-		headers.append('Content-Type', 'application/json');
-		let options = new RequestOptions({ headers: headers });
+	saveRecord(record: Object, tableName): Observable<any> {
+		if (!record) {
+			return null;
+		}
 		console.log('saveRecord record = ', record);
-		return this.http.post(this.recordValueUrl(tableName), record, options)
+		return this.http.post(this.recordValueUrl(tableName), record, this.requestOptions)
 			.map(this.extractsaveRecordData)
 			.catch(this.handleError)
 		;
@@ -126,18 +144,19 @@ export class DbTableRecordsService {
 		return status || { };
 	}
 
-	updateRecord(record: Object = {}, tableName): Observable<any> {
-		let headers = new Headers();
-		headers.append('Content-Type', 'application/json');
-		headers.append('If-Match', record['_etag']);
-		delete record['_etag'];
-		let id = record['_id'];
-		delete record['_id'];
+	updateRecord(record: Object, tableName): Observable<any> {
+		if (!record) {
+			return null;
+		}
 
-		let options = new RequestOptions({ headers: headers });
+		this.requestOptions.headers.append('If-Match', record['_etag']);
+		let id = record['_id'];
+
+		delete record['_etag']; // do not save it in record
+		delete record['_id']; // do not save it in record
 
 		console.log('updateRecord record = ', record);
-		return this.http.patch(this.recordValueUrl(tableName) + "/" + id, record, options)
+		return this.http.patch(this.recordValueUrl(tableName, id), record, this.requestOptions)
 			.map(this.extractupdateRecordData)
 			.catch(this.handleError)
 		;
@@ -154,11 +173,7 @@ export class DbTableRecordsService {
 	deleteRecord(key: string,  value: string, tableName): Observable<any> {
 		console.log('deleteRecord key = ', key);
 		console.log('deleteRecord value = ', value);
-		let headers = new Headers();
-		headers.append('Content-Type', 'application/json');
-
-		let options = new RequestOptions({ headers: headers });		
-		return this.http.delete(this.recordValueUrl(tableName) + "/" + value, options)
+		return this.http.delete(this.recordValueUrl(tableName) + "/" + value, this.requestOptions)
 			.map(this.extractdeleteRecordData)
 			.catch(this.handleError);
 		;

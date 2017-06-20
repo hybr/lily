@@ -9,16 +9,11 @@ const columns = [
 ];
 
 class Record {
-    _id
-    web_domain: string = window.location.origin;
-    email_address: string = '';
-    passwords: string[] = [];
+    public id: string;
+    public web_domain: string = window.location.origin;
+    public email_address: string = '';
+    public passwords: string[] = [];
 }
-
-class Password {
-    password: string = '';
-}
-
 
 @Component({
     selector: 'app-db-user',
