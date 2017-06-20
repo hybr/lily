@@ -1,5 +1,5 @@
 import { Injectable }              from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Http, Response, Headers, RequestOptions, RequestOptionsArgs } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -149,14 +149,24 @@ export class DbTableRecordsService {
 			return null;
 		}
 
-		this.requestOptions.headers.append('If-Match', record['_etag']);
+		let requestConfig = {
+			'headers' : {
+				'Content-Type' : 'application/json',
+				'If-Match' : record['_etag']
+			}
+		};
+
+		this.requestOptions.headers.set('If-Match', record['_etag']);
 		let id = record['_id'];
 
 		delete record['_etag']; // do not save it in record
 		delete record['_id']; // do not save it in record
 
 		console.log('updateRecord record = ', record);
-		return this.http.patch(this.recordValueUrl(tableName, id), record, this.requestOptions)
+		this.requestOptions.url =   this.recordValueUrl(tableName, id);
+		this.requestOptions.method = 'PATCH';
+
+		return this.http.patch(this.recordValueUrl(tableName, id), JSON.stringify(record), this.requestOptions)
 			.map(this.extractupdateRecordData)
 			.catch(this.handleError)
 		;
