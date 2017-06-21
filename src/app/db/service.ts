@@ -35,7 +35,7 @@ export class DbTableRecordsService {
 		if (id && id != '') {
 			url = url + '/' + id.toLowerCase();
 		}		
-		console.log('recordValueUrl url = ', url);
+		// console.log('recordValueUrl url = ', url);
 		return url;
 	}
 
@@ -69,15 +69,15 @@ export class DbTableRecordsService {
 				obj['title'] = tag;
 				obj['path'] = key;
 				filtered.push(obj);
-				// console.log('key = ', key);
+				// // console.log('key = ', key);
 			}
 		}
-		// console.log('2 filtered = ', filtered);
+		// // console.log('2 filtered = ', filtered);
 		return filtered;
 	}
 
 	public readDatabaseTablesList(searchPattern): Observable<any[]> {
-		return this.http.get(this.apiDocsUrl(), this.requestOptions)
+		return this.http.get(this.apiDocsUrl())
 			.map(response => this.extractStructure(response, searchPattern))
 			.catch(this.handleError)
 		;
@@ -86,17 +86,17 @@ export class DbTableRecordsService {
 	/* table record structure */
 
 	private extractTableStructure(res: Response, tableTitle) {
-		console.log('extractTableStructure res = ', res);
-		console.log('extractTableRecords tableTitle = ', tableTitle);
+		// console.log('extractTableStructure res = ', res);
+		// console.log('extractTableRecords tableTitle = ', tableTitle);
 
 		let definitions = <string[]> res.json()['definitions'];
-		console.log('extractTableStructure definitions = ', definitions);
+		// console.log('extractTableStructure definitions = ', definitions);
 
 		return definitions[tableTitle];
 	}
 
 	readTableRecordStructure(tableTitle): Observable<any[]> {
-		return this.http.get(this.apiDocsUrl(), this.requestOptions)
+		return this.http.get(this.apiDocsUrl(), {headers: this.headers})
 			.map(response => this.extractTableStructure(response, tableTitle))
 			.catch(this.handleError)
 		;
@@ -105,15 +105,15 @@ export class DbTableRecordsService {
 	/* table record value */
 
 	private extractTableRecords(res: Response, searchPattern) {
-		console.log('extractTableRecords searchPattern = ', searchPattern);
+		// console.log('extractTableRecords searchPattern = ', searchPattern);
 		//TODO implement search patteren
 		let items = <string[]> res.json()['_items'];
-		console.log('extractTableRecords items = ', items);
+		// console.log('extractTableRecords items = ', items);
 		return items;
 	}
 
 	public readTableRecordValues(tableName, searchPattern): Observable<any[]> {
-		return this.http.get(this.recordValueUrl(tableName), this.requestOptions)
+		return this.http.get(this.recordValueUrl(tableName), {headers: this.headers})
 			.map(response => this.extractTableRecords(response, searchPattern))
 			.catch(this.handleError)
 		;
@@ -130,10 +130,9 @@ export class DbTableRecordsService {
 		if (!record) {
 			return null;
 		}
-		console.log('saveRecord record = ', record);
-		return this.http.post(this.recordValueUrl(tableName), record, this.requestOptions)
+		// console.log('saveRecord record = ', record);
+		return this.http.post(this.recordValueUrl(tableName), record, {headers: this.headers})
 			.map(this.extractsaveRecordData)
-			.catch(this.handleError)
 		;
 	}
 
@@ -149,26 +148,17 @@ export class DbTableRecordsService {
 			return null;
 		}
 
-		let requestConfig = {
-			'headers' : {
-				'Content-Type' : 'application/json',
-				'If-Match' : record['_etag']
-			}
-		};
-
-		this.requestOptions.headers.set('If-Match', record['_etag']);
+		this.headers.set('If-Match', record['_etag']);
 		let id = record['_id'];
 
 		delete record['_etag']; // do not save it in record
 		delete record['_id']; // do not save it in record
 
-		console.log('updateRecord record = ', record);
-		this.requestOptions.url =   this.recordValueUrl(tableName, id);
-		this.requestOptions.method = 'PATCH';
+		// console.log('updateRecord record = ', record);
 
-		return this.http.patch(this.recordValueUrl(tableName, id), JSON.stringify(record), this.requestOptions)
+
+		return this.http.patch(this.recordValueUrl(tableName, id), JSON.stringify(record), {headers: this.headers})
 			.map(this.extractupdateRecordData)
-			.catch(this.handleError)
 		;
 	}
 
@@ -180,10 +170,10 @@ export class DbTableRecordsService {
     }
 
 
-	deleteRecord(key: string,  value: string, tableName): Observable<any> {
-		console.log('deleteRecord key = ', key);
-		console.log('deleteRecord value = ', value);
-		return this.http.delete(this.recordValueUrl(tableName) + "/" + value, this.requestOptions)
+	deleteRecord(record: Object, tableName): Observable<any> {
+		this.headers.set('If-Match', record['_etag']);
+		// console.log('deleteRecord record = ', record);
+		return this.http.delete(this.recordValueUrl(tableName, record['_id']), {headers: this.headers})
 			.map(this.extractdeleteRecordData)
 			.catch(this.handleError);
 		;

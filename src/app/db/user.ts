@@ -31,7 +31,8 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
     private errorMessage: string = '';
     private message: string = '';
 
-    private title = 'User Credentials';
+    private subTitle = 'User Credentials';
+    private title = '';
     private summary = 'User credentials to login';
     private dbTableName = 'users';
 
@@ -46,7 +47,6 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
 
     ngOnInit() {
         this.recordForm = this.formBuilder.group({
-
             web_domain: ['', [Validators.required]],
             email_address: ['', [Validators.required, Validators.email]],
             passwords: this.formBuilder.array([
@@ -63,75 +63,87 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
                 if (response != undefined && response) { 
                     this.tableValues = response;
                 }
-                console.log('getTableRecordsValue this.tableValues = ', this.tableValues);
+                // console.log('getTableRecordsValue this.tableValues = ', this.tableValues);
                 this.dataLoaded = true;
             },
             error =>  {
-                this.errorMessage = <any>error;
+                this.errorMessage = error.json();
                 this.dataLoaded = false;
             }
         );
+        this.title = this.subTitle;
     }
 
     showDialogToAdd() {
         this.newRecord = true;
         this.record = new Record();
+        if (this.selectedRecord) {
+            this.title = 'Clone ' + this.subTitle;
+        } else {
+            this.title = 'Add ' + this.subTitle;
+        }
         this.displayDialog = true;
     }
     
     save(modal: Record) {     
         /* save in db also */
-        
-        let tableValues = [...this.tableValues];
-        
+              
         if(this.newRecord) {
-            console.log('save modal = ', modal);
+            // console.log('save modal = ', modal);
             this.dataService.saveRecord(modal , this.dbTableName).subscribe(
                 response => {
-                    console.log('save response = ', response);
-                    tableValues.push(modal); // add in local browser
+                    // console.log('save response = ', response);
+                    // this.tableValues.push(modal); // add in local browser
                     this.message = 'Added new record';
                 },
                 error =>  {
-                    this.errorMessage = error.json()['_issues'];
+                    this.errorMessage = error.json();
+                    // console.log('this.errorMessage = ', this.errorMessage);
                 }
             );        
         } else {           
             modal['_id'] = this.tableValues[this.getSelectedRecordIndex()]['_id'];
             modal['_etag'] = this.tableValues[this.getSelectedRecordIndex()]['_etag'];
-            console.log('update modal = ', modal);
+            // console.log('update modal = ', modal);
             this.dataService.updateRecord(modal, this.dbTableName).subscribe(
                 response => {
-                    console.log('update response = ', response);
-                    tableValues[this.getSelectedRecordIndex()] = modal; // update in local browser
-                    this.message = 'Updated new record';
+                    // console.log('update response = ', response);
+                    // this.tableValues[this.getSelectedRecordIndex()] = modal; // update in local browser
+                    this.message = 'Updated the record';
                 },
                 error =>  {
-                    this.errorMessage = error.json()['_issues'];
+                    this.errorMessage = error.json();
+                    // console.log('this.errorMessage = ', this.errorMessage);
                 }
             );  
         }
-        
-        this.tableValues = tableValues;    
 
+        this.getTableRecordsValue();
         this.record = null;
         this.selectedRecord = null;
         this.displayDialog = false;
     }
     
     delete(modal: Record) {
+        // console.log('delete modal = ', modal);
+
         let index = this.getSelectedRecordIndex();
         
-
-        this.dataService.deleteRecord('_id', this.tableValues[index]['_id'], this.dbTableName).subscribe(
+        modal['_id'] = this.tableValues[this.getSelectedRecordIndex()]['_id'];
+        modal['_etag'] = this.tableValues[this.getSelectedRecordIndex()]['_etag'];
+        this.dataService.deleteRecord(modal, this.dbTableName).subscribe(
             response => {
-                console.log('delete response = ', response);
-                this.tableValues = this.tableValues.filter((val,i) => i!=index);              
+                // console.log('delete response = ', response);
+                this.tableValues = this.tableValues.filter((val,i) => i!=index);
+                this.message = 'Deleted the record';            
             },
             error =>  {
-                this.errorMessage = error.json()['_issues'];
+                this.errorMessage = error.json();
+                // console.log('this.errorMessage = ', this.errorMessage);
             }
-        );       
+        ); 
+
+        this.getTableRecordsValue();
         this.record = null;
         this.selectedRecord = null;
         this.displayDialog = false;
@@ -145,6 +157,7 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
             email_address: this.record.email_address,
             passwords: this.record.passwords
         });
+        this.title = 'Update ' + this.subTitle;
         this.displayDialog = true; 
     }
     

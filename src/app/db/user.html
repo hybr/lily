@@ -1,6 +1,6 @@
 
 <p-dataTable [value]="tableValues" selectionMode="single" [(selection)]="selectedRecord" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="15" [responsive]="true" *ngIf="dataLoaded">
-    <p-header>{{ title }}</p-header>
+    <p-header>{{ title }} <br /> {{summary}}</p-header>
     <p-column field="web_domain" header="Web Domain" [sortable]="true"></p-column>
     <p-column field="email_address" header="Email Address" [sortable]="true"></p-column>
     <p-footer>
@@ -22,7 +22,7 @@
             <span *ngIf="isVariableObject(errorMessage[error])">
                 <ul>
                     <li  *ngFor="let subError of keysOfObject(errorMessage[error])">
-                        {{errorMessage[error][subError]}}
+                        {{subError}} : {{errorMessage[error][subError]}}
                     </li>
                 </ul>
             </span>
@@ -33,7 +33,7 @@
     </ul>
 </div>
 
-<p-dialog header="Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+<p-dialog header="{{title}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
 
     <form [formGroup]="recordForm" novalidate (ngSubmit)="save(recordForm.value)">
 
@@ -119,7 +119,7 @@
 
         <p-footer>
             <div class="ui-dialog-buttonpane ui-helper-clearfix">
-                <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete"></button>
+                <button type="button" pButton icon="fa-close" (click)="delete(recordForm.value)" label="Delete"></button>
                 <button type="submit" pButton icon="fa-check" label="Save" [disabled]="!recordForm.valid" ></button>
             </div>
         </p-footer>
