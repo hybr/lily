@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AppCommon } from '../common';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { ActivatedRoute, Params } from '@angular/router';
-
+import { FormArray, FormGroup } from '@angular/forms';
 
 @Component({
 	selector: 'app-db-common',
@@ -29,7 +29,6 @@ export class AppDbCommon extends AppCommon {
 		this.errorArrived = false;
 		this.queryComplete = false;
 		this.response = {};
-console.log('r =', r);
 
 		if (param == undefined) {
 			this.errorArrived = true;
@@ -84,5 +83,38 @@ console.log('r =', r);
 
 		return rs;
 	} /* sortedFieldsOfRecord */
+
+    getLabel(list: any[], property: string, value: string) {
+        if (!list || !this.isVariableArray(list)) {
+        	return 'Error: List is not an array';
+        }
+        if (!property || property == '') {
+        	return 'Error: property name is empty';
+		}
+		if (!value || value == '') {
+			return 'Error: value is empty';
+		}
+        return list[list.findIndex(x => x[property] == value)]['label'];
+    }
+
+    removeControlFromGroup(recordGroup: FormGroup, fieldName: string, i: number) {
+        let control = <FormArray>recordGroup.controls[fieldName];
+        control.removeAt(i);
+        return recordGroup;
+    }
+
+    addControlFromGroup(recordGroup: FormGroup, fieldName: string, defaultControl) {
+        (<FormArray>recordGroup.controls[fieldName]).push(defaultControl);
+        return recordGroup;
+    }
+
+    setSubRecord(recordGroup: FormGroup, fieldName: string, subRecord: any[]) {
+    	console.log('subRecord = ', subRecord)
+        // let fFGs = subRecord.map(subField => new FormGroup(subField));
+        // let fFormArray = new FormArray(fFGs);
+        // recordGroup.registerControl(fieldName, fFormArray);
+        return recordGroup;
+    }
+
 
 }

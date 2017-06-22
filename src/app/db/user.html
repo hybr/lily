@@ -33,7 +33,7 @@
     </ul>
 </div>
 
-<p-dialog header="{{title}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+<p-dialog header="{{title}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [responsive]="true">
 
     <form [formGroup]="recordForm" novalidate (ngSubmit)="save(recordForm.value)">
 
@@ -66,7 +66,6 @@
 
                     <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.email_address.errors && recordForm.controls.email_address.errors.email"
                     >
-                        <i class="fa fa-close"></i>
                         Email address format is not right
                     </div>
                 </div>
@@ -74,9 +73,9 @@
 
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
-                    <label for="passwords" style="font-weight: bolder;">Passwords *</label>
+                    <label for="passwordsId" style="font-weight: bolder;">Passwords *</label>
 
-                    <div formArrayName="passwords">
+                    <div formArrayName="passwords" id="passwordsId">
                     
                         <p-panel *ngFor="let password of recordForm.controls.passwords.controls; let i=index; ">
 
@@ -87,12 +86,14 @@
                                 <span 
                                     style="float:right"
                                     *ngIf="recordForm.controls.passwords.controls.length > 1"
-                                    (click)="removePassword(i)"
+                                    (click)="recordForm = removeControlFromGroup(recordForm, 'passwords', i)"
                                 ><i class="fa fa-close"></i></span>
                             </div>
                         </p-header>
                             
-                            <input pInputText id="password" [formControlName]="i"/>
+                            <label for="passwordId" style="font-weight: bolder;">Password *</label>
+
+                            <input pInputText id="passwordId" [formControlName]="i"/>
 
                              <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.passwords.controls[i].errors && recordForm.controls.passwords.controls[i].errors.required"
                             >
@@ -109,7 +110,7 @@
                         
                     </div>
 
-                    <button type="button" pButton icon="fa-add" label="Add Password" (click)="addPassword()"></button>
+                    <button type="button" pButton icon="fa-add" label="Add Password" (click)="recordForm = addControlFromGroup(recordForm, 'passwords', initPassword())"></button>
 
                 </div>
 

@@ -73,12 +73,26 @@ people = {
 			'schema' : {
 				'type' : 'dict',
 				'schema' : {
-					'first_name' : {
+					'prefix' : {
 						'type' : 'string',
-						'required' : True
+						'regex' : '^[a-zA-Z.]*$'
 					},
-					'last_name' : {
-						'type' : 'string'
+					'first' : {
+						'type' : 'string',
+						'required' : True,
+						'regex' : '^[a-zA-Z]+$'
+					},
+					'middle' : {
+						'type' : 'string',
+						'regex' : '^[a-zA-Z]*$'
+					},
+					'last' : {
+						'type' : 'string',
+						'regex' : '^[a-zA-Z]*$'
+					},
+					'suffix' : {
+						'type' : 'string',
+						'regex' : '^[a-zA-Z.]*$'
 					}
 				}
 			}

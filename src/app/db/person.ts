@@ -8,18 +8,26 @@ const columns = [
     {field: 'email_address', header: 'Email Address'}
 ];
 
+class PersonName {
+    prefix: string = '';
+    first: string = '';
+    middle: string = '';
+    last: string = '';
+    suffix: string = '';
+}
+
 class Record {
     public id: string;
     public web_domain: string = window.location.origin;
-    public email_address: string = '';
-    public passwords: string[] = [];
+    public names: PersonName[] = [];
+    public gender: string = '';
 }
 
 @Component({
-    selector: 'app-db-user',
-    templateUrl: './user.html'
+    selector: 'app-db-person',
+    templateUrl: './person.html'
 })
-export class DbUserComponent extends AppDbCommon implements OnInit {
+export class DbPersonComponent extends AppDbCommon implements OnInit {
     private displayDialog: boolean = false;
     private record: Record = new Record();
     private selectedRecord: Record;
@@ -31,13 +39,13 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
     private errorMessage: string = '';
     private message: string = '';
 
-    private subTitle = 'User Credentials';
+    private subTitle = 'Person Details';
     private title = '';
-    private summary = 'User credentials to login';
-    private dbTableName = 'users';
+    private summary = 'Personal profile for our website';
+    private dbTableName = 'people';
 
-
-
+    private genders = [];
+   
     constructor(
         private dataService: DbTableRecordsService,
         private formBuilder: FormBuilder
@@ -46,12 +54,17 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
     }
 
     ngOnInit() {
+        this.genders.push({label:'Female', value:'female'});
+        this.genders.push({label:'Male', value:'male'});
+        this.genders.push({label:'Other', value:'other'});
+
+
         this.recordForm = this.formBuilder.group({
             web_domain: ['', [Validators.required]],
-            email_address: ['', [Validators.required, Validators.email]],
-            passwords: this.formBuilder.array([
-                this.initPassword(),
-            ])
+            names: this.formBuilder.array([
+                this.initName(),
+            ]),
+            gender: ['', []]
         });
         this.getTableRecordsValue();   
     }
@@ -154,9 +167,13 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
         this.record = this.cloneRecord(event.data);
         this.recordForm.reset({
             web_domain: this.record.web_domain,
-            email_address: this.record.email_address,
-            passwords: this.record.passwords
+            gender: this.record.gender,
         });
+        this.recordForm = this.setSubRecord(
+            this.recordForm, 
+            'names', 
+            this.record.names
+        );
         this.title = 'Update ' + this.subTitle;
         this.displayDialog = true; 
     }
@@ -175,8 +192,14 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
 
     /* ------------- */
 
-    initPassword() {
-        return new FormControl('', [Validators.required, Validators.minLength(8)]);
+    initName() {
+        return this.formBuilder.group({
+            prefix: ['', [Validators.pattern('^[a-zA-Z.]+$')]],
+            first: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
+            middle: ['', [Validators.pattern('^[a-zA-Z]+$')]],
+            last: ['', [Validators.pattern('^[a-zA-Z]+$')]],
+            suffix: ['', [Validators.pattern('^[a-zA-Z.]+$')]]
+        });
     } 
 
 

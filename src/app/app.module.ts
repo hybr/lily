@@ -33,11 +33,12 @@ import { DebugComponent } from './views/debug/debug.component';
 
 /* Prime Ng modules */
 import { ToolbarModule, DialogModule, DataListModule } from 'primeng/primeng';
-import { ButtonModule, SplitButtonModule } from 'primeng/primeng';
+import { ButtonModule, SplitButtonModule, ListboxModule } from 'primeng/primeng';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
 import { TooltipModule, PanelModule } from 'primeng/primeng';
 
 import { DbUserComponent } from './db/user';
+import { DbPersonComponent, } from './db/person';
 
 
 
@@ -63,7 +64,7 @@ const firebaseConfig = {
 		LoadingComponent,
 		DebugComponent,
 		
-		DbUserComponent,
+		DbUserComponent, DbPersonComponent,
 
 		DbTablesComponent,
 		TableRecordsComponent
@@ -85,7 +86,7 @@ const firebaseConfig = {
 
 		ToolbarModule, DialogModule, ButtonModule, DataListModule,
 		SplitButtonModule, DataTableModule,	SharedModule,
-		TooltipModule, PanelModule,
+		TooltipModule, PanelModule, ListboxModule,
 		
 		AngularFireModule.initializeApp (firebaseConfig),
 		AngularFireAuthModule,

@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 
 import { DbTablesComponent } from './db_tables';
 import { DbUserComponent, } from './user';
+import { DbPersonComponent, } from './person';
+
 
 import { TableRecordsComponent } from './table_records';
 
@@ -15,6 +17,7 @@ export const DbRoutes: Routes = [
 	{ path: 'db/tl/:tableName/:tableTitle', component: TableRecordsComponent },
 
 	{ path: 'db/users', component: DbUserComponent },
+	{ path: 'db/people', component: DbPersonComponent },
 
 
 /*	{ path: 'db/tl/:cNum', component: ListComponent }, */
