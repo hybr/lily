@@ -6,7 +6,7 @@ import { AppDbCommon } from './common';
 	selector: 'db-tables',
 	templateUrl: './db_tables.html'
 })
-export class DbTablesComponent extends AppDbCommon implements OnInit {
+export class DbTablesComponent implements OnInit {
 
 	private errorMessage: string = '';
 	private tables: any[] = [];
@@ -14,7 +14,7 @@ export class DbTablesComponent extends AppDbCommon implements OnInit {
 	private searchPattern: string = '';
 
 	constructor (private dataService: DbTableRecordsService) {
-		super();
+		
 	}
 	 
 	ngOnInit() { this.getDatabaseTablesList(); }

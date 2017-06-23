@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DbTableRecordsService } from './service';
 import { AppDbCommon } from './common';
 import { ActivatedRoute, Params } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
 
 
 @Component({
@@ -10,20 +11,18 @@ import { ActivatedRoute, Params } from '@angular/router';
 })
 export class TableRecordsComponent extends AppDbCommon implements OnInit {
 
-	private errorMessage: string = '';
 	private tableName: string;
 	private tableTitle: string;
 	private tableStructure: Object = {};
-	private tableValues: any[] = [];
 
-	private dataLoaded: boolean = false;
 	private searchPattern: string = '';
 	private silFields = [];
 	constructor (
-		private dataService: DbTableRecordsService,
-		private route: ActivatedRoute
+		public dataService: DbTableRecordsService,
+		private route: ActivatedRoute,
+		public formBuilder: FormBuilder
 	) {
-		super();
+		super(formBuilder, dataService);
 	}
 	 
 	ngOnInit() { 
