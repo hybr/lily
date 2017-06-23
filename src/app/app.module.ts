@@ -37,14 +37,10 @@ import { ButtonModule, SplitButtonModule, ListboxModule } from 'primeng/primeng'
 import { DataTableModule, SharedModule } from 'primeng/primeng';
 import { TooltipModule, PanelModule } from 'primeng/primeng';
 
-import { DbUserComponent } from './db/user';
-import { DbPersonComponent, } from './db/person';
-
-
-
 import { DbTableRecordsService } from './db/service';
 import { DbTablesComponent } from './db/db_tables';
-import { TableRecordsComponent } from './db/table_records';
+import { DbUserComponent } from './db/user';
+import { DbPersonComponent, } from './db/person';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -52,7 +48,7 @@ const firebaseConfig = {
 	databaseURL: 'https://ia2f-5d2b6.firebaseio.com',
 	storageBucket: 'ia2f-5d2b6.appspot.com',
 	messagingSenderId: '288539084670'
-};
+}; 
 
 @NgModule({
 	declarations: [
@@ -66,8 +62,7 @@ const firebaseConfig = {
 		
 		DbUserComponent, DbPersonComponent,
 
-		DbTablesComponent,
-		TableRecordsComponent
+		DbTablesComponent
 	],
 	providers: [
 		DbTableRecordsService

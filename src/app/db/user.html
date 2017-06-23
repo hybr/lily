@@ -1,6 +1,6 @@
 
 <p-dataTable [value]="tableValues" selectionMode="single" [(selection)]="selectedRecord" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="15" [responsive]="true" *ngIf="dataLoaded">
-    <p-header>{{ title }} <br /> {{summary}}</p-header>
+    <p-header>{{ subTitle }} <br /> {{summary}}</p-header>
     <p-column field="web_domain" header="Web Domain" [sortable]="true"></p-column>
     <p-column field="email_address" header="Email Address" [sortable]="true"></p-column>
     <p-footer>
@@ -11,7 +11,7 @@
     </p-footer>
 </p-dataTable>
 
-<div *ngIf="message" class="ui-message ui-corner-all">
+<div *ngIf="message" class="ui-message ui-corner-all ui-messages-success">
     {{message}}
 </div>
 

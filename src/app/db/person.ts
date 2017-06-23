@@ -24,16 +24,20 @@ export class DbPersonComponent extends AppDbCommon implements OnInit {
         this.dbTableName = 'people';
 
         this.genders.push({label:'Female', value:'female'});
-        this.genders.push({label:'Male', value:'male'});
+        this.genders.push({label:'Male', value:'male', selected:true});
         this.genders.push({label:'Other', value:'other'});
 
         this.recordForm = this.formBuilder.group({
             web_domain: ['', [Validators.required]],
-            names: this.formBuilder.array([
-                this.initName(),
-            ]),
             gender: ['', []]
         });
+
+        this.recordForm = this.setSubRecord(
+            this.recordForm, 
+            'names', 
+            []
+        );
+
         this.getTableRecordsValue();   
     }
     

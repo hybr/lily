@@ -13,9 +13,9 @@ export class DbTablesComponent implements OnInit {
 	private dataLoaded: boolean = false;
 	private searchPattern: string = '';
 
-	constructor (private dataService: DbTableRecordsService) {
-		
-	}
+	constructor (
+		private dataService: DbTableRecordsService
+	) {}
 	 
 	ngOnInit() { this.getDatabaseTablesList(); }
 	 

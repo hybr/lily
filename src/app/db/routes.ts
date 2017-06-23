@@ -4,9 +4,6 @@ import { DbTablesComponent } from './db_tables';
 import { DbUserComponent, } from './user';
 import { DbPersonComponent, } from './person';
 
-
-import { TableRecordsComponent } from './table_records';
-
 /*import { UpdateComponent } from './update/update.component';
 import { CreateComponent } from './create/create.component';
 import { RemoveComponent } from './remove/remove.component';*/
@@ -14,7 +11,6 @@ import { RemoveComponent } from './remove/remove.component';*/
 export const DbRoutes: Routes = [
 	/* tsl = TableS  List */
 	{ path: 'db/tsl', component: DbTablesComponent }, 
-	{ path: 'db/tl/:tableName/:tableTitle', component: TableRecordsComponent },
 
 	{ path: 'db/users', component: DbUserComponent },
 	{ path: 'db/people', component: DbPersonComponent },

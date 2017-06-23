@@ -1,6 +1,6 @@
 
 <p-dataTable [value]="tableValues" selectionMode="single" [(selection)]="selectedRecord" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="15" [responsive]="true" *ngIf="dataLoaded">
-    <p-header>{{ title }} <br /> {{summary}}</p-header>
+    <p-header>{{ subTitle }} <br /> {{summary}}</p-header>
 
     <p-column field="web_domain" header="Web Domain" [sortable]="true"></p-column>
     
@@ -27,7 +27,7 @@
     </p-footer>
 </p-dataTable>
 
-<div *ngIf="message" class="ui-message ui-corner-all">
+<div *ngIf="message" class="ui-message ui-corner-all ui-messages-success">
     {{message}}
 </div>
 
@@ -75,8 +75,8 @@
                     <label for="namesId" style="font-weight: bolder;">Names *</label>
 
                     <div formArrayName="names" id="namesId">
-                    
-                        <p-panel *ngFor="let name of recordForm.controls.names.controls; let i=index; ">
+
+                        <p-panel *ngFor=" let name of recordForm.controls.names.controls; let i=index; ">
 
                         <p-header>
                             <div class="ui-helper-clearfix">
@@ -85,7 +85,7 @@
                                 <span 
                                     style="float:right"
                                     *ngIf="recordForm.controls.names.controls.length > 1"
-                                    (click)="recordForm = removeControlFromGroup(recordForm, 'names', i)"
+                                    (click)="recordForm.get('names').removeAt(i)"
                                 ><i class="fa fa-close"></i></span>
                             </div>
                         </p-header>
@@ -98,10 +98,14 @@
                                         <label for="prefixId" style="font-weight: bolder;">Prefix</label>
                                         <input pInputText id="prefixId" formControlName="prefix" />
 
-                                         <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.names.controls[i].controls.prefix.errors && recordForm.controls.names.controls[i].controls.prefix.errors.patterm"
+
+                                        <div class="ui-message ui-messages-error ui-corner-all" 
+                                            *ngIf="recordForm.controls.names.controls[i].controls.prefix.errors 
+                                            &&  recordForm.controls.names.controls[i].controls.prefix.errors.pattern"
                                         >
-                                            Prefix format is not right
+                                            Prefix format is not correct
                                         </div>
+
                                     </div>
                                 </div>
                             
@@ -109,16 +113,21 @@
                                     <div class="ui-grid-col-12">
                                         <label for="firstId" style="font-weight: bolder;">First *</label>
                                         <input pInputText id="firstId" formControlName="first" />
-
-                                         <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.names.controls[i].controls.first.errors && recordForm.controls.names.controls[i].controls.first.errors.required"
+                                        
+                                        <div class="ui-message ui-messages-error ui-corner-all" 
+                                            *ngIf="recordForm.controls.names.controls[i].controls.first.errors 
+                                            && recordForm.controls.names.controls[i].controls.first.errors.required"
                                         >
                                             First name is required
                                         </div>
 
-                                         <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.names.controls[i].controls.first.errors && recordForm.controls.names.controls[i].controls.first.errors.patterm"
+                                         <div class="ui-message ui-messages-error ui-corner-all" 
+                                            *ngIf="recordForm.controls.names.controls[i].controls.first.errors 
+                                            && recordForm.controls.names.controls[i].controls.first.errors.pattern"
                                         >
-                                            First name format is not right
+                                            First name format is not correct
                                         </div>
+                   
                                     </div>
                                 </div>
                             
@@ -127,10 +136,13 @@
                                         <label for="middleId" style="font-weight: bolder;">Middle</label>
                                         <input pInputText id="middleId" formControlName="middle" />
 
-                                         <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.names.controls[i].controls.middle.errors && recordForm.controls.names.controls[i].controls.middle.errors.patterm"
+                                        <div class="ui-message ui-messages-error ui-corner-all" 
+                                            *ngIf="recordForm.controls.names.controls[i].controls.middle.errors 
+                                            && recordForm.controls.names.controls[i].controls.middle.errors.pattern"
                                         >
-                                            Middle name format is not right
+                                            Middle name format is not correct
                                         </div>
+
                                     </div>
                                 </div>
                             
@@ -139,24 +151,32 @@
                                         <label for="lastId" style="font-weight: bolder;">Last</label>
                                         <input pInputText id="lastId" formControlName="last" />
 
-                                         <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.names.controls[i].controls.last.errors && recordForm.controls.names.controls[i].controls.last.errors.patterm"
+
+                                        <div class="ui-message ui-messages-error ui-corner-all" 
+                                            *ngIf="recordForm.controls.names.controls[i].controls.last.errors 
+                                            && recordForm.controls.names.controls[i].controls.last.errors.pattern"
                                         >
-                                            Suffix format is not right
+                                            Last name format is not correct
                                         </div>
+
                                     </div>
                                 </div>
 
                                 <div class="ui-grid-row lns_sub_fields_border">
                                     <div class="ui-grid-col-12">
                                         <label for="suffixId" style="font-weight: bolder;">Suffix</label>
-                                        <input pInputText id="suffixId" formControlName="suffix" />
+                                        <input pInputText id="suffixId" [formControlName]="suffix" />
 
-                                         <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.names.controls[i].controls.suffix.errors && recordForm.controls.names.controls[i].controls.suffix.errors.patterm"
+                                        <div class="ui-message ui-messages-error ui-corner-all" 
+                                            *ngIf="recordForm.controls.names.controls[i].controls.suffix.errors 
+                                            && recordForm.controls.names.controls[i].controls.suffix.errors.pattern"
                                         >
-                                            Suffix format is not right
+                                            Suffix format is not correct
                                         </div>
+
                                     </div>
-                                </div>                                                                                                
+                                </div>
+
                             </div>
 
                         </p-panel>
