@@ -100,14 +100,159 @@ people = {
 		'gender' : {
 			'type' : 'string',
 			'allowed' : ['female', 'male', 'other']
+		},
+
+		'login_credentials': {
+			'type': 'list',
+			'minlength': 1,
+			'schema' : {
+				'type': 'objectid',
+            	'data_relation': {
+                	'resource': 'users',
+                	'field' : '_id'
+            	}
+			},		
+		},
+
+		'phones': {
+			'type': 'list',
+			'schema' : {
+				'type': 'objectid',
+            	'data_relation': {
+                	'resource': 'phones',
+                	'field' : '_id',
+                	'embeddable' : True
+            	}
+			},		
 		}
 	}
 }
 
 # ----------------------------------------------------------------
+phones = {
+	'resource_title' : 'Phones',
+	'item_title': 'Phone',
+	'soft_delete': True,
+	
+	'schema' : {
+
+		'web_domain': {
+			'type': 'string',
+			'required': True
+		},	
+
+		'phone_number' : {
+			'type' : 'string',
+			'regex' : '^[0-9]{10,13}$'
+		},
+
+		'use': {
+			'type': 'list',
+			'minlength': 1,
+			'schema' : {
+				'type' : 'string',
+				'allowed' : ['for home', 'for work', 'by madam', 'by sir', 'of landline', 'of mobile', 'as primary', 'on contact us webpage', 'other']
+			},	
+		},
+
+		'other_use': {
+			'type' : 'string',
+			'regex' : '^$|[0-9a-zA-Z ]{3,15}'
+		}
+	}
+}
+
+# ----------------------------------------------------------------
+web_sliders = {
+	'resource_title' : 'Web Sliders',
+	'item_title': 'Web ',
+	'soft_delete': True,
+	
+	'schema' : {
+
+		'web_domain': {
+			'type': 'string',
+			'required': True
+		},	
+
+		'title' : {
+			'type' : 'string'
+		},
+
+		'link' : {
+			'type' : "string"
+		}
+
+	}
+}
+
+# ----------------------------------------------------------------
+web_pages = {
+	'resource_title' : 'Web Pages',
+	'item_title': 'Web Page',
+	'soft_delete': True,
+	
+	'schema' : {
+
+		'web_domain': {
+			'type': 'string',
+			'required': True
+		},	
+
+		'use' : {
+			'type' : 'string',
+			'allowed' : ['home page', 'about us page', 'other']
+		},
+
+		'key_words': {
+			'type': 'string',
+			'required': True
+		},
+
+		'title' : {
+			'type' : 'string',
+			'required': True
+		},
+
+		'sections' : {
+			'type' : 'list',
+			'minlength': 1,
+			'schema' : {
+				'type' : 'dict',
+				'schema' : {
+					'type' : {
+						'type' : 'string',
+						'allowed' : ['paragraph', 'slider']
+					},
+					'paragraph' : {
+						'type' : 'string'
+					},
+					'slider': {
+						'type': 'list',
+						'schema' : {
+							'type': 'objectid',
+			            	'data_relation': {
+			                	'resource': 'web_sliders',
+			                	'field' : '_id',
+			                	'embeddable' : True
+			            	}
+						},		
+					}
+
+
+				}
+			}
+		}
+
+	}
+}
+# ----------------------------------------------------------------
 DOMAIN = {
 	'users' : users,
-	'people' : people
+	'phones' : phones,
+	'people' : people,
+	'web_sliders' : web_sliders,
+	'web_pages' : web_pages
 }
 
 # cd git\lily\db\eve

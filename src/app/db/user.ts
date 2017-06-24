@@ -27,7 +27,7 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
             web_domain: ['', [Validators.required]],
             email_address: ['', [Validators.required, Validators.email]],
             passwords: this.formBuilder.array([
-                this.initPassword(),
+                this.initPassword()
             ])
         });
         this.getTableRecordsValue();   
@@ -43,9 +43,6 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
         this.title = 'Update ' + this.subTitle;
         this.displayDialog = true; 
     }
-
-
-    /* ------------- */
 
     initPassword() {
         return new FormControl('', [Validators.required, Validators.minLength(8)]);

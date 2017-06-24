@@ -55,7 +55,6 @@
 
         <div class="ui-grid ui-grid-responsive ui-fluid">
 
-
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
                     <label for="web_domain" style="font-weight: bolder;">Web Domain *</label>
@@ -165,7 +164,7 @@
                                 <div class="ui-grid-row lns_sub_fields_border">
                                     <div class="ui-grid-col-12">
                                         <label for="suffixId" style="font-weight: bolder;">Suffix</label>
-                                        <input pInputText id="suffixId" [formControlName]="suffix" />
+                                        <input pInputText id="suffixId" formControlName="suffix" />
 
                                         <div class="ui-message ui-messages-error ui-corner-all" 
                                             *ngIf="recordForm.controls.names.controls[i].controls.suffix.errors 

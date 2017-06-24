@@ -2,7 +2,15 @@
 <p-dataTable [value]="tableValues" selectionMode="single" [(selection)]="selectedRecord" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="15" [responsive]="true" *ngIf="dataLoaded">
     <p-header>{{ subTitle }} <br /> {{summary}}</p-header>
     <p-column field="web_domain" header="Web Domain" [sortable]="true"></p-column>
-    <p-column field="email_address" header="Email Address" [sortable]="true"></p-column>
+    <p-column field="phone_number" header="Phone Number" [sortable]="true"></p-column>
+    <p-column field="use" header="Use" [sortable]="true">
+        <ng-template let-col let-use="rowData.use" pTemplate="body">
+            <ul><li *ngFor="let u of use">
+                {{ getLabel(usages, 'value', u) }}
+            </li></ul>
+        </ng-template>
+    </p-column>
+    <p-column field="other_use" header="Other Use" [sortable]="true"></p-column>
     <p-footer>
         <div class="ui-helper-clearfix" style="width:100%">
             <button *ngIf="!selectedRecord" type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button>
@@ -39,7 +47,6 @@
 
         <div class="ui-grid ui-grid-responsive ui-fluid">
 
-
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
                     <label for="webDomainId" style="font-weight: bolder;">Web Domain *</label>
@@ -55,65 +62,52 @@
 
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
-                    <label for="emailAddressId" style="font-weight: bolder;">Email Address *</label>
+                    <label for="phoneNumberId" style="font-weight: bolder;">Phone Number *</label>
 
-                    <input pInputText type="text" id="emailAddressId" formControlName="email_address" />
+                    <input pInputText type="text" id="phoneNumberId" formControlName="phone_number" />
 
-                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.email_address.errors && recordForm.controls.email_address.errors.required"
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.phone_number.errors && recordForm.controls.phone_number.errors.required"
                     >
-                        Email address is required
+                        Phone number is required
                     </div>
 
-                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.email_address.errors && recordForm.controls.email_address.errors.email"
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.phone_number.errors && recordForm.controls.phone_number.errors.pattern"
                     >
-                        Email address format is not right
+                        Phone number foramt is not correct
                     </div>
                 </div>
             </div>
 
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
-                    <label for="passwordsId" style="font-weight: bolder;">Passwords *</label>
+                    <label for="useId" style="font-weight: bolder;">Use *</label>
+                    <p-multiSelect  [options]="usages" id="useId"  formControlName="use" ></p-multiSelect >
 
-                    <div formArrayName="passwords" id="passwordsId">
-                    
-                        <p-panel *ngFor="let password of recordForm.controls.passwords.controls; let i=index; ">
-
-                        <p-header>
-                            <div class="ui-helper-clearfix">
-                                <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Password {{i + 1}}</span>
-                                
-                                <span 
-                                    style="float:right"
-                                    *ngIf="recordForm.controls.passwords.controls.length > 1"
-                                    (click)="recordForm = removeControlFromGroup(recordForm, 'passwords', i)"
-                                ><i class="fa fa-close"></i></span>
-                            </div>
-                        </p-header>
-                            
-                            <label for="passwordId" style="font-weight: bolder;">Password *</label>
-
-                            <input pInputText id="passwordId" [formControlName]="i"/>
-
-                             <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.passwords.controls[i].errors && recordForm.controls.passwords.controls[i].errors.required"
-                            >
-                                Password is required
-                            </div>
-                        
-                             <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.passwords.controls[i].errors && recordForm.controls.passwords.controls[i].errors.minlength" 
-                            >
-                                At least 8 charecters are required
-                            </div>
-
-
-                        </p-panel>
-                        
-                    </div>
-
-                    <button type="button" pButton icon="fa-add" label="Add Password" (click)="recordForm = addControlFromGroup(recordForm, 'passwords', initPassword())"></button>
-
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.use.errors && recordForm.controls.use.errors.required"
+                    >
+                        Use is required
+                    </div>                    
                 </div>
+            </div>
 
+            <div *ngIf="doesValueExists('other', recordForm.controls.use.value)" 
+                class="ui-grid-row lns_sub_fields_border">
+                <div class="ui-grid-col-12">
+                    <label for="useId" style="font-weight: bolder;">Other Use</label>
+
+                    <input pInputText type="text" id="useId" formControlName="other_use" maxlength=15/>
+                    {{15 - recordForm.controls.other_use.value.length}}
+                    <div class="ui-message ui-messages-error ui-corner-all"
+                        *ngIf="recordForm.controls.other_use.value.length < 3"
+                    >
+                        Atleast 3 letters required
+                    </div>
+                    <div class="ui-message ui-messages-error ui-corner-all" 
+                        *ngIf="recordForm.controls.other_use.errors && recordForm.controls.other_use.errors.pattern"
+                    >
+                        Other use foramt is not correct
+                    </div>
+                </div>
             </div>
 
         </div>

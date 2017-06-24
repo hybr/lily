@@ -27,16 +27,13 @@ export class DbPersonComponent extends AppDbCommon implements OnInit {
         this.genders.push({label:'Male', value:'male', selected:true});
         this.genders.push({label:'Other', value:'other'});
 
-        this.recordForm = this.formBuilder.group({
-            web_domain: ['', [Validators.required]],
-            gender: ['', []]
+        this.recordForm = new FormGroup({
+            web_domain: new FormControl('', [Validators.required]),
+            names: new FormArray(
+                [this.initName()],   Validators.minLength(1)
+            ),
+            gender: new FormControl('', [])
         });
-
-        this.recordForm = this.setSubRecord(
-            this.recordForm, 
-            'names', 
-            []
-        );
 
         this.getTableRecordsValue();   
     }
@@ -48,29 +45,23 @@ export class DbPersonComponent extends AppDbCommon implements OnInit {
 
         this.recordForm.reset({
             web_domain: event.data.web_domain,
-            gender: event.data.gender,
+            gender: event.data.gender
         });
-        
-        this.recordForm = this.setSubRecord(
+
+         this.recordForm = this.setSubRecord(
             this.recordForm, 
             'names', 
             event.data.names
-        );
-        
+        );  
     }
-    
-    
-    /* ------------- */
 
     initName() {
-        return this.formBuilder.group({
-            prefix: ['', [Validators.pattern('^[a-zA-Z.]+$')]],
-            first: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
-            middle: ['', [Validators.pattern('^[a-zA-Z]+$')]],
-            last: ['', [Validators.pattern('^[a-zA-Z]+$')]],
-            suffix: ['', [Validators.pattern('^[a-zA-Z.]+$')]]
+        return new FormGroup({
+            prefix: new FormControl('', [Validators.pattern('^[a-zA-Z.]+$')]),
+            first: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z.]+$')]),
+            middle: new FormControl('', [Validators.pattern('^[a-zA-Z.]+$')]),
+            last: new FormControl('', [Validators.pattern('^[a-zA-Z.]+$')]),
+            suffix: new FormControl('', [Validators.pattern('^[a-zA-Z.]+$')])
         });
-    } 
-
-
+    }
 }

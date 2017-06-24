@@ -25,7 +25,7 @@ export class AppDbCommon extends AppCommon {
     public summary = '';
     public dbTableName = '';
 
-    public selectedRecord = {};
+    public selectedRecord = null;
     public tableValues = [];
     public recordForm: FormGroup;
 

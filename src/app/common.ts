@@ -54,7 +54,18 @@ export class AppCommon {
 		// if (this.isVariableObject(obj)) return obj.hasOwnProperty(key);
 		return false;
 	}
-	
+
+	doesValueExists(value, list) {
+		// if (this.isVariableObject(list)) return (Object.values(list).indexOf(value) > -1);
+		if (this.isVariableObject(list)) {
+			Object.keys(list).forEach(function(key) {
+  				if (list[key] == value) return true;
+			})
+		}
+		if (this.isVariableArray(list)) return (list.indexOf(value) > -1);
+		return false;
+	}
+
 	valuesOfList(list) {
 		if (this.isVariableObject(list)) {
 			let rs = [];
