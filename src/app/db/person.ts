@@ -3,6 +3,13 @@ import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@ang
 import { AppDbCommon } from './common';
 import { DbTableRecordsService } from './service';
 
+interface Phone {
+    web_domain;
+    phone_number;
+    use;
+    other_use;
+}
+
 @Component({
     selector: 'app-db-person',
     templateUrl: './person.html'
@@ -10,6 +17,7 @@ import { DbTableRecordsService } from './service';
 export class DbPersonComponent extends AppDbCommon implements OnInit {
 
     private genders = [];
+    private phoneNumberRecords;
    
      constructor(
         public dataService: DbTableRecordsService,
@@ -32,10 +40,17 @@ export class DbPersonComponent extends AppDbCommon implements OnInit {
             names: new FormArray(
                 [this.initName()],   Validators.minLength(1)
             ),
-            gender: new FormControl('', [])
+            gender: new FormControl('', []),
+
+            phone_numbers: new FormArray(
+                [this.initPhone()]
+            )
         });
 
-        this.getTableRecordsValue();   
+        this.phoneNumberRecords = this.getSpecificTableRecordsValue('phones');
+        this.getTableRecordsValue();
+        
+
     }
     
     onRowSelect(event) {
@@ -48,11 +63,17 @@ export class DbPersonComponent extends AppDbCommon implements OnInit {
             gender: event.data.gender
         });
 
-         this.recordForm = this.setSubRecord(
+        this.recordForm = this.setSubRecord(
             this.recordForm, 
             'names', 
             event.data.names
-        );  
+        );
+
+        this.recordForm = this.setSubRecord(
+            this.recordForm, 
+            'phone_numbers', 
+            event.data.phone_numbers
+        ); 
     }
 
     initName() {
@@ -63,5 +84,9 @@ export class DbPersonComponent extends AppDbCommon implements OnInit {
             last: new FormControl('', [Validators.pattern('^[a-zA-Z.]+$')]),
             suffix: new FormControl('', [Validators.pattern('^[a-zA-Z.]+$')])
         });
+    }
+
+    initPhone() {
+        return new FormControl('', []);
     }
 }

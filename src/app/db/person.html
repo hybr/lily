@@ -1,4 +1,7 @@
 
+phone records = {{phoneNumberRecords | json}}
+table values = {{tableValues | json}}
+
 <p-dataTable [value]="tableValues" selectionMode="single" [(selection)]="selectedRecord" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="15" [responsive]="true" *ngIf="dataLoaded">
     <p-header>{{ subTitle }} <br /> {{summary}}</p-header>
 
@@ -24,6 +27,7 @@
             <button *ngIf="!selectedRecord" type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button>
             <button *ngIf="selectedRecord" type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Clone"></button>            
         </div>
+        phones = {{phoneNumbers | json}}
     </p-footer>
 </p-dataTable>
 
@@ -49,7 +53,8 @@
     </ul>
 </div>
 
-<p-dialog header="{{title}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [responsive]="true" >
+
+<p-dialog header="{{title}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [responsive]="true" [contentStyle]="{'overflow':'auto','max-height':'500px'}" >
 
     <form [formGroup]="recordForm" novalidate (ngSubmit)="save(recordForm.value)">
 
@@ -194,6 +199,45 @@
                     <p-listbox [options]="genders" id="genderId"  formControlName="gender" ></p-listbox>
                 </div>
             </div>
+
+
+
+
+            <div class="ui-grid-row lns_sub_fields_border">
+                <div class="ui-grid-col-12">
+                phone records = {{phoneNumberRecords | json}}
+                    <label for="phoneNumbersId" style="font-weight: bolder;">Phone Numbers</label>
+                    <div formArrayName="phone_numbers" id="phoneNumbersId">
+
+                    <p-panel *ngFor="let phone of recordForm.controls.phone_numbers.controls; let i=index; ">
+
+                        <p-header>
+                            <div class="ui-helper-clearfix">
+                                <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Phone {{i + 1}}</span>
+                                
+                                <span 
+                                    style="float:right"
+                                    *ngIf="recordForm.controls.phone_numbers.controls.length > 1"
+                                    (click)="recordForm = removeControlFromGroup(recordForm, 'phone_numbers', i)"
+                                ><i class="fa fa-close"></i></span>
+                            </div>
+                        </p-header>
+                            
+                            <input pInputText [formControlName]="i"/>
+
+                             <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.phone_numbers.controls[i].errors && recordForm.controls.phone_numbers.controls[i].errors.required"
+                            >
+                                Password is required
+                            </div>
+
+
+                        </p-panel>
+
+                    </div>
+                </div>
+
+            </div>
+
 
         </div>
 

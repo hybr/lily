@@ -3,7 +3,6 @@ import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@ang
 import { AppDbCommon } from './common';
 import { DbTableRecordsService } from './service';
 
-
 @Component({
     selector: 'app-db-phone',
     templateUrl: './phone.html'

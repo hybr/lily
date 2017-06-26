@@ -33,7 +33,7 @@
     </ul>
 </div>
 
-<p-dialog header="{{title}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [responsive]="true">
+<p-dialog header="{{title}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [responsive]="true" [contentStyle]="{'overflow':'auto','max-height':'500px'}">
 
     <form [formGroup]="recordForm" novalidate (ngSubmit)="save(recordForm.value)">
 

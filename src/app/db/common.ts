@@ -128,10 +128,15 @@ export class AppDbCommon extends AppCommon {
     }
 
     setSubRecord(recordGroup: FormGroup, fieldName: string, subRecord: any[]) {
-        console.log('subRecord = ', subRecord)
+        console.log('subRecord = ', subRecord);
+        
+        if (subRecord == undefined || fieldName == undefined || fieldName == '') { 
+            return recordGroup;
+        }
         let fFGs = subRecord.map(subField => this.formBuilder.group(subField));
         let fFormArray = this.formBuilder.array(fFGs);
         recordGroup.setControl(fieldName, fFormArray);
+        
         return recordGroup;
     }
 
@@ -139,10 +144,30 @@ export class AppDbCommon extends AppCommon {
         return tableRecords.indexOf(selectedRecord);
     }
 
+    getSpecificTableRecordsValue(tableName = '') {
+        return this.dataService.readTableRecordValues(tableName, '.*').subscribe(
+            response => {
+                if (response != undefined && response) { 
+                    console.log('getTableRecordsValue response for '
+                        + tableName + ' = ', response);
+                    return response;
+                    
+                } else {
+                    this.message = 'No record found';
+                }
+            },
+            error =>  {
+                this.errorMessage = error.json();
+            }
+        );
+    }
+
     getTableRecordsValue() {
         this.dataService.readTableRecordValues(this.dbTableName, '.*').subscribe(
             response => {
                 if (response != undefined && response) { 
+                    console.log('getTableRecordsValue response for '
+                        + this.dbTableName + ' = ', response);
                     this.tableValues = response;
                     this.dataLoaded = true;
                 } else {

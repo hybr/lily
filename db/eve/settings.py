@@ -114,7 +114,7 @@ people = {
 			},		
 		},
 
-		'phones': {
+		'phone_numbers': {
 			'type': 'list',
 			'schema' : {
 				'type': 'objectid',
