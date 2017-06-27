@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AppDbCommon } from './common';
 import { DbTableRecordsService } from './service';
+import { SelectItem } from 'primeng/primeng';
 
 interface Phone {
     web_domain;
@@ -17,7 +18,7 @@ interface Phone {
 export class DbPersonComponent extends AppDbCommon implements OnInit {
 
     private genders = [];
-    private phoneNumberRecords;
+    private phoneNumberRecords: SelectItem[];
    
      constructor(
         public dataService: DbTableRecordsService,
@@ -47,10 +48,13 @@ export class DbPersonComponent extends AppDbCommon implements OnInit {
             )
         });
 
-        this.phoneNumberRecords = this.getSpecificTableRecordsValue('phones');
+        this.getSpecificTableRecordsValue('phones', ['phone_number', 'use', 'other_use']);
+        this.phoneNumberRecords = this.specificTableValues;
+
+        console.log('this.specificTableValues = ', this.specificTableValues);
+        console.log('this.phoneNumberRecords = ', this.phoneNumberRecords);
         this.getTableRecordsValue();
         
-
     }
     
     onRowSelect(event) {

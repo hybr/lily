@@ -4,6 +4,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormArray, FormGroup, FormBuilder } from '@angular/forms';
 import { DbTableRecordsService } from './service';
+import { SelectItem } from 'primeng/primeng';
 
 @Component({
     selector: 'app-db-common',
@@ -28,6 +29,7 @@ export class AppDbCommon extends AppCommon {
     public selectedRecord = null;
     public tableValues = [];
     public recordForm: FormGroup;
+    public specificTableValues: SelectItem[] = [];
 
     constructor(
         public formBuilder: FormBuilder,
@@ -140,17 +142,27 @@ export class AppDbCommon extends AppCommon {
         return recordGroup;
     }
 
-   getSelectedRecordIndex(tableRecords, selectedRecord): number {
+    getSelectedRecordIndex(tableRecords, selectedRecord): number {
         return tableRecords.indexOf(selectedRecord);
     }
 
-    getSpecificTableRecordsValue(tableName = '') {
-        return this.dataService.readTableRecordValues(tableName, '.*').subscribe(
+    getSpecificTableRecordsValue(tableName = '', titleFields = []) {
+        this.dataService.readTableRecordValues(tableName, '.*').subscribe(
             response => {
                 if (response != undefined && response) { 
                     console.log('getTableRecordsValue response for '
                         + tableName + ' = ', response);
-                    return response;
+                    for(let r of response) {
+                        console.log(' r = ', r['_id']);
+                        let rowTitle = '';
+                        for (let titleField of titleFields) {
+                            rowTitle = rowTitle + ' ' + JSON.stringify(r[titleField]);
+                        }
+                        this.specificTableValues.push({
+                            'label': rowTitle,
+                            'value': r['_id']
+                        });
+                    }
                     
                 } else {
                     this.message = 'No record found';
