@@ -1,0 +1,225 @@
+
+<p-dataTable [value]="tableValues" selectionMode="single" [(selection)]="selectedRecord" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="15" [responsive]="true" *ngIf="dataLoaded">
+    <p-header>{{ subTitle }} <br /> {{summary}}</p-header>
+
+    <p-column field="web_domain" header="Web Domain" [sortable]="true"></p-column>
+    
+    <p-column field="sections" header="Names" [sortable]="true">
+        <ng-template let-col let-sections="rowData.sections" pTemplate="body">
+            <ul><li *ngFor="let section of sections">
+                {{ section.type }}
+            </li></ul>
+        </ng-template>
+    </p-column>
+    
+    <p-column field="use" header="Use" [sortable]="true">
+        <ng-template let-col let-use="rowData.use" pTemplate="body">
+            <ul><li *ngFor="let u of use">
+                {{ getLabel(usages, 'value', u) }}
+            </li></ul>
+        </ng-template>
+    </p-column>
+
+    <p-column field="other_use" header="Other Use" [sortable]="true"></p-column>
+    
+    <p-footer>
+        <div class="ui-helper-clearfix" style="width:100%">
+            <button *ngIf="!selectedRecord" type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button>
+            <button *ngIf="selectedRecord" type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Clone"></button>            
+        </div>
+    </p-footer>
+</p-dataTable>
+
+<div *ngIf="message" class="ui-message ui-corner-all ui-messages-success">
+    {{message}}
+</div>
+
+<div *ngIf="errorMessage" class="ui-message ui-messages-error ui-corner-all">
+    Can not save. Please check following: <ul>
+        <li *ngFor="let error of keysOfObject(errorMessage)">
+            {{error}} : 
+            <span *ngIf="isVariableObject(errorMessage[error])">
+                <ul>
+                    <li  *ngFor="let subError of keysOfObject(errorMessage[error])">
+                        {{subError}} : {{errorMessage[error][subError] | json}}
+                    </li>
+                </ul>
+            </span>
+            <span *ngIf="!isVariableObject(errorMessage[error])">
+                {{errorMessage[error]}}
+            </span>
+        </li>
+    </ul>
+</div>
+
+
+<p-dialog header="{{title}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [responsive]="true" [contentStyle]="{'overflow':'auto','max-height':'500px'}" >
+
+    <form [formGroup]="recordForm" novalidate (ngSubmit)="save(recordForm.value)">
+
+        <div class="ui-grid ui-grid-responsive ui-fluid">
+
+            <div class="ui-grid-row lns_sub_fields_border">
+                <div class="ui-grid-col-12">
+                    <label for="web_domain_id" style="font-weight: bolder;">Web Domain *</label>
+
+                    <input pInputText type="text" id="web_domain_id" formControlName="web_domain" />
+
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.web_domain.errors && recordForm.controls.web_domain.errors.required"
+                    >
+                        Web domain is required
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-grid-row lns_sub_fields_border">
+                <div class="ui-grid-col-12">
+                    <label for="use_id" style="font-weight: bolder;">Use</label>
+                    <div formArrayName="use" id="use_id">
+
+                    <p-panel *ngFor="let phoneNumber of recordForm.controls.use.controls; let useIntex=index; ">
+
+                        <p-header>
+                            <div class="ui-helper-clearfix">
+                                <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Phone {{useIntex + 1}}</span>
+                                
+                                <span 
+                                    style="float:right"
+                                    *ngIf="recordForm.controls.use.controls.length > 1"
+                                    (click)="recordForm = removeControlFromGroup(recordForm, 'use', useIntex)"
+                                ><i class="fa fa-close"></i></span>
+                            </div>
+                        </p-header>
+                            <p-listbox 
+                                [options]="usages" 
+                                [formControlName]="useIntex" >
+                            </p-listbox>
+
+                            <div class="ui-message ui-messages-error ui-corner-all"
+                                *ngIf="recordForm.controls.use.errors && 
+                                recordForm.controls.use.errors.minlength"
+                            >
+                                At least one use is required
+                            </div>
+                        </p-panel>
+
+                    </div>
+
+                    <button type="button" pButton icon="fa-add" label="Add Use" (click)="recordForm = addControlFromGroup(recordForm, 'use', initStringNoValidatorsControl())"></button>
+
+                </div>
+            </div>
+
+            <div *ngIf="doesValueExists('other', recordForm.controls.use.value)" 
+                class="ui-grid-row lns_sub_fields_border">
+                <div class="ui-grid-col-12">
+                    <label for="other_use_id" style="font-weight: bolder;">Other Use</label>
+
+                    <input pInputText type="text" id="other_use_id" formControlName="other_use" maxlength=15/>
+                    {{15 - recordForm.controls.other_use.value.length}}
+                    <div class="ui-message ui-messages-error ui-corner-all"
+                        *ngIf="recordForm.controls.other_use.value.length < 3"
+                    >
+                        Atleast 3 letters required
+                    </div>
+                    <div class="ui-message ui-messages-error ui-corner-all" 
+                        *ngIf="recordForm.controls.other_use.errors && recordForm.controls.other_use.errors.pattern"
+                    >
+                        Other use foramt is not correct
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-grid-row lns_sub_fields_border">
+                <div class="ui-grid-col-12">
+                    <label for="key_words_id" style="font-weight: bolder;">Key Words *</label>
+
+                    <input pInputText type="text" id="key_words_id" formControlName="key_words" />
+
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.key_words.errors && recordForm.controls.key_words.errors.required"
+                    >
+                        Key words are required
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-grid-row lns_sub_fields_border">
+                <div class="ui-grid-col-12">
+                    <label for="title_id" style="font-weight: bolder;">Title *</label>
+
+                    <input pInputText type="text" id="title" formControlName="title" />
+
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.title.errors && recordForm.controls.title.errors.required"
+                    >
+                        Title is required
+                    </div>
+                </div>
+            </div>
+ 
+
+            <div class="ui-grid-row lns_sub_fields_border">
+                <div class="ui-grid-col-12">
+
+                    <label for="sections_id" style="font-weight: bolder;">Sections *</label>
+
+                    <div formArrayName="sections" id="sections_id">
+
+                        <p-panel *ngFor=" let section of recordForm.controls.sections.controls; let sectionsIndex=index; ">
+
+                        <p-header>
+                            <div class="ui-helper-clearfix">
+                                <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Section {{sectionsIndex + 1}}</span>
+                                
+                                <span 
+                                    style="float:right"
+                                    *ngIf="recordForm.controls.sections.controls.length > 1"
+                                    (click)="recordForm.get('sections').removeAt(sectionsIndex)"
+                                ><i class="fa fa-close"></i></span>
+                            </div>
+                        </p-header>
+                            
+                            <div [formGroupName]="sectionsIndex" >
+
+                                <div class="ui-grid-row lns_sub_fields_border">
+                                    <div class="ui-grid-col-12"> 
+
+                                        <label for="type_id" style="font-weight: bolder;">Type</label>
+                                        <input pInputText id="type_id" formControlName="type" />
+                                         <validation-message 
+                                            [control]="recordForm.controls.sections"
+                                        ></validation-message>
+
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                        </p-panel>
+                        
+                    </div>
+
+                    <button type="button" pButton icon="fa-add" label="Add Name" (click)="recordForm = addControlFromGroup(recordForm, 'sections', initSection())"></button>
+
+                </div>
+            </div> 
+
+        </div>
+
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" (click)="delete(recordForm.value)" label="Delete"></button>
+                <button type="submit" pButton icon="fa-check" label="Save" [disabled]="!recordForm.valid" ></button>
+            </div>
+        </p-footer>
+
+    </form>
+
+     
+
+    <div *ngFor="let error of getFormValidationErrors()" class="ui-message ui-messages-error ui-corner-all">
+        <div>{{error}}</div>
+    </div>
+
+    <pre>{{ recordForm.value | json }}</pre>
+
+</p-dialog>

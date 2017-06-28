@@ -49,9 +49,9 @@
 
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
-                    <label for="webDomainId" style="font-weight: bolder;">Web Domain *</label>
+                    <label for="web_domain_id" style="font-weight: bolder;">Web Domain *</label>
 
-                    <input pInputText type="text" id="webDomainId" formControlName="web_domain" />
+                    <input pInputText type="text" id="web_domain_id" formControlName="web_domain" />
 
                     <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.web_domain.errors && recordForm.controls.web_domain.errors.required"
                     >
@@ -62,9 +62,9 @@
 
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
-                    <label for="phoneNumberId" style="font-weight: bolder;">Phone Number *</label>
+                    <label for="phone_number_id" style="font-weight: bolder;">Phone Number *</label>
 
-                    <input pInputText type="text" id="phoneNumberId" formControlName="phone_number" />
+                    <input pInputText type="text" id="phone_number_id" formControlName="phone_number" />
 
                     <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.phone_number.errors && recordForm.controls.phone_number.errors.required"
                     >
@@ -80,8 +80,8 @@
 
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
-                    <label for="useId" style="font-weight: bolder;">Use *</label>
-                    <p-multiSelect  [options]="usages" id="useId"  formControlName="use" ></p-multiSelect >
+                    <label for="use_id" style="font-weight: bolder;">Use *</label>
+                    <p-multiSelect  [options]="usages" id="use_id"  formArrayName="use" ></p-multiSelect >
 
                     <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.use.errors && recordForm.controls.use.errors.required"
                     >
@@ -93,9 +93,9 @@
             <div *ngIf="doesValueExists('other', recordForm.controls.use.value)" 
                 class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
-                    <label for="useId" style="font-weight: bolder;">Other Use</label>
+                    <label for="other_use_id" style="font-weight: bolder;">Other Use</label>
 
-                    <input pInputText type="text" id="useId" formControlName="other_use" maxlength=15/>
+                    <input pInputText type="text" id="other_use_id" formControlName="other_use" maxlength=15/>
                     {{15 - recordForm.controls.other_use.value.length}}
                     <div class="ui-message ui-messages-error ui-corner-all"
                         *ngIf="recordForm.controls.other_use.value.length < 3"
@@ -120,5 +120,6 @@
         </p-footer>
 
     </form>
-
+    {{ recordForm.value | json }}
+    {{ recordForm.errors() | json }}
 </p-dialog>

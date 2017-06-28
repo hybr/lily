@@ -37,11 +37,16 @@ import { ButtonModule, SplitButtonModule, ListboxModule } from 'primeng/primeng'
 import { DataTableModule, SharedModule, MultiSelectModule } from 'primeng/primeng';
 import { TooltipModule, PanelModule } from 'primeng/primeng';
 
+
+import { ValidationMessageComponent, } from './validation/message';
+
 import { DbTableRecordsService } from './db/service';
 import { DbTablesComponent } from './db/db_tables';
 import { DbUserComponent } from './db/user';
 import { DbPersonComponent, } from './db/person';
 import { DbPhoneComponent, } from './db/phone';
+import { DbWebPagesComponent, } from './db/web_page';
+
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -61,7 +66,9 @@ const firebaseConfig = {
 		LoadingComponent,
 		DebugComponent,
 		
+		ValidationMessageComponent,
 		DbUserComponent, DbPersonComponent, DbPhoneComponent,
+		DbWebPagesComponent,
 
 		DbTablesComponent
 	],

@@ -42,9 +42,9 @@
 
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
-                    <label for="webDomainId" style="font-weight: bolder;">Web Domain *</label>
+                    <label for="web_domain_id" style="font-weight: bolder;">Web Domain *</label>
 
-                    <input pInputText type="text" id="webDomainId" formControlName="web_domain" />
+                    <input pInputText type="text" id="web_domain_id" formControlName="web_domain" />
 
                     <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.web_domain.errors && recordForm.controls.web_domain.errors.required"
                     >
@@ -55,9 +55,9 @@
 
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
-                    <label for="emailAddressId" style="font-weight: bolder;">Email Address *</label>
+                    <label for="email_address_id" style="font-weight: bolder;">Email Address *</label>
 
-                    <input pInputText type="text" id="emailAddressId" formControlName="email_address" />
+                    <input pInputText type="text" id="email_address_id" formControlName="email_address" />
 
                     <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.email_address.errors && recordForm.controls.email_address.errors.required"
                     >
@@ -73,9 +73,9 @@
 
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
-                    <label for="passwordsId" style="font-weight: bolder;">Passwords *</label>
+                    <label for="passwords_id" style="font-weight: bolder;">Passwords *</label>
 
-                    <div formArrayName="passwords" id="passwordsId">
+                    <div formArrayName="passwords" id="passwords_id">
                     
                         <p-panel *ngFor="let password of recordForm.controls.passwords.controls; let i=index; ">
 
@@ -91,9 +91,9 @@
                             </div>
                         </p-header>
                             
-                            <label for="passwordId" style="font-weight: bolder;">Password *</label>
+                            <label for="password_id" style="font-weight: bolder;">Password *</label>
 
-                            <input pInputText id="passwordId" [formControlName]="i"/>
+                            <input pInputText id="password_id" [formControlName]="i"/>
 
                              <div class="ui-message ui-messages-error ui-corner-all" *ngIf="recordForm.controls.passwords.controls[i].errors && recordForm.controls.passwords.controls[i].errors.required"
                             >

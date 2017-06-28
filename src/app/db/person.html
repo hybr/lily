@@ -72,36 +72,36 @@
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
 
-                    <label for="namesId" style="font-weight: bolder;">Names *</label>
+                    <label for="names_id" style="font-weight: bolder;">Names *</label>
 
-                    <div formArrayName="names" id="namesId">
+                    <div formArrayName="names" id="names_id">
 
-                        <p-panel *ngFor=" let name of recordForm.controls.names.controls; let i=index; ">
+                        <p-panel *ngFor=" let name of recordForm.controls.names.controls; let namesIndex=index; ">
 
                         <p-header>
                             <div class="ui-helper-clearfix">
-                                <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Name {{i + 1}}</span>
+                                <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Name {{namesIndex + 1}}</span>
                                 
                                 <span 
                                     style="float:right"
                                     *ngIf="recordForm.controls.names.controls.length > 1"
-                                    (click)="recordForm.get('names').removeAt(i)"
+                                    (click)="recordForm.get('names').removeAt(namesIndex)"
                                 ><i class="fa fa-close"></i></span>
                             </div>
                         </p-header>
                             
-                            <div [formGroupName]="i" >
+                            <div [formGroupName]="namesIndex" >
 
                                 <div class="ui-grid-row lns_sub_fields_border">
                                     <div class="ui-grid-col-12"> 
 
-                                        <label for="prefixId" style="font-weight: bolder;">Prefix</label>
-                                        <input pInputText id="prefixId" formControlName="prefix" />
+                                        <label for="prefix_id" style="font-weight: bolder;">Prefix</label>
+                                        <input pInputText id="prefix_id" formControlName="prefix" />
 
 
                                         <div class="ui-message ui-messages-error ui-corner-all" 
-                                            *ngIf="recordForm.controls.names.controls[i].controls.prefix.errors 
-                                            &&  recordForm.controls.names.controls[i].controls.prefix.errors.pattern"
+                                            *ngIf="recordForm.controls.names.controls[namesIndex].controls.prefix.errors 
+                                            &&  recordForm.controls.names.controls[namesIndex].controls.prefix.errors.pattern"
                                         >
                                             Prefix format is not correct
                                         </div>
@@ -111,19 +111,19 @@
                             
                                 <div class="ui-grid-row lns_sub_fields_border">
                                     <div class="ui-grid-col-12">
-                                        <label for="firstId" style="font-weight: bolder;">First *</label>
-                                        <input pInputText id="firstId" formControlName="first" />
+                                        <label for="first_id" style="font-weight: bolder;">First *</label>
+                                        <input pInputText id="first_id" formControlName="first" />
                                         
                                         <div class="ui-message ui-messages-error ui-corner-all" 
-                                            *ngIf="recordForm.controls.names.controls[i].controls.first.errors 
-                                            && recordForm.controls.names.controls[i].controls.first.errors.required"
+                                            *ngIf="recordForm.controls.names.controls[namesIndex].controls.first.errors 
+                                            && recordForm.controls.names.controls[namesIndex].controls.first.errors.required"
                                         >
                                             First name is required
                                         </div>
 
                                          <div class="ui-message ui-messages-error ui-corner-all" 
-                                            *ngIf="recordForm.controls.names.controls[i].controls.first.errors 
-                                            && recordForm.controls.names.controls[i].controls.first.errors.pattern"
+                                            *ngIf="recordForm.controls.names.controls[namesIndex].controls.first.errors 
+                                            && recordForm.controls.names.controls[namesIndex].controls.first.errors.pattern"
                                         >
                                             First name format is not correct
                                         </div>
@@ -133,12 +133,12 @@
                             
                                 <div class="ui-grid-row lns_sub_fields_border">
                                     <div class="ui-grid-col-12">                            
-                                        <label for="middleId" style="font-weight: bolder;">Middle</label>
-                                        <input pInputText id="middleId" formControlName="middle" />
+                                        <label for="middle_id" style="font-weight: bolder;">Middle</label>
+                                        <input pInputText id="middle_id" formControlName="middle" />
 
                                         <div class="ui-message ui-messages-error ui-corner-all" 
-                                            *ngIf="recordForm.controls.names.controls[i].controls.middle.errors 
-                                            && recordForm.controls.names.controls[i].controls.middle.errors.pattern"
+                                            *ngIf="recordForm.controls.names.controls[namesIndex].controls.middle.errors 
+                                            && recordForm.controls.names.controls[namesIndex].controls.middle.errors.pattern"
                                         >
                                             Middle name format is not correct
                                         </div>
@@ -148,13 +148,13 @@
                             
                                 <div class="ui-grid-row lns_sub_fields_border">
                                     <div class="ui-grid-col-12">
-                                        <label for="lastId" style="font-weight: bolder;">Last</label>
-                                        <input pInputText id="lastId" formControlName="last" />
+                                        <label for="last_id" style="font-weight: bolder;">Last</label>
+                                        <input pInputText id="last_id" formControlName="last" />
 
 
                                         <div class="ui-message ui-messages-error ui-corner-all" 
-                                            *ngIf="recordForm.controls.names.controls[i].controls.last.errors 
-                                            && recordForm.controls.names.controls[i].controls.last.errors.pattern"
+                                            *ngIf="recordForm.controls.names.controls[namesIndex].controls.last.errors 
+                                            && recordForm.controls.names.controls[namesIndex].controls.last.errors.pattern"
                                         >
                                             Last name format is not correct
                                         </div>
@@ -164,12 +164,12 @@
 
                                 <div class="ui-grid-row lns_sub_fields_border">
                                     <div class="ui-grid-col-12">
-                                        <label for="suffixId" style="font-weight: bolder;">Suffix</label>
-                                        <input pInputText id="suffixId" formControlName="suffix" />
+                                        <label for="suffix_id" style="font-weight: bolder;">Suffix</label>
+                                        <input pInputText id="suffix_id" formControlName="suffix" />
 
                                         <div class="ui-message ui-messages-error ui-corner-all" 
-                                            *ngIf="recordForm.controls.names.controls[i].controls.suffix.errors 
-                                            && recordForm.controls.names.controls[i].controls.suffix.errors.pattern"
+                                            *ngIf="recordForm.controls.names.controls[namesIndex].controls.suffix.errors 
+                                            && recordForm.controls.names.controls[namesIndex].controls.suffix.errors.pattern"
                                         >
                                             Suffix format is not correct
                                         </div>
@@ -186,46 +186,44 @@
                     <button type="button" pButton icon="fa-add" label="Add Name" (click)="recordForm = addControlFromGroup(recordForm, 'names', initName())"></button>
 
                 </div>
-
             </div> 
 
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
-                    <label for="genderId" style="font-weight: bolder;">Gender</label>
-                    <p-listbox [options]="genders" id="genderId"  formControlName="gender" ></p-listbox>
+                    <label for="gender_id" style="font-weight: bolder;">Gender</label>
+                    <p-listbox [options]="genders" id="gender_id"  formControlName="gender" ></p-listbox>
                 </div>
             </div>
 
-
-
-
             <div class="ui-grid-row lns_sub_fields_border">
                 <div class="ui-grid-col-12">
-                    <label for="phoneNumbersId" style="font-weight: bolder;">Phone Numbers</label>
-                    <div formArrayName="phone_numbers" id="phoneNumbersId">
+                    <label for="phone_numbers_id" style="font-weight: bolder;">Phone Numbers</label>
+                    <div formArrayName="phone_numbers" id="phone_numbers_id">
 
-                    <p-panel *ngFor="let phoneNumber of recordForm.controls.phone_numbers.controls; let pi=index; ">
+                    <p-panel *ngFor="let phoneNumber of recordForm.controls.phone_numbers.controls; let phoneNumbersIndex=index; ">
 
                         <p-header>
                             <div class="ui-helper-clearfix">
-                                <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Phone {{pi + 1}}</span>
+                                <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Phone {{phoneNumbersIndex + 1}}</span>
                                 
                                 <span 
                                     style="float:right"
                                     *ngIf="recordForm.controls.phone_numbers.controls.length > 1"
-                                    (click)="recordForm = removeControlFromGroup(recordForm, 'phone_numbers', pi)"
+                                    (click)="recordForm = removeControlFromGroup(recordForm, 'phone_numbers', phoneNumbersIndex)"
                                 ><i class="fa fa-close"></i></span>
                             </div>
                         </p-header>
-                            <p-multiSelect 
+                            <p-listbox 
                                 [options]="phoneNumberRecords" 
-                                [formGroupName]="pi" >
-                            </p-multiSelect>
+                                [formControlName]="phoneNumbersIndex" >
+                            </p-listbox>
                         </p-panel>
 
                     </div>
-                </div>
 
+                    <button type="button" pButton icon="fa-add" label="Add Phone" (click)="recordForm = addControlFromGroup(recordForm, 'phone_numbers', initPhone())"></button>
+
+                </div>
             </div>
 
 

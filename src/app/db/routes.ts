@@ -4,6 +4,8 @@ import { DbTablesComponent } from './db_tables';
 import { DbUserComponent, } from './user';
 import { DbPersonComponent, } from './person';
 import { DbPhoneComponent, } from './phone';
+import { DbWebPagesComponent, } from './web_page';
+
 
 /*import { UpdateComponent } from './update/update.component';
 import { CreateComponent } from './create/create.component';
@@ -16,6 +18,7 @@ export const DbRoutes: Routes = [
 	{ path: 'db/users', component: DbUserComponent },
 	{ path: 'db/people', component: DbPersonComponent },
 	{ path: 'db/phones', component: DbPhoneComponent },
+	{ path: 'db/web_pages', component: DbWebPagesComponent },
 
 /*	{ path: 'db/tl/:cNum', component: ListComponent }, */
 	/* utr = Update Table (with number = cNum) Record (with id = docId) */

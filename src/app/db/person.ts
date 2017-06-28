@@ -21,10 +21,9 @@ export class DbPersonComponent extends AppDbCommon implements OnInit {
     private phoneNumberRecords: SelectItem[];
    
      constructor(
-        public dataService: DbTableRecordsService,
-        public formBuilder: FormBuilder
+        public dataService: DbTableRecordsService
     ) {
-        super(formBuilder, dataService);
+        super(dataService);
     }
 
     ngOnInit() {
@@ -50,11 +49,8 @@ export class DbPersonComponent extends AppDbCommon implements OnInit {
 
         this.getSpecificTableRecordsValue('phones', ['phone_number', 'use', 'other_use']);
         this.phoneNumberRecords = this.specificTableValues;
-
-        console.log('this.specificTableValues = ', this.specificTableValues);
-        console.log('this.phoneNumberRecords = ', this.phoneNumberRecords);
         this.getTableRecordsValue();
-        
+        this.logIt([this.recordForm]);
     }
     
     onRowSelect(event) {
@@ -82,7 +78,7 @@ export class DbPersonComponent extends AppDbCommon implements OnInit {
 
     initName() {
         return new FormGroup({
-            prefix: new FormControl('', [Validators.pattern('^[a-zA-Z.]+$')]),
+            prefix: new FormControl('', [Validators.required]),
             first: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z.]+$')]),
             middle: new FormControl('', [Validators.pattern('^[a-zA-Z.]+$')]),
             last: new FormControl('', [Validators.pattern('^[a-zA-Z.]+$')]),

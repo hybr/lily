@@ -12,10 +12,9 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
 
 
     constructor(
-        public dataService: DbTableRecordsService,
-        public formBuilder: FormBuilder
+        public dataService: DbTableRecordsService
     ) {
-        super(formBuilder, dataService);
+        super(dataService);
     }
 
     ngOnInit() {
@@ -23,10 +22,10 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
         this.summary = 'User credentials to login';
         this.dbTableName = 'users';
 
-        this.recordForm = this.formBuilder.group({
-            web_domain: ['', [Validators.required]],
-            email_address: ['', [Validators.required, Validators.email]],
-            passwords: this.formBuilder.array([
+        this.recordForm = new FormGroup({
+            web_domain: new FormControl('', [Validators.required]),
+            email_address: new FormControl('', [Validators.required, Validators.email]),
+            passwords: new FormArray([
                 this.initPassword()
             ])
         });

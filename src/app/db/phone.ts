@@ -12,10 +12,9 @@ export class DbPhoneComponent extends AppDbCommon implements OnInit {
     private usages = [];
     
     constructor(
-        public dataService: DbTableRecordsService,
-        public formBuilder: FormBuilder
+        public dataService: DbTableRecordsService
     ) {
-        super(formBuilder, dataService);
+        super(dataService);
     }
 
     ngOnInit() {
@@ -33,11 +32,13 @@ export class DbPhoneComponent extends AppDbCommon implements OnInit {
         this.usages.push({label:'On Contact us Webpage', value:'on contact us webpage'});
         this.usages.push({label:'Other', value:'other'});
 
-        this.recordForm = this.formBuilder.group({
-            web_domain: ['', [Validators.required]],
-            phone_number: ['', [Validators.required, Validators.pattern('^[0-9]{10,13}$')]],
-            use: [[], [Validators.required]],
-            other_use: ['', [Validators.pattern('^[0-9a-zA-Z ]{3,15}$')]]
+        this.recordForm = new FormGroup({
+            web_domain: new FormControl('', [Validators.required]),
+            phone_number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10,13}$')]),
+            use: new FormArray(
+                [this.initStringNoValidatorsControl()], Validators.compose([Validators.minLength(1)])
+            ),
+            other_use: new FormControl('', [Validators.pattern('^[0-9a-zA-Z ]{3,15}$')])
         });
 
         this.getTableRecordsValue();   

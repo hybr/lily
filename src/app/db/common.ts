@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AppCommon } from '../common';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { ActivatedRoute, Params } from '@angular/router';
-import { FormArray, FormGroup, FormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, ValidationErrors } from '@angular/forms';
 import { DbTableRecordsService } from './service';
 import { SelectItem } from 'primeng/primeng';
 
@@ -32,7 +32,6 @@ export class AppDbCommon extends AppCommon {
     public specificTableValues: SelectItem[] = [];
 
     constructor(
-        public formBuilder: FormBuilder,
         public dataService: DbTableRecordsService
     ) {
         super();
@@ -135,13 +134,17 @@ export class AppDbCommon extends AppCommon {
         if (subRecord == undefined || fieldName == undefined || fieldName == '') { 
             return recordGroup;
         }
-        let fFGs = subRecord.map(subField => this.formBuilder.group(subField));
-        let fFormArray = this.formBuilder.array(fFGs);
-        recordGroup.setControl(fieldName, fFormArray);
+        recordGroup.setControl(
+            fieldName, 
+            new FormArray(subRecord.map(subField => new FormGroup(subField)))
+        );
         
         return recordGroup;
     }
 
+    initStringNoValidatorsControl() {
+        return new FormControl('', []);   
+    }
     getSelectedRecordIndex(tableRecords, selectedRecord): number {
         return tableRecords.indexOf(selectedRecord);
     }
@@ -156,8 +159,9 @@ export class AppDbCommon extends AppCommon {
                         console.log(' r = ', r['_id']);
                         let rowTitle = '';
                         for (let titleField of titleFields) {
-                            rowTitle = rowTitle + ' ' + JSON.stringify(r[titleField]);
+                            rowTitle = rowTitle + ' | ' + this.toTitleCase(titleField) + ' = ' + JSON.stringify(r[titleField]);
                         }
+                        rowTitle = rowTitle + ' | ';
                         this.specificTableValues.push({
                             'label': rowTitle,
                             'value': r['_id']
@@ -174,6 +178,20 @@ export class AppDbCommon extends AppCommon {
         );
     }
 
+    getFormValidationErrors(): string[] {
+        let errors = [];
+        Object.keys(this.recordForm.controls).forEach(key => {
+            
+            const controlErrors: ValidationErrors = this.recordForm.get(key).errors;
+            if (controlErrors != null) {
+                Object.keys(controlErrors).forEach(keyError => {
+                    errors.push(key + ' : ' + keyError + '; ' + controlErrors[keyError]);
+                });
+            }
+        });
+        return errors;
+    }
+    
     getTableRecordsValue() {
         this.dataService.readTableRecordValues(this.dbTableName, '.*').subscribe(
             response => {
