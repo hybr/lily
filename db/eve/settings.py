@@ -22,7 +22,9 @@ ITEM_METHODS = ['GET', 'PATCH', 'PUT', 'DELETE']
 # We enable standard client cache directives for all resources exposed by the
 # API. We can always override these global settings later.
 
-CACHE_CONTROL = 'max-age=10,must-revalidate',
+ALLOWED_ROLES = ['admin']
+
+CACHE_CONTROL = 'max-age=10,must-revalidate'
 CACHE_EXPIRES = 10
 
 # ----------------------------------------------------------------
@@ -46,6 +48,7 @@ users = {
 			'required': True,
 			'regex' : '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 		},
+
 		'passwords': {
 			'type': 'list',
 			'minlength': 1,
@@ -53,8 +56,15 @@ users = {
 				'type' : 'string',
 				'minlength': 8,
 				'required': True
-			},
-				
+			}	
+		},
+
+		'roles': {
+			'type': 'list',
+			'schema' : {
+				'type' : 'string',
+				'allowed' : ['admin', 'public', 'customer', 'worker', 'supplier']
+			}
 		}
 	}
 }
@@ -166,9 +176,9 @@ phones = {
 }
 
 # ----------------------------------------------------------------
-web_sliders = {
-	'resource_title' : 'Web Sliders',
-	'item_title': 'Web ',
+web_slides = {
+	'resource_title' : 'Web Slides',
+	'item_title': 'Web Slide',
 	'soft_delete': True,
 	
 	'schema' : {
@@ -184,6 +194,10 @@ web_sliders = {
 
 		'link' : {
 			'type' : "string"
+		},
+
+		'background_image' : {
+			'type' : 'media'
 		}
 
 	}
@@ -249,13 +263,90 @@ web_pages = {
 
 	}
 }
+
+# ----------------------------------------------------------------
+organizations = {
+	'resource_title' : 'Organizations',
+	'item_title': 'Organization',
+	
+	'schema' : {
+
+		'abbreviation' : {
+			'type' : 'string'
+		},
+
+		'name' : {
+			'type' : "string"
+		},
+
+		'statement' : {
+			'type' : "string"
+		},
+
+		'parent_organization' : {
+			'type': 'objectid',
+			'data_relation': {
+				'resource': 'organizations',
+				'field' : '_id',
+				'embeddable' : True
+			}
+		},
+
+		'web_domains' : {
+			'type': 'list',
+			'minlength': 1,
+			'schema' : {
+				'type' : 'string'
+			},
+				
+		}
+
+	}
+}
+
+# ----------------------------------------------------------------
+se_operation_data = {
+	'resource_title' : 'SE Operation Data',
+	'item_title': 'SE Operation Data',
+	
+	'schema' : {
+
+		'on' : {
+			'type' : 'datetime'
+		},
+
+		'cma' : {
+			'type' : "string"
+		},
+
+		'mcma' : {
+			'type' : "string"
+		},
+
+		'sn' : {
+			'type' : "string"
+		},
+
+		'r' : {
+			'type' : "string"
+		},
+
+		'u' : {
+			'type' : "string"
+		}
+
+	}
+}
+
 # ----------------------------------------------------------------
 DOMAIN = {
 	'users' : users,
 	'phones' : phones,
 	'people' : people,
-	'web_sliders' : web_sliders,
-	'web_pages' : web_pages
+	'organizations': organizations,
+	'web_slides' : web_slides,
+	'web_pages' : web_pages,
+	'se_operation_data' : se_operation_data
 }
 
 # cd git\lily\db\eve

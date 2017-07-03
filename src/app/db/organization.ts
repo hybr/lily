@@ -3,14 +3,18 @@ import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@ang
 import { AppDbCommon } from './common';
 import { DbTableRecordsService } from './service';
 
-
 @Component({
-    selector: 'app-db-user',
+    selector: 'app-db-organization',
     template: `
         <p-dataTable [value]="tableValues" selectionMode="single" [(selection)]="selectedRecord" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="15" [responsive]="true" *ngIf="dataLoaded">
             <p-header>{{ subTitle }} <br /> {{summary}}</p-header>
+            
             <p-column field="web_domain" header="Web Domain" [sortable]="true"></p-column>
-            <p-column field="email_address" header="Email Address" [sortable]="true"></p-column>
+
+            <p-column field="abbreviation" header="Abbreviation" [sortable]="true"></p-column>
+                      
+            <p-column field="name" header="Name" [sortable]="true"></p-column>
+            
             <p-footer>
                 <div class="ui-helper-clearfix" style="width:100%">
                     <button *ngIf="!selectedRecord" type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button>
@@ -33,31 +37,26 @@ import { DbTableRecordsService } from './service';
                     <form-input 
                         [mainForm]="recordForm"
                         [submitClicked]="submitted"
-                        [fieldStructure]="getFieldStructure('web_domain')"
+                        [fieldStructure]="getFieldStructure('abbreviation')"
                     ></form-input>
 
                     <form-input 
                         [mainForm]="recordForm"
+                        [fieldStructure]="getFieldStructure('name')"
                         [submitClicked]="submitted"
-                        [fieldStructure]="getFieldStructure('email_address')"
                     ></form-input>
-                    
-                    <form-list 
-                        [mainForm]="recordForm"
-                        [submitClicked]="submitted"
-                        [fieldStructure]="getFieldStructure('passwords')"
-                    ></form-list>
 
-                    <form-list 
+                   <form-input
                         [mainForm]="recordForm"
+                        [fieldStructure]="getFieldStructure('statement')"
                         [submitClicked]="submitted"
-                        [fieldStructure]="getFieldStructure('roles')"
-                    ></form-list>
+                    ></form-input>
 
                 </div>
 
                 <p-footer>
                     <div class="ui-dialog-buttonpane ui-helper-clearfix">
+
                         <button type="button" pButton icon="fa-check" 
                             (click)="submitted=true;" label="Check"
                         ></button>
@@ -69,18 +68,17 @@ import { DbTableRecordsService } from './service';
                         <button type="submit" pButton icon="fa-save" 
                             label="Save" [disabled]="!recordForm.valid"
                         ></button>
+
                     </div>
                 </p-footer>
 
             </form>
 
-        </p-dialog>
+        </p-dialog>    
     `
 })
-export class DbUserComponent extends AppDbCommon implements OnInit {
-
-    private listOfRoles = [];
-
+export class DbOrganizationComponent extends AppDbCommon implements OnInit {
+    
     constructor(
         public dataService: DbTableRecordsService
     ) {
@@ -88,21 +86,16 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
     }
 
     ngOnInit() {
-        this.subTitle = 'User Credentials';
-        this.summary = 'User credentials to login';
-        this.dbTableName = 'users';
+        this.subTitle = 'Organization';
+        this.summary = 'Detail of organization';
+        this.dbTableName = 'organizations';
 
-        this.listOfRoles.push({label:'Admin', value:'admin'});
-        this.listOfRoles.push({label:'Public', value:'public', selected:true});
-        this.listOfRoles.push({label:'Customer', value:'customer'});
-        this.listOfRoles.push({label:'Worker', value:'worker'});
-        this.listOfRoles.push({label:'Supplier', value:'supplier'});
 
-        this.addFieldStructureInRecordStructure('', 'email_address');
-        this.addFieldStructureInRecordStructure('', 'passwords');
-        this.addFieldStructureInRecordStructure('', 'roles', this.listOfRoles);
+        this.addFieldStructureInRecordStructure('string', 'abbreviation', [], 'Abbreviations', 'Abbreviation');
+        this.addFieldStructureInRecordStructure('string', 'name', [], 'Names', 'Name');
+        this.addFieldStructureInRecordStructure('string', 'statement', [], 'Statements', 'Statement');
         this.createRecordForm();
-
+        
         this.getTableRecordsValue();   
     }
     
@@ -110,9 +103,9 @@ export class DbUserComponent extends AppDbCommon implements OnInit {
         this.newRecord = false;
         this.recordForm.reset({
             web_domain: event.data.web_domain,
-            email_address: event.data.email_address,
-            passwords: event.data.passwords,
-            roles: event.data.roles
+            phone_number: event.data.phone_number,
+            use: event.data.use,
+            other_use: event.data.other_use
         });
         this.title = 'Update ' + this.subTitle;
         this.displayDialog = true; 

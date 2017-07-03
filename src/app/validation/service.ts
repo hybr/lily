@@ -4,19 +4,22 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class ValidationService {
     static getValidatorErrorMessage(validatorName: string, validatorValue?: any) {
-        console.log('getValidatorErrorMessage validatorName = ', validatorName);
+        // console.log('getValidatorErrorMessage validatorName = ', validatorName);
         let config = {
             'required': 'Required',
+            'email': 'Invalid email address format',
             'invalidCreditCard': 'Is invalid credit card number',
             'invalidEmailAddress': 'Invalid email address',
             'invalidPassword': 'Invalid password. Password must be at least 6 characters long, and contain a number.',
-            'minlength': `Minimum length ${validatorValue.requiredLength}`
+            'minlength': `Minimum length ${validatorValue.requiredLength}`,
+            'pattern': 'Invalid format '
         };
 
         if (validatorName in config) {
+            // console.log('validatorValue = ', validatorValue);
             return config[validatorName];
         } else {
-            return 'Add error for ' +  validatorName;
+            return 'Missnig error in config for ' +  validatorName;
         }
         
     }

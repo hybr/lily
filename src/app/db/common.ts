@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { AppCommon } from '../common';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { ActivatedRoute, Params } from '@angular/router';
-import { FormArray, FormGroup, FormControl, ValidationErrors } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { DbTableRecordsService } from './service';
 import { SelectItem } from 'primeng/primeng';
 
 @Component({
     selector: 'app-db-common',
-    templateUrl: './common'
+    template: ''
 })
 export class AppDbCommon extends AppCommon {
     public tableOfTables: string = 't1';
@@ -18,8 +18,8 @@ export class AppDbCommon extends AppCommon {
     public displayDialog: boolean = false;    
     public newRecord: boolean;
     public dataLoaded: boolean = false;
-    public errorMessage: string = '';
-    public message: string = '';
+    public apiErrorMessage: string = '';
+    public apiGoodMessage: string = '';
 
     public subTitle = '';
     public title = '';
@@ -29,7 +29,9 @@ export class AppDbCommon extends AppCommon {
     public selectedRecord = null;
     public tableValues = [];
     public recordForm: FormGroup;
+    public recordStructure: Object[] = [];
     public specificTableValues: SelectItem[] = [];
+    public submitted: boolean = false;
 
     constructor(
         public dataService: DbTableRecordsService
@@ -37,6 +39,145 @@ export class AppDbCommon extends AppCommon {
         super();
         this.keysOfFieldProperties = ['_n', '_t', '_y', '_s', '_f', '_v', '_d', '_m'];
         this.recordForm = null;
+        this.recordStructure.push({ 
+            'name' : 'web_domain',
+            'plural_label' : 'Web Domain',
+            'singular_label': 'Web Domain',
+            'field_defination' : new FormControl('', [Validators.required]),
+        });
+    }
+
+    addFieldStructureInRecordStructure(
+        type: string = '',
+        fieldName: string = '', 
+        values: Object[] = [],
+        pluralLabel: string = '',
+        singularLabel: string = '',
+        validators: any[] = []
+    ) {
+        if (type == 'string') {
+            this.recordStructure.push({ 
+                'name' : fieldName,
+                'plural_label' : pluralLabel,
+                'singular_label': singularLabel,
+                'field_defination' : new FormControl('', validators),
+            });
+
+        } else if (fieldName == 'use') {
+            this.recordStructure.push({ 
+                'name' : 'use',
+                'plural_label' : 'Uses',
+                'singular_label': 'Use',
+                'values' : values,
+                'sub_field_defination' : new FormControl('', []),
+                'field_defination': new FormArray(
+                    [new FormControl('', [])], 
+                    Validators.compose([Validators.minLength(1)])
+                ),
+            });
+            
+            this.recordStructure.push({ 
+                'name' : 'other_use',
+                'plural_label' : 'Other Uses',
+                'singular_label': 'Other Use',
+                'field_defination' : new FormControl(
+                    '', 
+                    [Validators.pattern('^[0-9a-zA-Z ]{3,15}$')]
+                ),
+            });
+        
+        } else if (fieldName == 'phone_number') {
+            this.recordStructure.push({ 
+                'name' : 'phone_number',
+                'plural_label' : 'Phone Numbers',
+                'singular_label': 'Phone Number',
+                'field_defination' : new FormControl(
+                    '', 
+                    [Validators.required, Validators.pattern('^[0-9]{10,13}$')]
+                ),
+                'help' : 'Phone number is 10 to 13 charecters long',
+            });
+        
+        } else if (fieldName == 'gender') {
+            this.recordStructure.push({ 
+                'name' : 'gender',
+                'plural_label' : 'Genders',
+                'singular_label': 'Gender',
+                'field_defination' : new FormControl('', []),
+            });
+
+        } else if (fieldName == 'abbreviation') {
+            this.recordStructure.push({ 
+                'name' : 'abbreviation',
+                'plural_label' : 'Abbreviations',
+                'singular_label': 'Abbreviation',
+                'field_defination' : new FormControl('', []),
+            });
+
+        } else if (fieldName == 'name') {
+            this.recordStructure.push({ 
+                'name' : 'name',
+                'plural_label' : 'Names',
+                'singular_label': 'Name',
+                'field_defination' : new FormControl('', []),
+            });
+            
+        
+        } else if (fieldName == 'email_address') {
+            this.recordStructure.push({ 
+                'name' : 'email_address',
+                'plural_label' : 'Email Addresses',
+                'singular_label': 'Email Address',
+                'field_defination' : new FormControl('', [Validators.required, Validators.email]),
+            });
+
+       } else if (fieldName == 'passwords') {
+            this.recordStructure.push({ 
+                'name' : 'passwords',
+                'plural_label' : 'Passwords',
+                'singular_label': 'Password',
+                'sub_field_defination' : new FormControl(
+                    '', 
+                    [Validators.required, Validators.pattern('^[0-9]{10,13}$')]
+                ),
+                'field_defination': new FormArray(
+                    [new FormControl(
+                        '', 
+                        [Validators.required, Validators.pattern('^[0-9]{10,13}$')]
+                    )], 
+                    Validators.compose([Validators.minLength(1)])
+                ),
+            });
+
+       } else if (fieldName == 'roles') {
+            this.recordStructure.push({ 
+                'name' : 'roles',
+                'plural_label' : 'Roles',
+                'singular_label': 'Role',
+                'values' : values,
+                'sub_field_defination' : new FormControl(
+                    '', 
+                    [Validators.required]
+                ),
+                'field_defination': new FormArray(
+                    [new FormControl(
+                        '', 
+                        [Validators.required]
+                    )], 
+                    Validators.compose([Validators.minLength(1)])
+                ),
+            });        
+
+        } /* switch */
+    } /* addFieldStructureInRecordStructure */
+
+    getFieldStructure(fieldName: string) {
+        for (let fieldStructure of this.recordStructure) {
+            if (fieldStructure['name'] == fieldName) {
+                return fieldStructure;
+            }
+        }
+        return {};
     }
 
     announceIt(value, emitter, code) {
@@ -117,6 +258,17 @@ export class AppDbCommon extends AppCommon {
         return list[list.findIndex(x => x[property] == value)]['label'];
     }
 
+    createRecordForm() {
+        let x = {};
+        console.log('createRecordForm this.recordStructure = ', this.recordStructure);
+        for (let field of this.recordStructure) {
+            x[field['name']] = field['field_defination'];
+        }
+        this.recordForm = new FormGroup(x);
+        console.log('createRecordForm this.recordForm = ', this.recordForm);
+        x = null; // release memory
+    }
+    
     removeControlFromGroup(recordGroup: FormGroup, fieldName: string, i: number) {
         let control = <FormArray>recordGroup.controls[fieldName];
         control.removeAt(i);
@@ -169,11 +321,11 @@ export class AppDbCommon extends AppCommon {
                     }
                     
                 } else {
-                    this.message = 'No record found';
+                    this.apiGoodMessage = 'No record found';
                 }
             },
             error =>  {
-                this.errorMessage = error.json();
+                this.apiErrorMessage = error.json();
             }
         );
     }
@@ -201,11 +353,11 @@ export class AppDbCommon extends AppCommon {
                     this.tableValues = response;
                     this.dataLoaded = true;
                 } else {
-                    this.message = 'No record found';
+                    this.apiGoodMessage = 'No record found';
                 }
             },
             error =>  {
-                this.errorMessage = error.json();
+                this.apiErrorMessage = error.json();
                 this.dataLoaded = false;
             }
         );
@@ -214,6 +366,8 @@ export class AppDbCommon extends AppCommon {
 
     showDialogToAdd() {
         this.newRecord = true;
+        this.apiErrorMessage = '';
+        this.apiGoodMessage = '';
         if (this.selectedRecord) {
             this.title = 'Clone ' + this.subTitle;
         } else {
@@ -222,34 +376,39 @@ export class AppDbCommon extends AppCommon {
         this.displayDialog = true;
     }
     
-    save(modal) {     
+    save(modal) {
+        this.apiErrorMessage = '';
+        this.apiGoodMessage = '';
         let si = this.getSelectedRecordIndex(this.tableValues, this.selectedRecord);
         if(this.newRecord) {
             this.dataService.saveRecord(modal , this.dbTableName).subscribe(
-                response => {this.message = 'Added new record';},
-                error =>  {this.errorMessage = error.json();}
+                response => {this.apiGoodMessage = 'Added new record';},
+                error =>  {this.apiErrorMessage = error.json();}
             );        
         } else {           
             modal['_id'] = this.tableValues[si]['_id'];
             modal['_etag'] = this.tableValues[si]['_etag'];
             this.dataService.updateRecord(modal, this.dbTableName).subscribe(
-                response => {this.message = 'Updated the record';},
-                error => {this.errorMessage = error.json();}
+                response => {this.apiGoodMessage = 'Updated the record';},
+                error => {this.apiErrorMessage = error.json();}
             );  
         }
 
         this.getTableRecordsValue();
         this.selectedRecord = null;
         this.displayDialog = false;
+        this.submitted = true;  
     }
     
     delete(modal) {
+        this.apiErrorMessage = '';
+        this.apiGoodMessage = '';
         let si = this.getSelectedRecordIndex(this.tableValues, this.selectedRecord);
         modal['_id'] = this.tableValues[si]['_id'];
         modal['_etag'] = this.tableValues[si]['_etag'];
         this.dataService.deleteRecord(modal, this.dbTableName).subscribe(
-            response => {this.message = 'Deleted the record';},
-            error => {this.errorMessage = error.json();}
+            response => {this.apiGoodMessage = 'Deleted the record';},
+            error => {this.apiErrorMessage = error.json();}
         ); 
         this.getTableRecordsValue();
         this.selectedRecord = null;

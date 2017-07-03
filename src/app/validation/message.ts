@@ -7,24 +7,22 @@ import { ValidationService } from './service';
   selector: 'validation-message',
   template: `<div 
     class="ui-message ui-messages-error ui-corner-all" 
-    *ngIf="errorMessage !== null"
+    *ngIf="errorMessage !== ''"
   >{{errorMessage}}</div>`
 })
 export class ValidationMessageComponent {
 
-  private errorMessage: string;
   @Input() control: FormControl;
+  @Input() formSubmitted: boolean;
   
   constructor() { }
 
-  getErrorMessage() {
-    console.log('contorl = ', this.control);
+  get errorMessage(): string {
     for (let propertyName in this.control.errors) {
-      if (this.control.errors.hasOwnProperty(propertyName) && this.control.touched) {
+      if (this.control.errors.hasOwnProperty(propertyName) && (this.control.dirty || this.formSubmitted)) {
         return ValidationService.getValidatorErrorMessage(propertyName, this.control.errors[propertyName]);
       }
     }
-    
-    return null;
+    return '';
   }
 }

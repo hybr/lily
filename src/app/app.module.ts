@@ -38,14 +38,19 @@ import { DataTableModule, SharedModule, MultiSelectModule } from 'primeng/primen
 import { TooltipModule, PanelModule } from 'primeng/primeng';
 
 
-import { ValidationMessageComponent, } from './validation/message';
+import { ValidationMessageComponent } from './validation/message';
+import { ValidationApiMessageComponent } from './validation/api_message';
+
+import { FormInputComponent } from './form/input';
+import { FormListComponent } from './form/list';
 
 import { DbTableRecordsService } from './db/service';
 import { DbTablesComponent } from './db/db_tables';
 import { DbUserComponent } from './db/user';
-import { DbPersonComponent, } from './db/person';
-import { DbPhoneComponent, } from './db/phone';
-import { DbWebPagesComponent, } from './db/web_page';
+import { DbPersonComponent } from './db/person';
+import { DbPhoneComponent } from './db/phone';
+import { DbWebPagesComponent } from './db/web_page';
+import { DbOrganizationComponent } from './db/organization';
 
 
 const firebaseConfig = {
@@ -66,9 +71,10 @@ const firebaseConfig = {
 		LoadingComponent,
 		DebugComponent,
 		
-		ValidationMessageComponent,
+		ValidationMessageComponent, ValidationApiMessageComponent,
+		FormInputComponent, FormListComponent,
 		DbUserComponent, DbPersonComponent, DbPhoneComponent,
-		DbWebPagesComponent,
+		DbWebPagesComponent, DbOrganizationComponent,
 
 		DbTablesComponent
 	],
