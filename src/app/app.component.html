@@ -1,16 +1,15 @@
 <div class="ui-g">
-  <div class="ui-g-12 ui-md-2">
-          <button pButton type="button" icon="fa-database" [routerLink]="['/db/tsl']"></button>
-  </div>
-  <div class="ui-g-12 ui-md-10 ui-g-nopad">
+
+  <div class="ui-g-12 ui-md-12 ui-g-nopad">
     <div class="ui-g-12">
       <p-toolbar>
         <div class="ui-toolbar-group-left">
           <span>Demo</span>
-          <button pButton type="button" label="Home" icon="fa-home" [routerLink]="['/']"></button>
-          <button pButton type="button" label="About" icon="fa-info" [routerLink]="[ '/web-page/about' ]"></button>
+          <button pButton type="button" icon="fa-home" tooltipPosition="bottom" pTooltip="Home" [routerLink]="['/']"></button>
+          <button pButton type="button" icon="fa-info" tooltipPosition="bottom" pTooltip="About" [routerLink]="[ '/web-page/about' ]"></button>
         </div>
         <div class="ui-toolbar-group-right">
+          <button pButton type="button" icon="fa-database" tooltipPosition="bottom" pTooltip="Database" [routerLink]="['/db/tsl']"></button>
           <span *ngIf="!(user|async)">
             <button pButton type="button" icon="fa-sign-in" tooltipPosition="left" pTooltip="User Login" (click)="login()"></button>
           </span>
@@ -20,12 +19,14 @@
         </div>
       </p-toolbar>
     </div>
+
     <div class="ui-g-12 ui-g-nopad">
       <div class="ui-g">
         <router-outlet></router-outlet>
       </div>
     </div>
   </div>
+
   <div class="ui-g-12">
     <div class="ui-g">
       <hr /> Demo &copy; Copyright

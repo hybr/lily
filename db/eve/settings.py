@@ -338,6 +338,196 @@ se_operation_data = {
 	}
 }
 
+items = {
+	'resource_title' : 'Products and Services',
+	'item_title': 'Product and Service',
+	
+	'schema' : {
+
+		'title' : {
+			'type' : "string"
+		},
+
+		'upc' : {
+			'type' : "string"
+		},
+
+		'summary' : {
+			'type' : "string"
+		},
+
+		'manufacturar' : {
+			'type': 'objectid',
+			'data_relation': {
+				'resource': 'organizations',
+				'field' : '_id',
+				'embeddable' : True
+			}
+		},
+
+		'life_status' : {
+			'type' : 'string',
+			'allowed' : ['proposed', 'design', 'implement', 'test', 'live', 'closed']
+		},
+
+		'type' : {
+			'type' : 'string',
+			'allowed' : ['product', 'service', 'solution']
+		},
+
+		'virtual' : {
+			'type' : 'boolean'
+		},
+
+		'photos': {
+			'type': 'list',
+			'schema' : {
+				'type': 'objectid',
+				'data_relation': {
+					'resource': 'web_photos',
+					'field' : '_id',
+					'embeddable' : True
+				}
+			},		
+		},
+
+		'costs' : {
+			'type' : 'list',
+			'minlength': 1,
+			'schema' : {
+				'type' : 'dict',
+				'schema' : {
+					'for' : {
+						'type' : 'string',
+						'allowed' : ['manufacture', 'purchase', 'sale', 'consume', 'packaging', 'shipping', 'distribution']
+					},
+					'type' : {
+						'type' : 'string',
+						'allowed' : ['amount', 'quote']
+					},
+					'amount' : {
+						'type' : 'float'
+					},
+					'currency' : {
+						'type' : 'string'
+					},
+					'per' : {
+						'type' : 'float'
+					},
+					'per_unit' : {
+						'type' : 'string'
+					}
+				}
+			}
+		},
+
+		'hours' : {
+			'type' : 'list',
+			'minlength': 1,
+			'schema' : {
+				'type' : 'dict',
+				'schema' : {
+					'for' : {
+						'type' : 'string',
+						'allowed' : ['manufacture', 'purchase', 'sale', 'consume', 'packaging', 'shipping', 'distribution']
+					},				
+					'provider': {
+						'type': 'list',
+						'minlength': 1,
+						'schema' : {
+							'type': 'objectid',
+							'data_relation': {
+								'resource': 'people',
+								'field' : '_id'
+							}
+						},		
+					},
+					'every' : {
+						'type' : 'float'
+					},
+					'frequency' : {
+						'type' : 'string',
+						'allowed' : ['minute', 'hour', 'working_day', 'day', 'week', 'bi-week', 'month', 'quater', 'year']
+					},
+					'start_date_time' : {
+						'type' : 'datetime'
+					},
+					'end_date_time' : {
+						'type' : 'datetime'
+					},
+					'duration' : {
+						'type' : 'float'
+					},
+					'duration_unit' : {
+						'type' : 'string',
+						'allowed' : ['minute', 'hour', 'working_day', 'day', 'week', 'bi-week', 'month', 'quater', 'year']
+					},
+				}
+			}
+		},
+
+		'pre_requisites' : {
+			'type' : 'list',
+			'schema' : {
+				'type' : 'dict',
+				'schema' : {
+					'for' : {
+						'type' : 'string',
+						'allowed' : ['manufacture', 'purchase', 'sale', 'consume', 'packaging', 'shipping', 'distribution']
+					},
+					'mendatory' : {
+						'type' : 'boolean'
+					},
+					'condition' : {
+						'type' : 'string'
+					}
+				}
+			}
+		},
+
+		'information' : {
+			'type' : 'list',
+			'schema' : {
+				'type' : 'dict',
+				'schema' : {
+					'for' : {
+						'type' : 'string',
+						'allowed' : ['manufacture', 'purchase', 'sale', 'consume', 'packaging', 'shipping', 'distribution']
+					},
+					'title' : {
+						'type' : 'string'
+					},
+					'detail' : {
+						'type' : 'string'
+					}
+				}
+			}
+		},
+
+		'report' : {
+			'type' : 'list',
+			'schema' : {
+				'type' : 'dict',
+				'schema' : {
+					'life_status' : {
+						'type' : 'string',
+						'allowed' : ['proposed', 'design', 'implement', 'test', 'live', 'closed']
+					},				
+					'for' : {
+						'type' : 'string',
+						'allowed' : ['manufacture', 'purchase', 'sale', 'consume', 'packaging', 'shipping', 'distribution']
+					},
+					'title' : {
+						'type' : 'string'
+					},
+					'password' : {
+						'type' : 'string'
+					}
+				}
+			}
+		},		
+	}	
+}
 # ----------------------------------------------------------------
 DOMAIN = {
 	'users' : users,
@@ -346,7 +536,8 @@ DOMAIN = {
 	'organizations': organizations,
 	'web_slides' : web_slides,
 	'web_pages' : web_pages,
-	'se_operation_data' : se_operation_data
+	'se_operation_data' : se_operation_data,
+	'items' : items
 }
 
 # cd git\lily\db\eve
