@@ -63,7 +63,7 @@ export class AppFormCommon  extends AppCommon {
 	}
 
 	get selectOptions() {
-		if (this.doesKeyExists('values', this.fieldStructure)) {
+		if (this.doesKeyExists('values', this.fieldStructure) && this.fieldStructure['values']) {
 			return this.fieldStructure['values'];
 		} else {
 			return [];

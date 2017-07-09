@@ -63,6 +63,31 @@ export class AppDbCommon extends AppCommon {
                 'field_defination' : new FormControl('', validators),
             });
 
+        } else if (type == 'required_list_of_strings') {
+            this.recordStructure.push({ 
+                'name' : fieldName,
+                'plural_label' : pluralLabel,
+                'singular_label': singularLabel,
+                'values' : values,
+                'sub_field_defination' : new FormControl('', validators),
+                'field_defination': new FormArray(
+                    [new FormControl('', validators)], 
+                    Validators.compose([Validators.minLength(1)])
+                ),
+            });
+
+        } else if (type == 'list_of_strings') {
+            this.recordStructure.push({ 
+                'name' : fieldName,
+                'plural_label' : pluralLabel,
+                'singular_label': singularLabel,
+                'values' : values,
+                'sub_field_defination' : new FormControl('', validators),
+                'field_defination': new FormArray(
+                    [new FormControl('', validators)]                    
+                ),
+            });
+
         } else if (fieldName == 'use') {
             this.recordStructure.push({ 
                 'name' : 'use',
@@ -260,12 +285,12 @@ export class AppDbCommon extends AppCommon {
 
     createRecordForm() {
         let x = {};
-        console.log('createRecordForm this.recordStructure = ', this.recordStructure);
+        //console.log('createRecordForm this.recordStructure = ', this.recordStructure);
         for (let field of this.recordStructure) {
             x[field['name']] = field['field_defination'];
         }
         this.recordForm = new FormGroup(x);
-        console.log('createRecordForm this.recordForm = ', this.recordForm);
+        //console.log('createRecordForm this.recordForm = ', this.recordForm);
         x = null; // release memory
     }
     
@@ -281,7 +306,7 @@ export class AppDbCommon extends AppCommon {
     }
 
     setSubRecord(recordGroup: FormGroup, fieldName: string, subRecord: any[]) {
-        console.log('subRecord = ', subRecord);
+        //console.log('subRecord = ', subRecord);
         
         if (subRecord == undefined || fieldName == undefined || fieldName == '') { 
             return recordGroup;
@@ -305,10 +330,9 @@ export class AppDbCommon extends AppCommon {
         this.dataService.readTableRecordValues(tableName, '.*').subscribe(
             response => {
                 if (response != undefined && response) { 
-                    console.log('getTableRecordsValue response for '
-                        + tableName + ' = ', response);
+                    //console.log('getTableRecordsValue response for ' + tableName + ' = ', response);
                     for(let r of response) {
-                        console.log(' r = ', r['_id']);
+                        //console.log(' r = ', r['_id']);
                         let rowTitle = '';
                         for (let titleField of titleFields) {
                             rowTitle = rowTitle + ' | ' + this.toTitleCase(titleField) + ' = ' + JSON.stringify(r[titleField]);
@@ -348,8 +372,7 @@ export class AppDbCommon extends AppCommon {
         this.dataService.readTableRecordValues(this.dbTableName, '.*').subscribe(
             response => {
                 if (response != undefined && response) { 
-                    console.log('getTableRecordsValue response for '
-                        + this.dbTableName + ' = ', response);
+                    //console.log('getTableRecordsValue response for ' + this.dbTableName + ' = ', response);
                     this.tableValues = response;
                     this.dataLoaded = true;
                 } else {

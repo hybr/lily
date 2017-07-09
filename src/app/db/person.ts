@@ -178,36 +178,11 @@ import { SelectItem } from 'primeng/primeng';
                         </div>
                     </div>
 
-                    <div class="ui-grid-row lns_sub_fields_border">
-                        <div class="ui-grid-col-12">
-                            <label for="phone_numbers_id" style="font-weight: bolder;">Phone Numbers</label>
-                            <div formArrayName="phone_numbers" id="phone_numbers_id">
-
-                            <p-panel *ngFor="let phoneNumber of recordForm.controls.phone_numbers.controls; let phoneNumbersIndex=index; ">
-
-                                <p-header>
-                                    <div class="ui-helper-clearfix">
-                                        <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Phone {{phoneNumbersIndex + 1}}</span>
-                                        
-                                        <span 
-                                            style="float:right"
-                                            *ngIf="recordForm.controls.phone_numbers.controls.length > 1"
-                                            (click)="recordForm = removeControlFromGroup(recordForm, 'phone_numbers', phoneNumbersIndex)"
-                                        ><i class="fa fa-close"></i></span>
-                                    </div>
-                                </p-header>
-                                    <p-listbox 
-                                        [options]="phoneNumberRecords" 
-                                        [formControlName]="phoneNumbersIndex" >
-                                    </p-listbox>
-                                </p-panel>
-
-                            </div>
-
-                            <button type="button" pButton icon="fa-add" label="Add Phone" (click)="recordForm = addControlFromGroup(recordForm, 'phone_numbers', initPhone())"></button>
-
-                        </div>
-                    </div>
+                    <form-list 
+                        [mainForm]="recordForm"
+                        [submitClicked]="submitted"
+                        [fieldStructure]="getFieldStructure('phone_numbers')"
+                    ></form-list>
 
 
                 </div>
@@ -236,7 +211,7 @@ import { SelectItem } from 'primeng/primeng';
 export class DbPersonComponent extends AppDbCommon implements OnInit {
 
     private genders = [];
-    private phoneNumberRecords: SelectItem[];
+    private phoneNumberRecords: SelectItem[] = [];
    
      constructor(
         public dataService: DbTableRecordsService
@@ -263,20 +238,15 @@ export class DbPersonComponent extends AppDbCommon implements OnInit {
             ),
         });
         this.addFieldStructureInRecordStructure('', 'gender', this.genders);
-        this.recordStructure.push({ 
-            'name' : 'phone_numbers',
-            'label' : 'Names*',
-            'sub_field_defination' : this.initPhone(),
-            'field_defination': new FormArray(
-                [this.initPhone()]
-            ),
-        });
-        this.createRecordForm();
-
         this.getSpecificTableRecordsValue('phones', ['phone_number', 'use', 'other_use']);
         this.phoneNumberRecords = this.specificTableValues;
+        this.addFieldStructureInRecordStructure(
+            'required_list_of_strings', 
+            'phone_numbers', this.phoneNumberRecords,
+            'Phone Numbers','Phone Number'
+        );
+        this.createRecordForm();
         this.getTableRecordsValue();
-        this.logIt([this.recordForm]);
     }
     
     onRowSelect(event) {
@@ -310,9 +280,5 @@ export class DbPersonComponent extends AppDbCommon implements OnInit {
             last: new FormControl('', [Validators.pattern('^[a-zA-Z.]+$')]),
             suffix: new FormControl('', [Validators.pattern('^[a-zA-Z.]+$')])
         });
-    }
-
-    initPhone() {
-        return new FormControl('', []);
     }
 }

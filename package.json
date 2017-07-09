@@ -9,11 +9,11 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-	"clean": "rm -rf dist",
-	"finalize": "[[ -d dist ]] && [[ -d final ]] && rm -rf final; mv dist final",
-	"build": "ng build",
-	"minify": "uglifyjs dist/bundle.js --screw-ie8 --compress --mangle --output dist/bundle.min.js",
-	"build_prod": "npm run clean && npm run build && npm run finalize"
+        "clean": "rm -rf dist",
+        "finalize": "[[ -d dist ]] && [[ -d final ]] && rm -rf final; mv dist final",
+        "build": "ng build",
+        "minify": "uglifyjs dist/bundle.js --screw-ie8 --compress --mangle --output dist/bundle.min.js",
+        "build_prod": "npm run clean && npm run build && npm run finalize"
     },
     "private": true,
     "dependencies": {
