@@ -9,9 +9,11 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "build": "npm run clean && tsc",
-        "build_prod": "npm run build && browserify -s main dist/main.js > dist/bundle.js && npm run minify",
-        "minify": "uglifyjs dist/bundle.js --screw-ie8 --compress --mangle --output dist/bundle.min.js"
+	"clean": "rm -rf dist",
+	"finalize": "[[ -d dist ]] && [[ -d final ]] && rm -rf final; mv dist final",
+	"build": "ng build",
+	"minify": "uglifyjs dist/bundle.js --screw-ie8 --compress --mangle --output dist/bundle.min.js",
+	"build_prod": "npm run clean && npm run build && npm run finalize"
     },
     "private": true,
     "dependencies": {
@@ -34,13 +36,12 @@
         "cors": "^2.8.3",
         "firebase": "*",
         "hammerjs": "*",
-        "primeng": "^4.1.0-rc.1",
+        "primeng": "^4.0.0",
         "rxjs": "*",
         "ts-md5": "*",
         "typescript": "*",
         "typings": "*",
         "zone.js": "*",
-        "primeng": "^4.0.0",
         "font-awesome": "^4.7.0"
     },
     "devDependencies": {
