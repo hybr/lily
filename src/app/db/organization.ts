@@ -37,6 +37,12 @@ import { DbTableRecordsService } from './service';
                     <form-input 
                         [mainForm]="recordForm"
                         [submitClicked]="submitted"
+                        [fieldStructure]="getFieldStructure('web_domain')"
+                    ></form-input>
+
+                    <form-input 
+                        [mainForm]="recordForm"
+                        [submitClicked]="submitted"
                         [fieldStructure]="getFieldStructure('abbreviation')"
                     ></form-input>
 
@@ -89,13 +95,22 @@ export class DbOrganizationComponent extends AppDbCommon implements OnInit {
         this.subTitle = 'Organization';
         this.summary = 'Detail of organization';
         this.dbTableName = 'organizations';
-
-
-        this.addFieldStructureInRecordStructure('string', 'abbreviation', [], 'Abbreviations', 'Abbreviation');
-        this.addFieldStructureInRecordStructure('string', 'name', [], 'Names', 'Name');
-        this.addFieldStructureInRecordStructure('string', 'statement', [], 'Statements', 'Statement');
+        this.addFieldStructureInRecordStructure(
+            'string', 'abbreviation', 
+            [Validators.required], 
+            'Abbreviations', 'Abbreviation'
+        );
+        this.addFieldStructureInRecordStructure(
+            'string', 'name', 
+            [Validators.required], 
+            'Names', 'Name'
+        );
+        this.addFieldStructureInRecordStructure(
+            'string', 'statement', 
+            [Validators.required], 
+            'Statements', 'Statement'
+        );
         this.createRecordForm();
-        
         this.getTableRecordsValue();   
     }
     

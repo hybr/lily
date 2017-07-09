@@ -179,20 +179,21 @@ export class DbWebPagesComponent extends AppDbCommon implements OnInit {
         this.sectionTypes.push({label:'Paragraph', value:'paragraph', selected: true});
         this.sectionTypes.push({label:'Slider', value:'slider'});
         
-        this.addFieldStructureInRecordStructure('email_address');
-        this.addFieldStructureInRecordStructure('passwords');
-        
+        this.addFieldStructureInRecordStructure('', 'use', this.usages);
+        this.addFieldStructureInRecordStructure(
+            'string', 'key_words', 
+            [Validators.required], 
+            'Key Words', 'Key Word'
+        );
+        this.addFieldStructureInRecordStructure(
+            'string', 'title', 
+            [Validators.required], 
+            'Titles', 'Title'
+        );      
         this.createRecordForm();
 
 
         this.recordForm = new FormGroup({
-            web_domain: new FormControl('', [Validators.required]),
-            use: new FormArray(
-                [this.initStringNoValidatorsControl()], Validators.compose([Validators.minLength(1)])
-            ),
-            other_use: new FormControl('', [Validators.pattern('^[0-9a-zA-Z ]{3,15}$')]),
-            key_words: new FormControl('', [Validators.required]),
-            title: new FormControl('', [Validators.required]),
             sections: new FormArray(
                 [this.initSection()], Validators.compose([Validators.minLength(1)])
             ),
