@@ -6,7 +6,7 @@ import { DbPersonComponent, } from './person';
 import { DbPhoneComponent, } from './phone';
 import { DbWebPagesComponent, } from './web_page';
 import { DbOrganizationComponent, } from './organization';
-
+import { DbSeOperationDataComponent, } from './se_operation_data';
 
 /*import { UpdateComponent } from './update/update.component';
 import { CreateComponent } from './create/create.component';
@@ -21,6 +21,7 @@ export const DbRoutes: Routes = [
 	{ path: 'db/phones', component: DbPhoneComponent },
 	{ path: 'db/web_pages', component: DbWebPagesComponent },
 	{ path: 'db/organizations', component: DbOrganizationComponent },
+	{ path: 'db/se_operation_data', component: DbSeOperationDataComponent },
 	
 
 /*	{ path: 'db/tl/:cNum', component: ListComponent }, */

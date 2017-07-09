@@ -36,13 +36,14 @@ import { ToolbarModule, DialogModule, DataListModule } from 'primeng/primeng';
 import { ButtonModule, SplitButtonModule, ListboxModule } from 'primeng/primeng';
 import { DataTableModule, SharedModule, MultiSelectModule } from 'primeng/primeng';
 import { TooltipModule, PanelModule } from 'primeng/primeng';
-
+import { CalendarModule } from 'primeng/primeng';
 
 import { ValidationMessageComponent } from './validation/message';
 import { ValidationApiMessageComponent } from './validation/api_message';
 
 import { FormInputComponent } from './form/input';
 import { FormListComponent } from './form/list';
+import { FormDateTimeComponent } from './form/datetime';
 
 import { DbTableRecordsService } from './db/service';
 import { DbTablesComponent } from './db/db_tables';
@@ -51,7 +52,7 @@ import { DbPersonComponent } from './db/person';
 import { DbPhoneComponent } from './db/phone';
 import { DbWebPagesComponent } from './db/web_page';
 import { DbOrganizationComponent } from './db/organization';
-
+import { DbSeOperationDataComponent, } from './db/se_operation_data';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDRGd4HFZkgmseHrokr2Jv5hXIkoPNugy0',
@@ -72,9 +73,9 @@ const firebaseConfig = {
 		DebugComponent,
 		
 		ValidationMessageComponent, ValidationApiMessageComponent,
-		FormInputComponent, FormListComponent,
+		FormInputComponent, FormListComponent, FormDateTimeComponent,
 		DbUserComponent, DbPersonComponent, DbPhoneComponent,
-		DbWebPagesComponent, DbOrganizationComponent,
+		DbWebPagesComponent, DbOrganizationComponent, DbSeOperationDataComponent,
 
 		DbTablesComponent
 	],
@@ -96,6 +97,7 @@ const firebaseConfig = {
 		ToolbarModule, DialogModule, ButtonModule, DataListModule,
 		SplitButtonModule, DataTableModule,	SharedModule, MultiSelectModule,
 		TooltipModule, PanelModule, ListboxModule,
+		CalendarModule,
 		
 		AngularFireModule.initializeApp (firebaseConfig),
 		AngularFireAuthModule,
